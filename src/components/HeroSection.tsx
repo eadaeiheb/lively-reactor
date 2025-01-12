@@ -1,40 +1,44 @@
-import { useEffect, useRef } from 'react';
-import { ArrowDown } from 'lucide-react';
+import { AnimatedText } from "./AnimatedText";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
-const HeroSection = () => {
-  const textRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const text = "Innovation through simplicity.";
-    let index = 0;
-    const interval = setInterval(() => {
-      if (textRef.current && index <= text.length) {
-        textRef.current.textContent = text.slice(0, index);
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
+export const HeroSection = () => {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center relative px-6">
-      <div className="text-center max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-          <span ref={textRef} className="bg-clip-text"></span>
-        </h1>
-        <p className="text-soft-600 text-lg md:text-xl max-w-2xl mx-auto mb-12 animate-fadeIn opacity-0" style={{ animationDelay: '1s' }}>
-          Experience design that puts user needs first, creating meaningful interactions through thoughtful simplicity.
-        </p>
-      </div>
+    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-accent-light/30 to-transparent -z-10" />
       
-      <div className="absolute bottom-12 animate-bounce">
-        <ArrowDown size={24} className="text-soft-400" />
-      </div>
-    </section>
+      <AnimatedText
+        text="Master Any Language"
+        className="text-4xl md:text-6xl font-bold mb-6"
+      />
+      
+      <AnimatedText
+        text="Unlock your potential with AI-powered language learning"
+        className="text-xl md:text-2xl text-gray-600 mb-12"
+        delay={200}
+      />
+      
+      <AnimatedText
+        text=""
+        delay={400}
+        className="flex flex-col sm:flex-row gap-4"
+      >
+        <Button
+          size="lg"
+          className="bg-accent hover:bg-accent-dark text-white font-semibold px-8 py-6 rounded-full"
+        >
+          Start Learning
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+        
+        <Button
+          variant="outline"
+          size="lg"
+          className="border-2 px-8 py-6 rounded-full"
+        >
+          Explore Languages
+        </Button>
+      </AnimatedText>
+    </div>
   );
 };
-
-export default HeroSection;
