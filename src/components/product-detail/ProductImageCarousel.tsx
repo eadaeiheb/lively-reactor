@@ -18,22 +18,23 @@ const ProductImageCarousel = ({ images, name }: ProductImageCarouselProps) => {
 
   if (filteredImages.length === 0) return null;
 
+  // Get other images excluding the selected one
+  const otherImages = filteredImages.filter((_, index) => index !== selectedImage);
+
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-6">
       {/* Thumbnails column */}
-      <div className="flex flex-col gap-2">
-        {filteredImages.map((image, index) => (
+      <div className="flex flex-col gap-4">
+        {otherImages.map((image, index) => (
           <button
             key={index}
-            onClick={() => setSelectedImage(index)}
-            className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-              selectedImage === index ? 'border-[#700100]' : 'border-transparent hover:border-gray-200'
-            }`}
+            onClick={() => setSelectedImage(filteredImages.indexOf(image))}
+            className="w-32 h-32 rounded-lg overflow-hidden border-2 border-transparent hover:border-gray-200 transition-all duration-300"
           >
             <img
               src={image}
               alt={`${name} - Thumbnail ${index + 1}`}
-              className="w-full h-full object-contain mix-blend-normal p-1"
+              className="w-full h-full object-contain mix-blend-normal p-2 opacity-80 hover:opacity-100 transition-opacity"
             />
           </button>
         ))}
