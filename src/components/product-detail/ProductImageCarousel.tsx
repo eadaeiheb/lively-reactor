@@ -18,33 +18,41 @@ const ProductImageCarousel = ({ images, name }: ProductImageCarouselProps) => {
 
   if (filteredImages.length === 0) return null;
 
-  // Get other images excluding the selected one
-  const otherImages = filteredImages.filter((_, index) => index !== selectedImage);
-
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-4 h-[600px]">
       {/* Thumbnails column */}
-      <div className="flex flex-col gap-4">
-        {otherImages.map((image, index) => (
-          <button
+      <div className="flex flex-col gap-2 w-24 h-full justify-between">
+        {filteredImages.map((image, index) => (
+          <motion.button
             key={index}
-            onClick={() => setSelectedImage(filteredImages.indexOf(image))}
-            className="w-32 h-32 rounded-lg overflow-hidden border-2 border-transparent hover:border-gray-200 transition-all duration-300"
+            onClick={() => setSelectedImage(index)}
+            className={`
+              relative w-24 h-[142px] rounded-lg overflow-hidden border-2 
+              ${selectedImage === index ? 'border-[#700100]' : 'border-gray-200'}
+              hover:border-[#700100]/50 transition-all duration-300
+            `}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
           >
             <img
               src={image}
               alt={`${name} - Thumbnail ${index + 1}`}
-              className="w-full h-full object-contain mix-blend-normal p-2 opacity-80 hover:opacity-100 transition-opacity"
+              className="w-full h-full object-cover"
             />
-          </button>
+            {selectedImage === index && (
+              <div className="absolute inset-0 bg-black/10" />
+            )}
+          </motion.button>
         ))}
       </div>
 
       {/* Main image */}
       <div className="flex-1 relative">
-        <div 
-          className="aspect-square bg-white rounded-xl overflow-hidden cursor-zoom-in"
+        <motion.div 
+          className="relative h-full bg-white rounded-xl overflow-hidden shadow-lg cursor-zoom-in"
           onClick={() => setIsZoomed(true)}
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.3 }}
         >
           <motion.img
             key={selectedImage}
@@ -53,14 +61,14 @@ const ProductImageCarousel = ({ images, name }: ProductImageCarouselProps) => {
             transition={{ duration: 0.3 }}
             src={filteredImages[selectedImage]}
             alt={`${name} - Image ${selectedImage + 1}`}
-            className="w-full h-full object-contain mix-blend-normal p-4"
+            className="w-full h-full object-contain p-4"
           />
           <button
-            className="absolute bottom-4 right-4 p-2 bg-black/10 rounded-full opacity-0 hover:opacity-100 transition-opacity"
+            className="absolute bottom-4 right-4 p-2 bg-white/80 rounded-full opacity-0 hover:opacity-100 transition-opacity shadow-md"
           >
             <ZoomIn className="w-5 h-5 text-gray-700" />
           </button>
-        </div>
+        </motion.div>
       </div>
 
       {/* Zoom Modal */}
