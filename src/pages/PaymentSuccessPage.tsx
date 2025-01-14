@@ -71,8 +71,8 @@ const PaymentSuccessPage = () => {
             item.image : 
             `https://respizenmedical.com/fiori/${item.image}`;
 
-          // Determine if item is from pack
-          const isFromPack = item.fromPack && packType;
+          // Determine if item is from pack based on the fromPack property
+          const isFromPack = item.fromPack === true;
           const itemName = isFromPack ? `${item.name} (${packType})` : item.name;
 
           return {
@@ -113,7 +113,7 @@ const PaymentSuccessPage = () => {
               size: '-',
               color: '-',
               personalization: '-',
-              pack: packType,
+              pack: 'aucun',
               box: '-',
               image: '/Menu/Sur musure .png'
             });
