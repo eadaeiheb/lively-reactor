@@ -54,10 +54,11 @@ const PaymentSuccessPage = () => {
         console.log('Retrieved user details:', finalUserDetails);
         await updateProductStock(pendingOrder.cartItems);
 
-        const packType = sessionStorage.getItem('selectedPackType');
-        console.log('Pack type:', packType);
+        // Get the current pack type from session storage
+        const currentPackType = sessionStorage.getItem('selectedPackType');
+        console.log('Current pack type:', currentPackType);
 
-        // Format items with correct pack information and size
+        // Format items with correct pack information
         const formattedItems = pendingOrder.cartItems.map((item: any) => {
           console.log('Processing item:', item);
 
@@ -71,54 +72,30 @@ const PaymentSuccessPage = () => {
             item.image : 
             `https://respizenmedical.com/fiori/${item.image}`;
 
-          // Determine if item is from pack based on the fromPack property
-          const isFromPack = item.fromPack === true;
-          const itemName = isFromPack ? `${item.name} (${packType})` : item.name;
+          // Check if the item is a pack charge
+          const isPackCharge = item.type_product === "Pack";
+          
+          // Determine if item is from pack and which pack
+          const packInfo = (() => {
+            if (isPackCharge) return "aucun";
+            if (!item.fromPack && !currentPackType) return "aucun";
+            return item.fromPack ? currentPackType : "aucun";
+          })();
 
           return {
             item_id: item.id.toString(),
             quantity: item.quantity,
             price: itemPrice,
             total_price: itemPrice * item.quantity,
-            name: itemName,
+            name: item.name,
             size: item.size || '-',
             color: item.color || '-',
             personalization: item.personalization || '-',
-            pack: isFromPack ? packType : 'aucun',
+            pack: packInfo,
             box: item.withBox ? 'Avec box' : 'Sans box',
             image: imageUrl
           };
         });
-
-        // Add pack as a separate item if it exists
-        if (packType) {
-          const packPrices: { [key: string]: number } = {
-            'Pack Prestige': 50,
-            'Pack Premium': 30,
-            'Pack Trio': 20,
-            'Pack Duo': 20,
-            'Pack Mini Duo': 0,
-            'Pack Chemise': 10
-          };
-
-          const packPrice = packPrices[packType] || 0;
-          
-          if (packPrice > 0) {
-            formattedItems.push({
-              item_id: `pack-${Date.now()}`,
-              quantity: 1,
-              price: packPrice,
-              total_price: packPrice,
-              name: `${packType} - Frais de packaging`,
-              size: '-',
-              color: '-',
-              personalization: '-',
-              pack: 'aucun',
-              box: '-',
-              image: '/Menu/Sur musure .png'
-            });
-          }
-        }
 
         const orderData = {
           order_id: pendingOrder.orderId,
@@ -191,6 +168,7 @@ const PaymentSuccessPage = () => {
           });
         }
         
+        // Clear session storage and cart
         sessionStorage.removeItem('pendingOrder');
         sessionStorage.removeItem('selectedPackType');
         clearCart();
