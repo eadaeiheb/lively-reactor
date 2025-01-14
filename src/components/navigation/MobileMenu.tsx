@@ -119,9 +119,14 @@ const MobileMenu = ({
                   <SubMenuSectionMobile
                     title="Outlet"
                     items={[
-                      { href: "/category/outlet/homme/costumes", title: "Costume", description: "Costumes en promotion" },
-                      { href: "/category/outlet/homme/blazers", title: "Blazer", description: "Blazers en solde" },
-                      { href: "/category/outlet/femme/chemises", title: "Chemise", description: "Chemises en promotion" }
+                      { href: "/category/outlet/homme/costumes", title: "Costumes", description: "Costumes en promotion" },
+                      { href: "/category/outlet/homme/blazers", title: "Blazers", description: "Blazers en solde" },
+                      { href: "/category/outlet/homme/chemises", title: "Chemises", description: "Chemises en promotion" },
+                      { href: "/category/outlet/homme/pantalons", title: "Pantalons", description: "Pantalons en solde" },
+                      { href: "/category/outlet/homme/pollo", title: "Polo", description: "Polos en promotion" },
+                      { href: "/category/outlet/femme/chemises", title: "Chemises Femme", description: "Chemises en promotion" },
+                      { href: "/category/outlet/femme/robes", title: "Robes", description: "Robes en solde" },
+                      { href: "/category/outlet/femme/vestes", title: "Vestes/Manteaux", description: "Vestes et manteaux en promotion" }
                     ]}
                   />
                 </div>
