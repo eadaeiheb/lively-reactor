@@ -76,13 +76,10 @@ const PaymentSuccessPage = () => {
           const isPackCharge = item.type_product === "Pack";
           
           // Determine if item is from pack and which pack
-          const packInfo = (() => {
-            if (isPackCharge) return "aucun";
-            if (!item.fromPack && !currentPackType) return "aucun";
-            return item.fromPack ? currentPackType : "aucun";
-          })();
+          const packInfo = isPackCharge ? "aucun" : 
+                          item.fromPack ? currentPackType || "aucun" : "aucun";
 
-          return {
+          const formattedItem = {
             item_id: item.id.toString(),
             quantity: item.quantity,
             price: itemPrice,
@@ -95,6 +92,9 @@ const PaymentSuccessPage = () => {
             box: item.withBox ? 'Avec box' : 'Sans box',
             image: imageUrl
           };
+
+          console.log('Formatted item:', formattedItem);
+          return formattedItem;
         });
 
         const orderData = {
