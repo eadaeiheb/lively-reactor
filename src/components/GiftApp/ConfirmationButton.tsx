@@ -70,6 +70,31 @@ const ConfirmationButton = ({
       return;
     }
 
+    // Check if it's Pack Prestige and only 2 items are selected
+    if (packType === 'Pack Prestige' && selectedItemsCount === 2) {
+      clearInterval(holdTimer);
+      setIsHolding(false);
+      setHoldProgress(0);
+      
+      toast({
+        title: "Pack incomplet",
+        description: (
+          <div className="space-y-2">
+            <p>Vous n'avez sélectionné que 2 articles.</p>
+            <p>Souhaitez-vous plutôt composer un Pack Duo ?</p>
+            <button
+              onClick={() => navigate('/gift-universe/packduo')}
+              className="mt-2 px-4 py-2 bg-[#700100] text-white rounded-md hover:bg-[#590000] transition-colors w-full"
+            >
+              Voir le Pack Duo
+            </button>
+          </div>
+        ),
+        duration: 5000,
+      });
+      return;
+    }
+
     setIsLoading(true);
     
     try {
