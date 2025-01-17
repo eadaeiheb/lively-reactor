@@ -1,38 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { CartItem, CartContextType } from '@/types/cart';
 import { saveCartItems, getCartItems } from '@/utils/cartStorage';
 import { getPersonalizations } from '@/utils/personalizationStorage';
-import { calculateDiscountedPrice } from '@/utils/priceCalculations';
-
-export interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  quantity: number;
-  image: string;
-  size?: string;
-  color?: string;
-  personalization?: string;
-  fromPack?: boolean;
-  withBox?: boolean;
-  discount_product?: string;
-  type_product?: string;
-  itemgroup_product?: string;
-}
-
-interface CartContextType {
-  cartItems: CartItem[];
-  addToCart: (item: CartItem) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
-  clearCart: () => void;
-  hasNewsletterDiscount: boolean;
-  applyNewsletterDiscount: () => void;
-  removeNewsletterDiscount: () => void;
-  calculateTotal: () => { subtotal: number; discount: number; total: number; boxTotal: number };
-}
-
-const BOX_PRICE = 30;
+import { toast } from "@/hooks/use-toast";
+import { stockReduceManager } from '@/utils/StockReduce';
+import { clearDevCache } from '@/utils/devUtils';
+import { calculateCartTotals } from '@/utils/cartCalculations';
+import { 
+  shouldSkipPackagingFee, 
+  shouldSkipPackItem, 
+  findExistingItem, 
+  prepareItemForCart 
+} from '@/utils/cartItemManagement';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -43,6 +22,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   useEffect(() => {
+    clearDevCache();
     const savedItems = getCartItems();
     const personalizations = getPersonalizations();
     
@@ -54,15 +34,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     if (itemsWithPersonalization.length > 0) {
       setCartItems(itemsWithPersonalization);
     }
-
-    // Check if user has already used the discount with their email
-    const subscribedEmail = localStorage.getItem('subscribedEmail');
-    const usedDiscountEmails = JSON.parse(localStorage.getItem('usedDiscountEmails') || '[]');
-    
-    if (subscribedEmail && usedDiscountEmails.includes(subscribedEmail)) {
-      setHasNewsletterDiscount(false);
-      localStorage.removeItem('newsletterSubscribed');
-    }
   }, []);
 
   useEffect(() => {
@@ -70,43 +41,68 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [cartItems]);
 
   const addToCart = (item: CartItem) => {
+    console.log('Adding item to cart:', item);
+    
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(i => 
-        i.id === item.id && 
-        i.size === item.size && 
-        i.color === item.color && 
-        i.personalization === item.personalization &&
-        i.withBox === item.withBox
-      );
-      
+      if (shouldSkipPackagingFee(prevItems, item)) {
+        console.log('Pack packaging fee already exists, skipping...');
+        return prevItems;
+      }
+
+      if (shouldSkipPackItem(prevItems, item)) {
+        console.log('Item already exists in pack, skipping...');
+        return prevItems;
+      }
+
+      const existingItem = findExistingItem(prevItems, item);
       if (existingItem) {
         return prevItems.map(i =>
-          i.id === item.id && 
-          i.size === item.size && 
-          i.color === item.color && 
-          i.personalization === item.personalization &&
-          i.withBox === item.withBox
+          i === existingItem
             ? { ...i, quantity: i.quantity + item.quantity }
             : i
         );
       }
 
-      // Calculate discounted price if applicable
-      const originalPrice = item.price;
-      const finalPrice = item.discount_product 
-        ? calculateDiscountedPrice(originalPrice, item.discount_product)
-        : originalPrice;
-
-      return [...prevItems, { 
-        ...item, 
-        price: finalPrice,
-        originalPrice: item.discount_product ? originalPrice : undefined
-      }];
+      const itemWithDetails = prepareItemForCart(item);
+      return [...prevItems, itemWithDetails];
     });
   };
 
   const removeFromCart = (id: number) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    const itemToRemove = cartItems.find(item => item.id === id);
+    
+    if (itemToRemove) {
+      setCartItems(prevItems => {
+        if (itemToRemove.type_product === "Pack" || itemToRemove.fromPack) {
+          const packType = itemToRemove.type_product === "Pack" 
+            ? itemToRemove.name.split(' - ')[0]
+            : itemToRemove.pack;
+          
+          const remainingItems = prevItems.filter(item => {
+            const isPackagingFee = item.type_product === "Pack" && 
+                                 item.name.split(' - ')[0] === packType;
+            const isPackItem = item.pack === packType && item.fromPack;
+            
+            return !isPackagingFee && !isPackItem;
+          });
+          
+          toast({
+            title: "Pack supprimé",
+            description: "Le pack et tous ses articles ont été supprimés du panier",
+            style: {
+              backgroundColor: '#700100',
+              color: 'white',
+              border: '1px solid #590000',
+            },
+            duration: 5000,
+          });
+          
+          return remainingItems;
+        }
+        
+        return prevItems.filter(item => item.id !== id);
+      });
+    }
   };
 
   const updateQuantity = (id: number, quantity: number) => {
@@ -122,24 +118,21 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const clearCart = () => {
     setCartItems([]);
+    stockReduceManager.clearItems();
   };
 
   const applyNewsletterDiscount = () => {
     const subscribedEmail = localStorage.getItem('subscribedEmail');
     if (!subscribedEmail) return;
 
-    // Get array of emails that have used the discount
     const usedDiscountEmails = JSON.parse(localStorage.getItem('usedDiscountEmails') || '[]');
     
-    // Check if this email has already used the discount
     if (usedDiscountEmails.includes(subscribedEmail)) {
-      console.log('Email has already used the newsletter discount');
       setHasNewsletterDiscount(false);
       localStorage.removeItem('newsletterSubscribed');
       return;
     }
 
-    // Add email to used discounts list
     usedDiscountEmails.push(subscribedEmail);
     localStorage.setItem('usedDiscountEmails', JSON.stringify(usedDiscountEmails));
     
@@ -153,18 +146,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const calculateTotal = () => {
-    const itemsSubtotal = cartItems.reduce((sum, item) => {
-      return sum + (item.price * item.quantity);
-    }, 0);
-    
-    const boxTotal = cartItems.reduce((sum, item) => 
-      sum + (item.withBox ? BOX_PRICE * item.quantity : 0), 0);
-    
-    const subtotal = itemsSubtotal + boxTotal;
-    const discount = hasNewsletterDiscount ? subtotal * 0.05 : 0;
-    const total = subtotal - discount;
-    
-    return { subtotal: itemsSubtotal, discount, total, boxTotal };
+    return calculateCartTotals(cartItems, hasNewsletterDiscount);
   };
 
   return (
