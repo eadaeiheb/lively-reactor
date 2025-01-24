@@ -8,14 +8,14 @@ let ffmpeg: FFmpeg | null = null;
 const initFFmpeg = async (): Promise<FFmpeg> => {
   if (!ffmpeg) {
     ffmpeg = new FFmpeg();
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist';
 
     try {
       console.log('[FFmpeg] Initializing...');
       await ffmpeg.load({
-        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-        workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript'),
+        coreURL: await toBlobURL(`${baseURL}/umd/ffmpeg-core.js`, 'text/javascript'),
+        wasmURL: await toBlobURL(`${baseURL}/umd/ffmpeg-core.wasm`, 'application/wasm'),
+        workerURL: await toBlobURL(`${baseURL}/worker/ffmpeg-core.worker.js`, 'text/javascript'),
       });
       console.log('[FFmpeg] Successfully loaded core files.');
       return ffmpeg;
