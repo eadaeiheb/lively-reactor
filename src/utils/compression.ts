@@ -1,95 +1,4 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import imageCompression from 'browser-image-compression';
-import { fallbackCompressVideo, fallbackCompressImage } from './fallbackCompression';
-
-let ffmpeg: FFmpeg | null = null;
-
-const initFFmpeg = async (): Promise<FFmpeg> => {
-  if (!ffmpeg) {
-    ffmpeg = new FFmpeg();
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-
-    try {
-      console.log('[FFmpeg] Initializing...');
-      await ffmpeg.load({
-        coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-      });
-      console.log('[FFmpeg] Successfully loaded core files.');
-      return ffmpeg;
-    } catch (error) {
-      console.error('[FFmpeg] Failed to load core files:', error);
-      throw new Error('Failed to initialize FFmpeg. Using fallback compression.');
-    }
-  }
-  return ffmpeg;
-};
-
-export const compressVideo = async (
-  file: File,
-  onProgress?: (progress: number) => void
-): Promise<File> => {
-  if (!file || file.type.split('/')[0] !== 'video') {
-    throw new Error('Invalid file type. Please upload a video file.');
-  }
-
-  try {
-    console.log('[Video Compression] Starting...', {
-      fileName: file.name,
-      fileSize: formatFileSize(file.size),
-      fileType: file.type,
-      timestamp: new Date().toISOString(),
-    });
-
-    const ff = await initFFmpeg();
-    ff.off('progress'); // Remove any existing progress listeners
-
-    ff.on('progress', (event: { progress: number; time: number }) => {
-      const progress = Math.round(event.progress * 100);
-      console.log(`[Video Compression] Progress: ${progress}%`, {
-        time: event.time,
-        timestamp: new Date().toISOString(),
-      });
-      if (onProgress) onProgress(progress);
-    });
-
-    const inputFileName = 'input' + file.name.substring(file.name.lastIndexOf('.'));
-    const outputFileName = 'output.mp4';
-    
-    console.log('[Video Compression] Writing file to memory...');
-    await ff.writeFile(inputFileName, await fetchFile(file));
-
-    console.log('[Video Compression] Executing FFmpeg command...');
-    await ff.exec([
-      '-i', inputFileName,
-      '-c:v', 'libx264',
-      '-crf', '28',
-      '-preset', 'medium',
-      '-c:a', 'aac',
-      '-b:a', '128k',
-      '-movflags', '+faststart',
-      '-y',
-      outputFileName
-    ], 30000); // 30 second timeout
-
-    console.log('[Video Compression] Reading compressed file...');
-    const data = await ff.readFile(outputFileName);
-    const compressedFile = new File([data], file.name.replace(/\.[^/.]+$/, '.mp4'), { type: 'video/mp4' });
-
-    console.log('[Video Compression] Completed.', {
-      originalSize: formatFileSize(file.size),
-      compressedSize: formatFileSize(compressedFile.size),
-      compressionRatio: `${((1 - compressedFile.size / file.size) * 100).toFixed(1)}%`,
-      timestamp: new Date().toISOString(),
-    });
-
-    return compressedFile;
-  } catch (error) {
-    console.error('[Video Compression] FFmpeg failed. Using fallback method...', error);
-    return fallbackCompressVideo(file, { onProgress });
-  }
-};
 
 export const compressImage = async (
   file: File,
@@ -113,7 +22,7 @@ export const compressImage = async (
       useWebWorker: true,
       onProgress: onProgress
         ? (progress: number) => {
-            const roundedProgress = Math.round(progress);
+            const roundedProgress = Math.round(progress * 100);
             console.log(`[Image Compression] Progress: ${roundedProgress}%`);
             onProgress(roundedProgress);
           }
@@ -131,8 +40,8 @@ export const compressImage = async (
 
     return compressedFile;
   } catch (error) {
-    console.error('[Image Compression] Failed. Attempting fallback method...', error);
-    return fallbackCompressImage(file, { onProgress });
+    console.error('[Image Compression] Failed:', error);
+    throw error;
   }
 };
 

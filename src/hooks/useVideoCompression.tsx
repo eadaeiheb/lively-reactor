@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { compressVideo, compressImage, formatFileSize } from '@/utils/compression';
+import { compressImage, formatFileSize } from '@/utils/compression';
 
 interface FileWithPreview extends File {
   preview?: string;
@@ -13,15 +13,15 @@ interface CompressionState {
   compressionProgress: number;
 }
 
-interface UseVideoCompressionReturn extends CompressionState {
+interface UseImageCompressionReturn extends CompressionState {
   handleFileCompression: (
     file: File,
-    type: 'video' | 'thumbnail'
+    type: 'thumbnail'
   ) => Promise<FileWithPreview | null>;
   resetCompressionState: () => void;
 }
 
-export const useVideoCompression = (): UseVideoCompressionReturn => {
+export const useVideoCompression = (): UseImageCompressionReturn => {
   const [isCompressing, setIsCompressing] = useState(false);
   const [originalSize, setOriginalSize] = useState<number | null>(null);
   const [compressedSize, setCompressedSize] = useState<number | null>(null);
@@ -37,17 +37,14 @@ export const useVideoCompression = (): UseVideoCompressionReturn => {
 
   const handleFileCompression = async (
     file: File,
-    type: 'video' | 'thumbnail'
+    type: 'thumbnail'
   ): Promise<FileWithPreview | null> => {
     setIsCompressing(true);
     setOriginalSize(file.size);
     setCompressionProgress(0);
 
     try {
-      const compressFile = type === 'video' ? compressVideo : compressImage;
-
-      // Compress the file and get the compressed version
-      const compressedFile = await compressFile(file, (progress) => {
+      const compressedFile = await compressImage(file, (progress) => {
         setCompressionProgress(progress);
         console.log('Compression progress:', progress);
       });
@@ -55,13 +52,8 @@ export const useVideoCompression = (): UseVideoCompressionReturn => {
       setCompressedSize(compressedFile.size);
       const compressionRatio = ((file.size - compressedFile.size) / file.size * 100).toFixed(1);
 
-      // Preview for video and thumbnail image
       const fileWithPreview = Object.assign(compressedFile, {
-        preview: type === 'thumbnail'
-          ? URL.createObjectURL(compressedFile)  // For image thumbnails
-          : type === 'video'
-          ? URL.createObjectURL(compressedFile)  // For video previews, could be a thumbnail from the video
-          : undefined
+        preview: URL.createObjectURL(compressedFile)
       });
 
       toast({
@@ -75,7 +67,6 @@ export const useVideoCompression = (): UseVideoCompressionReturn => {
     } catch (error: any) {
       console.error('Error compressing file:', error);
 
-      // Enhanced error message handling
       toast({
         variant: "destructive",
         title: "Erreur de compression",
