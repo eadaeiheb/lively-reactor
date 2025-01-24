@@ -71,7 +71,10 @@ export const compressVideo = async (
       '-b:a', '128k',
       '-movflags', '+faststart',
       outputFileName
-    ]);
+    ], { 
+      input: inputFileName,
+      output: outputFileName
+    });
 
     console.log('[Video Compression] Reading compressed file...');
     const data = await ff.readFile(outputFileName);
