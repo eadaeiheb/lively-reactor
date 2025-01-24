@@ -8,7 +8,7 @@ let ffmpeg: FFmpeg | null = null;
 const initFFmpeg = async (): Promise<FFmpeg> => {
   if (!ffmpeg) {
     ffmpeg = new FFmpeg();
-    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
+    const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
 
     try {
       console.log('[FFmpeg] Initializing...');
@@ -70,7 +70,7 @@ export const compressVideo = async (
       '-b:a', '128k',
       '-movflags', '+faststart',
       outputFileName
-    ], 30); // 30 second timeout
+    ], 30000); // 30 second timeout
 
     console.log('[Video Compression] Reading compressed file...');
     const data = await ff.readFile(outputFileName);
