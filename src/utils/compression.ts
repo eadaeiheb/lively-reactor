@@ -64,11 +64,12 @@ export const compressVideo = async (
     await ff.exec([
       '-i', inputFileName,
       '-c:v', 'libx264',
-      '-preset', 'ultrafast',
       '-crf', '28',
+      '-preset', 'medium',
       '-c:a', 'aac',
       '-b:a', '128k',
       '-movflags', '+faststart',
+      '-y',
       outputFileName
     ], 30000); // 30 second timeout
 
