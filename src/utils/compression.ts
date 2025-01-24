@@ -8,6 +8,7 @@ let ffmpeg: FFmpeg | null = null;
 const initFFmpeg = async (): Promise<FFmpeg> => {
   if (!ffmpeg) {
     ffmpeg = new FFmpeg();
+    // Using specific version and correct paths
     const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist';
 
     try {
@@ -21,7 +22,7 @@ const initFFmpeg = async (): Promise<FFmpeg> => {
       return ffmpeg;
     } catch (error) {
       console.error('[FFmpeg] Failed to load core files:', error);
-      throw new Error('Failed to initialize FFmpeg.');
+      throw new Error('Failed to initialize FFmpeg. Using fallback compression.');
     }
   }
   return ffmpeg;
@@ -86,7 +87,7 @@ export const compressVideo = async (
 
     return compressedFile;
   } catch (error) {
-    console.error('[Video Compression] Failed. Attempting fallback method...', error);
+    console.error('[Video Compression] FFmpeg failed. Using fallback method...', error);
     return fallbackCompressVideo(file, { onProgress });
   }
 };
