@@ -15,8 +15,10 @@ const initFFmpeg = async (): Promise<FFmpeg> => {
       await ffmpeg.load({
         coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
         wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+        workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript'),
       });
       console.log('[FFmpeg] Successfully loaded core files.');
+      return ffmpeg;
     } catch (error) {
       console.error('[FFmpeg] Failed to load core files:', error);
       throw new Error('Failed to initialize FFmpeg.');
@@ -42,11 +44,8 @@ export const compressVideo = async (
     });
 
     const ff = await initFFmpeg();
+    ff.off('progress'); // Remove any existing progress listeners
 
-    // Remove previous progress listener
-    ff.off('progress', () => {});
-
-    // Add new progress listener
     ff.on('progress', (event: { progress: number; time: number }) => {
       const progress = Math.round(event.progress * 100);
       console.log(`[Video Compression] Progress: ${progress}%`, {
@@ -56,34 +55,27 @@ export const compressVideo = async (
       if (onProgress) onProgress(progress);
     });
 
-    const inputFileName = 'input.mp4';
-    const outputFileName = 'output.webm';
-    const fileData = await fetchFile(file);
-
+    const inputFileName = 'input' + file.name.substring(file.name.lastIndexOf('.'));
+    const outputFileName = 'output.mp4';
+    
     console.log('[Video Compression] Writing file to memory...');
-    await ff.writeFile(inputFileName, fileData);
+    await ff.writeFile(inputFileName, await fetchFile(file));
 
     console.log('[Video Compression] Executing FFmpeg command...');
     await ff.exec([
       '-i', inputFileName,
-      '-c:v', 'libvpx-vp9',
-      '-cpu-used', '4',
-      '-deadline', 'realtime',
-      '-threads', '4',
-      '-tile-columns', '2',
-      '-frame-parallel', '1',
-      '-b:v', '2M',
-      '-maxrate', '2.5M',
-      '-bufsize', '4M',
-      '-vf', 'scale=1280:-2',
-      '-c:a', 'libopus',
-      '-b:a', '96k',
-      outputFileName,
+      '-c:v', 'libx264',
+      '-preset', 'ultrafast',
+      '-crf', '28',
+      '-c:a', 'aac',
+      '-b:a', '128k',
+      '-movflags', '+faststart',
+      outputFileName
     ]);
 
     console.log('[Video Compression] Reading compressed file...');
     const data = await ff.readFile(outputFileName);
-    const compressedFile = new File([data], file.name.replace(/\.[^/.]+$/, '.webm'), { type: 'video/webm' });
+    const compressedFile = new File([data], file.name.replace(/\.[^/.]+$/, '.mp4'), { type: 'video/mp4' });
 
     console.log('[Video Compression] Completed.', {
       originalSize: formatFileSize(file.size),
