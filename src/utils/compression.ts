@@ -70,7 +70,7 @@ export const compressVideo = async (
       '-b:a', '128k',
       '-movflags', '+faststart',
       outputFileName
-    ], 30000); // Added 30 second timeout
+    ], 30000); // 30 second timeout
 
     console.log('[Video Compression] Reading compressed file...');
     const data = await ff.readFile(outputFileName);
