@@ -9,6 +9,7 @@ import { VideoUploadForm } from '@/components/video-upload/VideoUploadForm';
 import { formatFileSize } from '@/utils/compression';
 import { useVideoCompression } from '@/hooks/useVideoCompression';
 import { useVideoUploadForm } from '@/hooks/useVideoUploadForm';
+import { Progress } from '@/components/ui/progress';
 
 interface VideosProps {
   user: {
@@ -18,7 +19,8 @@ interface VideosProps {
   };
 }
 
-const MAX_TOTAL_SIZE = 400 * 1024 * 1024; // 400MB in bytes
+const MAX_TOTAL_SIZE = 450 * 1024 * 1024; // 450MB in bytes
+const SIZE_THRESHOLD = 500 * 1024 * 1024; // 500MB threshold
 
 const Videos: React.FC<VideosProps> = ({ user }) => {
   const [enableCompression, setEnableCompression] = React.useState(true);
@@ -30,6 +32,7 @@ const Videos: React.FC<VideosProps> = ({ user }) => {
     originalSize,
     compressedSize,
     compressionProgress,
+    loadingMessage,
     handleFileCompression,
   } = useVideoCompression();
 
@@ -57,11 +60,11 @@ const Videos: React.FC<VideosProps> = ({ user }) => {
     const newTotalSize = videoSize + thumbnailSize;
     setTotalFileSize(newTotalSize);
 
-    if (newTotalSize > MAX_TOTAL_SIZE && !enableCompression) {
+    if (newTotalSize > SIZE_THRESHOLD) {
       setEnableCompression(true);
       toast({
         title: "Compression automatique activée",
-        description: `La taille totale des fichiers (${formatFileSize(newTotalSize)}) dépasse 400MB. La compression a été activée automatiquement.`,
+        description: `La taille totale des fichiers (${formatFileSize(newTotalSize)}) dépasse 500MB. La compression sera appliquée automatiquement pour atteindre une taille maximale de 450MB.`,
         duration: 5000,
       });
     }
@@ -95,34 +98,37 @@ const Videos: React.FC<VideosProps> = ({ user }) => {
     const otherFileSize = type === 'video' ? (thumbnailFile?.size || 0) : (videoFile?.size || 0);
     const newTotalSize = file.size + otherFileSize;
 
-    if (newTotalSize > MAX_TOTAL_SIZE && !enableCompression) {
-      setEnableCompression(true);
-      toast({
-        title: "Compression automatique activée",
-        description: `La taille totale des fichiers (${formatFileSize(newTotalSize)}) dépasse 400MB. La compression a été activée automatiquement.`,
-        duration: 5000,
-      });
-    }
-
-    if (enableCompression || newTotalSize > MAX_TOTAL_SIZE) {
-      const compressedFile = await handleFileCompression(file, type);
-      if (compressedFile) {
-        if (type === 'video') {
+    try {
+      if (type === 'video' && (file.size > SIZE_THRESHOLD || newTotalSize > MAX_TOTAL_SIZE)) {
+        console.log('Starting video compression...');
+        // Calculate target size to ensure final size is under 450MB
+        const targetSize = Math.min(MAX_TOTAL_SIZE - otherFileSize, MAX_TOTAL_SIZE);
+        const compressedFile = await handleFileCompression(file, targetSize);
+        if (compressedFile) {
+          console.log('Video compression complete');
           setVideoFile(compressedFile);
+          toast({
+            title: "Compression réussie",
+            description: `Taille originale: ${formatFileSize(file.size)}\nTaille compressée: ${formatFileSize(compressedFile.size)}`,
+          });
+        }
+      } else {
+        if (type === 'video') {
+          setVideoFile(file);
         } else {
-          setThumbnailFile(compressedFile);
+          const fileWithPreview = Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          });
+          setThumbnailFile(fileWithPreview);
         }
       }
-    } else {
-      const fileWithPreview = Object.assign(file, {
-        preview: type === 'thumbnail' ? URL.createObjectURL(file) : undefined
+    } catch (error) {
+      console.error('Error handling file:', error);
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Une erreur est survenue lors du traitement du fichier"
       });
-
-      if (type === 'video') {
-        setVideoFile(fileWithPreview);
-      } else {
-        setThumbnailFile(fileWithPreview);
-      }
     }
   };
 
@@ -138,28 +144,51 @@ const Videos: React.FC<VideosProps> = ({ user }) => {
               <CardTitle className="text-xl font-semibold">Télécharger une nouvelle vidéo</CardTitle>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-muted-foreground">Compression</span>
+              <span className="text-sm text-muted-foreground">Compression automatique</span>
               <Switch
                 checked={enableCompression}
                 onCheckedChange={setEnableCompression}
-                disabled={totalFileSize > MAX_TOTAL_SIZE}
+                disabled={totalFileSize > SIZE_THRESHOLD}
               />
             </div>
           </div>
 
           {totalFileSize > 0 && (
-            <Alert variant={totalFileSize > MAX_TOTAL_SIZE ? "destructive" : "default"}>
+            <Alert variant={totalFileSize > SIZE_THRESHOLD ? "destructive" : "default"}>
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>Taille totale des fichiers</AlertTitle>
               <AlertDescription>
                 {formatFileSize(totalFileSize)}
-                {totalFileSize > MAX_TOTAL_SIZE && " - Compression automatique activée"}
+                {totalFileSize > SIZE_THRESHOLD && " - Compression automatique activée"}
               </AlertDescription>
             </Alert>
           )}
 
+          {isCompressing && (
+            <div className="mt-4 space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>{loadingMessage}</span>
+                <span>{compressionProgress}%</span>
+              </div>
+              <Progress value={compressionProgress} className="h-2" />
+              {originalSize && (
+                <p className="text-sm text-muted-foreground">
+                  Taille originale: {formatFileSize(originalSize)}
+                  {compressedSize && (
+                    <>
+                      <br />
+                      Taille compressée: {formatFileSize(compressedSize)}
+                      <br />
+                      Réduction: {((originalSize - compressedSize) / originalSize * 100).toFixed(1)}%
+                    </>
+                  )}
+                </p>
+              )}
+            </div>
+          )}
+
           <p className="text-sm text-muted-foreground">
-            Partagez votre contenu avec votre audience. Téléchargez des vidéos et personnalisez leurs détails.
+            Partagez votre contenu avec votre audience. Les fichiers de plus de 500MB seront automatiquement compressés pour optimiser le stockage.
           </p>
         </CardHeader>
         <CardContent>
