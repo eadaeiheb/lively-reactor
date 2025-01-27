@@ -21,6 +21,8 @@ interface VideoUploadFormProps {
   compressionProgress: number;
   originalSize: number | null;
   compressedSize: number | null;
+  timeLeft?: string;
+  speed?: string;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onVideoSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -29,6 +31,7 @@ interface VideoUploadFormProps {
   onSubchapterChange: (value: string) => void;
   onSubmit: (e: React.FormEvent) => void;
   onThumbnailRemove: () => void;
+  onCancelCompression?: () => void;
 }
 
 export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
@@ -93,7 +96,7 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Fichier vidéo</label>
           <FileUploadBox
-            type="video"
+            type="thumbnail"
             file={videoFile}
             isCompressing={isCompressing}
             compressionProgress={compressionProgress}
@@ -126,9 +129,9 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
           compressionProgress={compressionProgress}
           originalSize={originalSize}
           compressedSize={compressedSize}
-          timeLeft={timeLeft}
-          speed={speed}
-          onCancel={onCancelCompression}
+          timeLeft={timeLeft || 'Calcul...'}
+          speed={speed || '0x'}
+          onCancel={onCancelCompression || (() => {})}
         />
       )}
 
