@@ -2,20 +2,24 @@ import React from 'react';
 import { FileVideo, ImageIcon, X } from 'lucide-react';
 import { formatFileSize } from '@/utils/compression';
 import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 
 interface FileWithPreview extends File {
   preview?: string;
 }
 
 interface FileUploadBoxProps {
-  type: 'video' | 'thumbnail';
+  type: 'thumbnail';
   file: FileWithPreview | null;
   isCompressing: boolean;
   compressionProgress: number;
   originalSize: number | null;
   compressedSize: number | null;
+  timeLeft?: string;
+  speed?: string;
   onFileSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFileRemove?: () => void;
+  onCancel?: () => void;
 }
 
 export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
@@ -25,10 +29,13 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   compressionProgress,
   originalSize,
   compressedSize,
+  timeLeft,
+  speed,
   onFileSelect,
-  onFileRemove
+  onFileRemove,
+  onCancel
 }) => {
-  const Icon = type === 'video' ? FileVideo : ImageIcon;
+  const Icon = type === 'thumbnail' ? ImageIcon : FileVideo;
   const inputId = `${type}Input`;
 
   return (
@@ -49,14 +56,6 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
               alt="Aperçu de la miniature" 
               className="w-32 h-32 object-cover mx-auto rounded-lg"
             />
-          ) : type === 'video' && file ? (
-            <video 
-              className="w-full max-w-[300px] mx-auto rounded-lg mb-4"
-              controls
-            >
-              <source src={URL.createObjectURL(file)} type={file.type} />
-              Votre navigateur ne supporte pas la lecture de vidéos.
-            </video>
           ) : null}
 
           {onFileRemove && (
@@ -92,13 +91,29 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
             )}
           </div>
 
-          {isCompressing && (
+          {isCompressing && timeLeft && speed && (
             <div className="mt-4 space-y-2">
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Compression en cours...</span>
-                <span>{compressionProgress.toFixed(0)}%</span>
+                <span>Compression: {compressionProgress}%</span>
+                <span>Vitesse: {speed}</span>
               </div>
               <Progress value={compressionProgress} className="h-2" />
+              <p className="text-sm text-muted-foreground">
+                Temps restant: {timeLeft}
+              </p>
+              {onCancel && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCancel();
+                  }}
+                  className="mt-2"
+                >
+                  Annuler la compression
+                </Button>
+              )}
             </div>
           )}
         </>
@@ -108,7 +123,7 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
         <>
           <Icon className="w-8 h-8 mx-auto mb-4 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            {isCompressing ? 'Compression en cours...' : `Déposez ${type === 'video' ? 'la vidéo' : 'la miniature'} ici ou cliquez pour parcourir`}
+            {isCompressing ? 'Compression en cours...' : `Déposez ${type === 'thumbnail' ? 'la miniature' : 'la vidéo'} ici ou cliquez pour parcourir`}
           </p>
         </>
       )}

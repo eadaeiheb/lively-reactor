@@ -10,6 +10,9 @@ export const useVideoCompression = () => {
   const [originalSize, setOriginalSize] = useState<number | null>(null);
   const [compressedSize, setCompressedSize] = useState<number | null>(null);
   const [loadingMessage, setLoadingMessage] = useState('Loading FFmpeg...');
+  const [timeLeft, setTimeLeft] = useState('Calcul...');
+  const [speed, setSpeed] = useState('0x');
+  const startTimeRef = useRef<number>(0);
   const ffmpegRef = useRef(new FFmpeg());
   const { toast } = useToast();
 
@@ -32,12 +35,27 @@ export const useVideoCompression = () => {
       
       ffmpeg.on('log', ({ message }) => {
         console.log('FFmpeg Log:', message);
+        if (message.includes('speed=')) {
+          const speedMatch = message.match(/speed=\s*(\d+\.\d+)x/);
+          if (speedMatch) {
+            setSpeed(speedMatch[1] + 'x');
+          }
+        }
       });
 
       ffmpeg.on('progress', ({ progress, time }) => {
         const percentage = Math.round(progress * 100);
-        console.log('Compression progress:', percentage);
         setCompressionProgress(percentage);
+        
+        // Calculate time left
+        const elapsedTime = Date.now() - startTimeRef.current;
+        const estimatedTotalTime = elapsedTime / progress;
+        const remainingTime = estimatedTotalTime - elapsedTime;
+        
+        const minutes = Math.floor(remainingTime / 60000);
+        const seconds = Math.floor((remainingTime % 60000) / 1000);
+        setTimeLeft(`${minutes}m ${seconds}s`);
+        
         setLoadingMessage(`Processing: ${percentage}% (${(time / 1000000).toFixed(1)}s)`);
       });
 
@@ -48,7 +66,6 @@ export const useVideoCompression = () => {
       
       setLoaded(true);
       setLoadingMessage('');
-      console.log('FFmpeg loaded successfully');
     } catch (error) {
       console.error('Error loading FFmpeg:', error);
       toast({
@@ -72,24 +89,23 @@ export const useVideoCompression = () => {
     setIsCompressing(true);
     setOriginalSize(file.size);
     setCompressionProgress(0);
-    setLoadingMessage('Preparing video...');
+    setTimeLeft('Calcul...');
+    setSpeed('0x');
+    startTimeRef.current = Date.now();
 
     try {
       console.log('Starting video compression...');
       await ffmpeg.writeFile('input.mp4', await fetchFile(file));
       
-      setLoadingMessage('Compressing video...');
-      
-      // Calculate bitrate based on target size
       const duration = await getVideoDuration(file);
-      const targetBitrate = Math.floor((targetSize * 8) / duration); // bits per second
-      const videoBitrate = Math.floor(targetBitrate * 0.95); // 95% for video
-      const audioBitrate = Math.floor(targetBitrate * 0.05); // 5% for audio
+      const targetBitrate = Math.floor((targetSize * 8) / duration);
+      const videoBitrate = Math.floor(targetBitrate * 0.95);
+      const audioBitrate = Math.floor(targetBitrate * 0.05);
 
       await ffmpeg.exec([
         '-i', 'input.mp4',
         '-c:v', 'libx264',
-        '-preset', 'veryfast', // Fast compression
+        '-preset', 'veryfast',
         '-b:v', `${videoBitrate}`,
         '-maxrate', `${videoBitrate * 1.5}`,
         '-bufsize', `${videoBitrate * 2}`,
@@ -98,9 +114,8 @@ export const useVideoCompression = () => {
         '-movflags', '+faststart',
         '-y',
         'output.mp4'
-      ]);
+      ], 30000);
 
-      setLoadingMessage('Finalizing...');
       const data = await ffmpeg.readFile('output.mp4');
       const compressedBlob = new Blob([data], { type: 'video/mp4' });
       setCompressedSize(compressedBlob.size);
@@ -132,13 +147,32 @@ export const useVideoCompression = () => {
     }
   };
 
+  const cancelCompression = () => {
+    const ffmpeg = ffmpegRef.current;
+    if (ffmpeg && isCompressing) {
+      ffmpeg.terminate();
+      loadFFmpeg(); // Reload FFmpeg after termination
+      setIsCompressing(false);
+      setCompressionProgress(0);
+      setTimeLeft('Cancelled');
+      setSpeed('0x');
+      toast({
+        title: "Compression cancelled",
+        description: "Video compression was cancelled by user"
+      });
+    }
+  };
+
   return {
     isCompressing,
     originalSize,
     compressedSize,
     compressionProgress,
     loadingMessage,
-    handleFileCompression
+    timeLeft,
+    speed,
+    handleFileCompression,
+    cancelCompression
   };
 };
 
