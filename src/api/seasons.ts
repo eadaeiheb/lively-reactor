@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 export const addSeason = async (name: string, photo: string) => {
-  console.log('Adding season:', { name });
+  console.log('Adding season:', { name, photo });
   const response = await axios.post('https://plateform.draminesaid.com/app/add_saison.php', {
     name_saison: name,
-    photo_saison: '' // Sending empty string as photo is no longer needed
+    photo_saison: photo // Now we're sending a default photo value
   });
   console.log('Season added:', response.data);
   return response.data;

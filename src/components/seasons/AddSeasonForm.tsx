@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react';
 
 export const AddSeasonForm = () => {
   const [name, setName] = useState('');
+  const [photo, setPhoto] = useState('placeholder.jpg'); // Default photo value
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -25,7 +26,10 @@ export const AddSeasonForm = () => {
 
     setIsLoading(true);
     try {
-      const response = await addSeason(name, '');
+      console.log('Submitting season:', { name, photo });
+      const response = await addSeason(name, photo);
+      console.log('Server response:', response);
+      
       if (response.success) {
         toast({
           title: "Succès",
@@ -34,9 +38,10 @@ export const AddSeasonForm = () => {
         setName('');
         queryClient.invalidateQueries({ queryKey: ['seasons'] });
       } else {
-        throw new Error(response.message);
+        throw new Error(response.message || 'Erreur lors de l\'ajout de la saison');
       }
     } catch (error: any) {
+      console.error('Error adding season:', error);
       toast({
         variant: "destructive",
         title: "Erreur",
