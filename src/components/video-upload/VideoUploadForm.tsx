@@ -2,11 +2,12 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Upload } from 'lucide-react';
+import { Upload, Download } from 'lucide-react';
 import { ChapterSelect } from './ChapterSelect';
 import { FileUploadBox } from './FileUploadBox';
 import { CompressionProgress } from './CompressionProgress';
 import { Progress } from '@/components/ui/progress';
+import { formatFileSize } from '@/utils/compression';
 
 interface VideoUploadFormProps {
   title: string;
@@ -47,8 +48,8 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
   compressionProgress,
   originalSize,
   compressedSize,
-  timeLeft,
-  speed,
+  timeLeft = 'Calcul...',
+  speed = '0x',
   onTitleChange,
   onDescriptionChange,
   onVideoSelect,
@@ -59,6 +60,8 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
   onThumbnailRemove,
   onCancelCompression,
 }) => {
+  const videoPreviewUrl = videoFile ? URL.createObjectURL(videoFile) : null;
+
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <ChapterSelect
@@ -107,6 +110,47 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
             onFileSelect={onVideoSelect}
             onCancel={onCancelCompression}
           />
+          
+          {videoFile && !isCompressing && (
+            <div className="mt-4 space-y-4">
+              <div className="rounded-lg overflow-hidden border border-border/40">
+                <video 
+                  src={videoPreviewUrl}
+                  controls
+                  className="w-full"
+                  style={{ maxHeight: '200px' }}
+                >
+                  Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+              </div>
+              
+              <div className="flex justify-between items-center text-sm text-muted-foreground">
+                <span>Taille originale: {originalSize ? formatFileSize(originalSize) : 'N/A'}</span>
+                <span>Taille compressée: {compressedSize ? formatFileSize(compressedSize) : 'N/A'}</span>
+              </div>
+              
+              {compressedSize && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    if (videoPreviewUrl) {
+                      const a = document.createElement('a');
+                      a.href = videoPreviewUrl;
+                      a.download = videoFile.name;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    }
+                  }}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Télécharger la vidéo compressée
+                </Button>
+              )}
+            </div>
+          )}
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Image miniature</label>
@@ -129,8 +173,8 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
           compressionProgress={compressionProgress}
           originalSize={originalSize}
           compressedSize={compressedSize}
-          timeLeft={timeLeft || 'Calcul...'}
-          speed={speed || '0x'}
+          timeLeft={timeLeft}
+          speed={speed}
           onCancel={onCancelCompression || (() => {})}
         />
       )}
