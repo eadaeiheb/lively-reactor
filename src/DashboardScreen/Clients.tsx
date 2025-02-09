@@ -234,6 +234,10 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
         setAlertMessage('Utilisateur a été activé avec succès!');
         logUploadEvent('Utilisateur a été activé avec succès');
         setShowAlert(true);
+        
+        // Automatically open the Allower modal after successful activation
+        setSelectedUserId(id_client);
+        setIsAllowerModalOpen(true);
       } else {
         console.error("Failed to activate user:", data.message);
         setAlertMessage(data.message);
@@ -525,3 +529,4 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
 };
 
 export default Clients;
+
