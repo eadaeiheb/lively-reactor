@@ -27,9 +27,11 @@ const calculateTimeLeft = (progress: number, elapsedTime: number): string => {
 
 export const compressVideo = async (
   file: File,
-  targetSize: number = 400 * 1024 * 1024, // 400MB target
+  targetSize: number = 200 * 1024 * 1024, // Reduced to 200MB target
   onProgress: (progress: CompressionProgress) => void
 ): Promise<File> => {
+  console.log('Starting video compression...', { originalSize: formatFileSize(file.size) });
+
   const ff = new FFmpeg();
   const startTime = Date.now();
   let lastProgress = 0;
@@ -40,10 +42,10 @@ export const compressVideo = async (
     const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
     
     ff.on('log', ({ message }) => {
-      if (message.includes('speed=')) {
-        compressionSpeed = message.split('speed=')[1].split('x')[0] + 'x';
-      }
       console.log('FFmpeg Log:', message);
+      if (message.includes('speed=')) {
+        compressionSpeed = message.split('speed=')[1].split('x')[0].trim() + 'x';
+      }
     });
 
     ff.on('progress', ({ progress, time }) => {
@@ -53,10 +55,11 @@ export const compressVideo = async (
       
       if (progressPercent !== lastProgress) {
         lastProgress = progressPercent;
+        console.log(`Compression progress: ${progressPercent}%`);
         onProgress({
           percent: progressPercent,
           timeLeft: calculateTimeLeft(progressPercent, elapsedTime),
-          currentSize: 0, // Will be updated after compression
+          currentSize: 0,
           targetSize,
           speed: compressionSpeed
         });
@@ -69,49 +72,46 @@ export const compressVideo = async (
     });
 
     const inputFileName = 'input.mp4';
-    const outputFileName = 'output.webm';
+    const outputFileName = 'output.mp4';
 
     console.log('Writing input file...');
     await ff.writeFile(inputFileName, await fetchFile(file));
     
-    // Calculate bitrate based on target size
     const duration = await getVideoDuration(file);
-    const targetBitrate = Math.floor((targetSize * 8) / duration); // bits per second
-    const videoBitrate = Math.floor(targetBitrate * 0.95); // 95% for video
-    const audioBitrate = Math.floor(targetBitrate * 0.05); // 5% for audio
+    const targetBitrate = Math.floor((targetSize * 8) / duration);
+    const videoBitrate = Math.floor(targetBitrate * 0.95);
+    const audioBitrate = Math.floor(targetBitrate * 0.05);
 
-    console.log('Starting FFmpeg compression...');
+    console.log('Starting FFmpeg compression with params:', {
+      videoBitrate,
+      audioBitrate,
+      duration
+    });
+
+    // Optimized FFmpeg command for faster compression
     await ff.exec([
       '-i', inputFileName,
-      '-c:v', 'libvpx-vp9',
-      '-cpu-used', '4',
-      '-deadline', 'realtime',
-      '-threads', '8',
-      '-tile-columns', '4',
-      '-frame-parallel', '1',
+      '-c:v', 'libx264',
+      '-preset', 'veryfast', // Changed from ultrafast to veryfast for better compression
+      '-threads', '0',
+      '-crf', '40', // Increased from 18 to 23 for faster compression
+      '-vf', 'scale=-2:720', // Scale down to 720p
+      '-g', '30', // Keyframe every 30 frames
+      '-keyint_min', '30',
       '-b:v', `${videoBitrate}`,
       '-maxrate', `${videoBitrate * 1.5}`,
       '-bufsize', `${videoBitrate * 2}`,
-      '-vf', 'scale=1280:-2', // 720p
-      '-c:a', 'libopus',
+      '-c:a', 'aac',
       '-b:a', `${audioBitrate}`,
-      '-row-mt', '1',
+      '-movflags', '+faststart',
+      '-y',
       outputFileName
     ]);
 
     console.log('Reading compressed file...');
     const data = await ff.readFile(outputFileName);
-    const compressedFile = new File([data], file.name.replace('.mp4', '.webm'), { type: 'video/webm' });
+    const compressedFile = new File([data], file.name, { type: 'video/mp4' });
     
-    // Final progress update with actual compressed size
-    onProgress({
-      percent: 100,
-      timeLeft: '0s',
-      currentSize: compressedFile.size,
-      targetSize,
-      speed: compressionSpeed
-    });
-
     console.log('Compression complete:', {
       originalSize: formatFileSize(file.size),
       compressedSize: formatFileSize(compressedFile.size),
@@ -122,6 +122,12 @@ export const compressVideo = async (
   } catch (error) {
     console.error('Compression error:', error);
     throw error;
+  } finally {
+    try {
+      await ff.terminate();
+    } catch (error) {
+      console.error('Error terminating FFmpeg:', error);
+    }
   }
 };
 
@@ -136,3 +142,5 @@ const getVideoDuration = async (file: File): Promise<number> => {
     video.src = URL.createObjectURL(file);
   });
 };
+
+export default compressVideo;

@@ -16,6 +16,11 @@ export const useVideoCompression = () => {
   const ffmpegRef = useRef(new FFmpeg());
   const { toast } = useToast();
 
+  // Size thresholds in bytes
+  const MEDIUM_SIZE = 400 * 1024 * 1024; // 400MB
+  const LARGE_SIZE = 700 * 1024 * 1024; // 700MB
+  const VERY_LARGE_SIZE = 1024 * 1024 * 1024; // 1GB
+
   useEffect(() => {
     loadFFmpeg();
     return () => {
@@ -47,7 +52,6 @@ export const useVideoCompression = () => {
         const percentage = Math.round(progress * 100);
         setCompressionProgress(percentage);
         
-        // Calculate time left
         const elapsedTime = Date.now() - startTimeRef.current;
         const estimatedTotalTime = elapsedTime / progress;
         const remainingTime = estimatedTotalTime - elapsedTime;
@@ -55,8 +59,6 @@ export const useVideoCompression = () => {
         const minutes = Math.floor(remainingTime / 60000);
         const seconds = Math.floor((remainingTime % 60000) / 1000);
         setTimeLeft(`${minutes}m ${seconds}s`);
-        
-        setLoadingMessage(`Processing: ${percentage}% (${(time / 1000000).toFixed(1)}s)`);
       });
 
       await ffmpeg.load({
@@ -76,13 +78,20 @@ export const useVideoCompression = () => {
     }
   };
 
-  const handleFileCompression = async (file: File, targetSize: number) => {
-    if (!loaded) {
-      toast({
-        title: "Please wait",
-        description: "Video compression is still loading..."
-      });
-      return null;
+  const getTargetSizeRatio = (fileSize: number): number => {
+    if (fileSize >= MEDIUM_SIZE && fileSize < LARGE_SIZE) {
+      return 0.7; // 30% compression
+    } else if (fileSize >= LARGE_SIZE && fileSize <= VERY_LARGE_SIZE) {
+      return 0.4; // 60% compression
+    }
+    return 1; // No compression for other sizes
+  };
+
+  const handleFileCompression = async (file: File) => {
+    // Skip compression for files outside our target ranges
+    if (file.size < MEDIUM_SIZE || file.size > VERY_LARGE_SIZE) {
+      console.log('File size outside compression range, returning original');
+      return file;
     }
 
     const ffmpeg = ffmpegRef.current;
@@ -97,24 +106,34 @@ export const useVideoCompression = () => {
       console.log('Starting video compression...');
       await ffmpeg.writeFile('input.mp4', await fetchFile(file));
       
+      const targetSizeRatio = getTargetSizeRatio(file.size);
+      const targetSize = Math.floor(file.size * targetSizeRatio);
       const duration = await getVideoDuration(file);
       const targetBitrate = Math.floor((targetSize * 8) / duration);
       const videoBitrate = Math.floor(targetBitrate * 0.95);
-      const audioBitrate = Math.floor(targetBitrate * 0.05);
+      const audioBitrate = '128k';
 
+      // Ultra-fast compression settings optimized for speed
       await ffmpeg.exec([
         '-i', 'input.mp4',
         '-c:v', 'libx264',
-        '-preset', 'veryfast',
+        '-preset', 'ultrafast',
+        '-tune', 'fastdecode',
+        '-vf', 'scale=-2:720',
+        '-threads', '0',
+        '-tile-columns', '6',
+        '-frame-parallel', '1',
+        '-cpu-used', '8',
+        '-row-mt', '1',
         '-b:v', `${videoBitrate}`,
         '-maxrate', `${videoBitrate * 1.5}`,
         '-bufsize', `${videoBitrate * 2}`,
         '-c:a', 'aac',
-        '-b:a', `${audioBitrate}`,
+        '-b:a', audioBitrate,
         '-movflags', '+faststart',
         '-y',
         'output.mp4'
-      ], 30000);
+      ]);
 
       const data = await ffmpeg.readFile('output.mp4');
       const compressedBlob = new Blob([data], { type: 'video/mp4' });
@@ -130,9 +149,6 @@ export const useVideoCompression = () => {
         reduction: ((file.size - compressedFile.size) / file.size * 100).toFixed(1) + '%'
       });
 
-      setLoadingMessage('Compression complete!');
-      setCompressionProgress(100);
-      
       return compressedFile;
     } catch (error) {
       console.error('Error during compression:', error);
@@ -151,7 +167,7 @@ export const useVideoCompression = () => {
     const ffmpeg = ffmpegRef.current;
     if (ffmpeg && isCompressing) {
       ffmpeg.terminate();
-      loadFFmpeg(); // Reload FFmpeg after termination
+      loadFFmpeg();
       setIsCompressing(false);
       setCompressionProgress(0);
       setTimeLeft('Cancelled');

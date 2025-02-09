@@ -6,7 +6,7 @@ import { Upload, Download } from 'lucide-react';
 import { ChapterSelect } from './ChapterSelect';
 import { FileUploadBox } from './FileUploadBox';
 import { CompressionProgress } from './CompressionProgress';
-import { Progress } from '@/components/ui/progress';
+import { UploadProgress } from './UploadProgress';
 import { formatFileSize } from '@/utils/compression';
 
 interface VideoUploadFormProps {
@@ -24,6 +24,10 @@ interface VideoUploadFormProps {
   compressedSize: number | null;
   timeLeft?: string;
   speed?: string;
+  uploadedSize: number;
+  totalSize: number;
+  uploadTimeLeft: string;
+  uploadSpeed: string;
   onTitleChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
   onVideoSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -50,6 +54,10 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
   compressedSize,
   timeLeft = 'Calcul...',
   speed = '0x',
+  uploadedSize,
+  totalSize,
+  uploadTimeLeft,
+  uploadSpeed,
   onTitleChange,
   onDescriptionChange,
   onVideoSelect,
@@ -80,7 +88,7 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
             required
-            className="bg-dashboard-background border-border/40"
+            className="bg-dashboard-background border-border/40 text-black"
           />
         </div>
         <div className="space-y-2">
@@ -90,7 +98,7 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
             value={description}
             onChange={(e) => onDescriptionChange(e.target.value)}
             required
-            className="bg-dashboard-background border-border/40 min-h-[80px]"
+            className="bg-dashboard-background border-border/40 min-h-[80px] text-black"
           />
         </div>
       </div>
@@ -99,7 +107,7 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
         <div className="space-y-2">
           <label className="text-sm font-medium">Fichier vidéo</label>
           <FileUploadBox
-            type="thumbnail"
+            type="video"
             file={videoFile}
             isCompressing={isCompressing}
             compressionProgress={compressionProgress}
@@ -128,27 +136,6 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
                 <span>Taille originale: {originalSize ? formatFileSize(originalSize) : 'N/A'}</span>
                 <span>Taille compressée: {compressedSize ? formatFileSize(compressedSize) : 'N/A'}</span>
               </div>
-              
-              {compressedSize && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => {
-                    if (videoPreviewUrl) {
-                      const a = document.createElement('a');
-                      a.href = videoPreviewUrl;
-                      a.download = videoFile.name;
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
-                    }
-                  }}
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  Télécharger la vidéo compressée
-                </Button>
-              )}
             </div>
           )}
         </div>
@@ -180,13 +167,13 @@ export const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
       )}
 
       {isUploading && (
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Téléchargement en cours...</span>
-            <span>{uploadProgress}%</span>
-          </div>
-          <Progress value={uploadProgress} className="h-2" />
-        </div>
+        <UploadProgress
+          progress={uploadProgress}
+          uploadedSize={uploadedSize}
+          totalSize={totalSize}
+          timeLeft={uploadTimeLeft}
+          speed={uploadSpeed}
+        />
       )}
 
       <Button

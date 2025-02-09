@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card } from '@/components/ui/card';
@@ -5,6 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { UserPlus, Check, Pause, Box, Trash2, Loader2, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Pagination,
   PaginationContent,
@@ -46,6 +54,26 @@ interface ClientsProps {
   user: any;
 }
 
+interface APISeasonResponse {
+  success: boolean;
+  saisons: {
+    id_saison: number;
+    name_saison: string;
+    havechapters_saisons: number;
+    photo_saison: string;
+  }[];
+}
+
+interface APIUserSeasonsResponse {
+  success: boolean;
+  seasons: {
+    id: string;
+    id_client: string;
+    id_saison: string;
+    name_saison: string;
+  }[];
+}
+
 const Clients: React.FC<ClientsProps> = ({ user }) => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,10 +85,37 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [selectedUserEmail, setSelectedUserEmail] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterSeason, setFilterSeason] = useState<string>('all');
+  const [filterAllocation, setFilterAllocation] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [allSeasons, setAllSeasons] = useState<APISeasonResponse['saisons']>([]);
+  const [userSeasons, setUserSeasons] = useState<APIUserSeasonsResponse['seasons']>([]);
   const itemsPerPage = 10;
 
   const key = "38457";
+
+  const fetchSeasons = async () => {
+    try {
+      const response = await axios.get<APISeasonResponse>('https://plateform.draminesaid.com/app/get_saisons.php');
+      if (response.data.success) {
+        setAllSeasons(response.data.saisons);
+      }
+    } catch (error) {
+      console.error("Error fetching seasons:", error);
+    }
+  };
+
+  const fetchUserSeasons = async () => {
+    try {
+      const response = await axios.get<APIUserSeasonsResponse>('https://plateform.draminesaid.com/app/get_allusers_seasons.php');
+      if (response.data.success) {
+        setUserSeasons(response.data.seasons);
+      }
+    } catch (error) {
+      console.error("Error fetching user seasons:", error);
+    }
+  };
 
   const logUploadEvent = async (title: string) => {
     try {
@@ -76,24 +131,64 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
     }
   };
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('https://plateform.draminesaid.com/app/get_users.php');
-        const data = await response.json();
-        if (data.success) {
-          setUsers(data.users);
-        } else {
-          console.error("Failed to fetch users");
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('https://plateform.draminesaid.com/app/get_usersnew.php', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
+      });
+      
+      if (response.data.success) {
+        setUsers(response.data.users);
+      } else {
+        setAlertMessage("Échec du chargement des utilisateurs. Veuillez réessayer.");
+        setShowAlert(true);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setAlertMessage("Une erreur s'est produite lors du chargement des utilisateurs.");
+      setShowAlert(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
     fetchUsers();
+    fetchSeasons();
+    fetchUserSeasons();
   }, []);
+
+  const getUserSeasons = (userId: string) => {
+    return userSeasons.filter(season => season.id_client === userId);
+  };
+
+  const filteredUsers = users.filter((userData: UserData) => {
+    const matchesSearch = Object.values(userData.user).some(value =>
+      String(value).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    const matchesStatus = filterStatus === 'all' 
+      ? true 
+      : userData.user.status_client === (filterStatus === 'active' ? '1' : '0');
+
+    const userSeasonsList = getUserSeasons(userData.user.id_client);
+    
+    const matchesSeason = filterSeason === 'all'
+      ? true
+      : userSeasonsList.some(season => season.id_saison === filterSeason);
+
+    const matchesAllocation = filterAllocation === 'all'
+      ? true
+      : filterAllocation === 'with-seasons'
+      ? userSeasonsList.length > 0
+      : userSeasonsList.length === 0;
+
+    return matchesSearch && matchesStatus && matchesSeason && matchesAllocation;
+  });
 
   const handleDelete = async (id_client: string) => {
     setIsModalOpen(false);
@@ -192,15 +287,7 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
     setSelectedUserId(id_client);
     setIsAllowerModalOpen(true);
   };
-
-  // Filter users based on search term
-  const filteredUsers = users.filter((userData: UserData) =>
-    Object.values(userData.user).some(value =>
-      String(value).toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
-
-  // Calculate pagination
+  
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
@@ -220,15 +307,62 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
           <h2 className="text-2xl font-bold text-gray-900">Informations Utilisateurs</h2>
           <p className="text-gray-500">Liste des utilisateurs enregistrés</p>
         </div>
-        <div className="w-72">
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-            <Input
-              placeholder="Rechercher..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
-            />
+        <div className="flex gap-4 items-center">
+          <Select
+            value={filterAllocation}
+            onValueChange={setFilterAllocation}
+          >
+            <SelectTrigger className="w-[180px] text-black">
+              <SelectValue placeholder="Statut des formations" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les utilisateurs</SelectItem>
+              <SelectItem value="with-seasons">Avec formations</SelectItem>
+              <SelectItem value="without-seasons">Sans formations</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select
+            value={filterSeason}
+            onValueChange={setFilterSeason}
+          >
+            <SelectTrigger className="w-[180px] text-black">
+              <SelectValue placeholder="Filtrer par formation" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes les formations</SelectItem>
+              {allSeasons.map((season) => (
+                <SelectItem key={season.id_saison} value={season.id_saison.toString()}>
+                  {season.name_saison}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={filterStatus}
+            onValueChange={setFilterStatus}
+          >
+            <SelectTrigger className="w-[180px] text-black">
+              <SelectValue placeholder="Filtrer par statut" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les statuts</SelectItem>
+              <SelectItem value="active">Actif</SelectItem>
+              <SelectItem value="inactive">Inactif</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <div className="w-72">
+            <div className="relative">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+              <Input
+                placeholder="Rechercher..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8 text-black"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -374,13 +508,18 @@ const Clients: React.FC<ClientsProps> = ({ user }) => {
         />
       )}
 
-      {isAllowerModalOpen && (
-        <AllowerModal
-          userId={selectedUserId}
-          isOpen={isAllowerModalOpen}
-          onClose={() => setIsAllowerModalOpen(false)}
-        />
-      )}
+{isAllowerModalOpen && (
+  <AllowerModal
+    userId={selectedUserId || ''} // Ensure string type
+    isOpen={isAllowerModalOpen}
+    onClose={() => {
+      setIsAllowerModalOpen(false);
+      // Optionally refresh the users list after allocation changes
+      fetchUsers(); // You'll need to extract the fetchUsers function
+    }}
+  />
+)}
+
     </div>
   );
 };

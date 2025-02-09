@@ -9,7 +9,7 @@ interface FileWithPreview extends File {
 }
 
 interface FileUploadBoxProps {
-  type: 'thumbnail';
+  type: 'video' | 'thumbnail';
   file: FileWithPreview | null;
   isCompressing: boolean;
   compressionProgress: number;
@@ -35,8 +35,23 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   onFileRemove,
   onCancel
 }) => {
-  const Icon = type === 'thumbnail' ? ImageIcon : FileVideo;
+  const Icon = type === 'video' ? FileVideo : ImageIcon;
   const inputId = `${type}Input`;
+  
+  const acceptedTypes = type === 'video'
+    ? 'video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm'
+    : 'image/*';
+
+  const getUploadText = () => {
+    if (isCompressing) return 'Compression en cours...';
+    if (type === 'video') return 'Déposez la vidéo ici ou cliquez pour parcourir';
+    return 'Déposez la miniature ici ou cliquez pour parcourir';
+  };
+
+  const getFormatText = () => {
+    if (type === 'video') return 'Formats acceptés: MP4, MOV, AVI, MKV, WebM';
+    return 'Images uniquement';
+  };
 
   return (
     <div 
@@ -56,7 +71,13 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
               alt="Aperçu de la miniature" 
               className="w-32 h-32 object-cover mx-auto rounded-lg"
             />
-          ) : null}
+          ) : (
+            <video 
+              src={URL.createObjectURL(file)}
+              className="w-32 h-32 object-cover mx-auto rounded-lg"
+              controls
+            />
+          )}
 
           {onFileRemove && (
             <button
@@ -84,7 +105,7 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
                     <br />
                     Taille compressée: {formatFileSize(compressedSize)}
                     <br />
-                    Réduction: {((originalSize - compressedSize) / originalSize * 100).toFixed(1)}%
+                    Réduction: {((1 - compressedSize / originalSize) * 100).toFixed(1)}%
                   </>
                 )}
               </p>
@@ -123,7 +144,10 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
         <>
           <Icon className="w-8 h-8 mx-auto mb-4 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            {isCompressing ? 'Compression en cours...' : `Déposez ${type === 'thumbnail' ? 'la miniature' : 'la vidéo'} ici ou cliquez pour parcourir`}
+            {getUploadText()}
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            {getFormatText()}
           </p>
         </>
       )}
@@ -132,7 +156,7 @@ export const FileUploadBox: React.FC<FileUploadBoxProps> = ({
         type="file"
         id={inputId}
         onChange={onFileSelect}
-        accept={type === 'thumbnail' ? 'image/*' : 'video/*'}
+        accept={acceptedTypes}
         className="hidden"
         disabled={isCompressing}
       />
