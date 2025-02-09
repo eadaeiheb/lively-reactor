@@ -1,5 +1,7 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -77,15 +79,17 @@ const LoginPage = () => {
         };
         
         localStorage.setItem('user', JSON.stringify(safeUserData));
-        window.location.href = '/app';
+        toast.success('Connexion réussie!');
+        navigate('/app');
       } else {
         if (data.message === 'Compte pas encore actif, merci pour votre patience.') {
-          window.location.href = '/not-active';
+          navigate('/not-active');
         } else {
           setErrorMessage(data.message || "Identifiants invalides.");
         }
       }
     } catch (error) {
+      console.error('Login error:', error);
       setErrorMessage("Le serveur est temporairement indisponible. Veuillez réessayer plus tard.");
     }
   };
