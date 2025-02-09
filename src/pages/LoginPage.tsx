@@ -87,10 +87,8 @@ const LoginPage = () => {
         localStorage.setItem('user', JSON.stringify(safeUserData));
         toast.success('Connexion réussie!');
         
-        // Small delay to ensure localStorage is set before navigation
-        setTimeout(() => {
-          navigate('/app');
-        }, 100);
+        // Redirect to the external platform URL
+        window.location.href = 'https://plateform.draminesaid.com/app/';
       } else {
         if (data.message === 'Compte pas encore actif, merci pour votre patience.') {
           navigate('/not-active');
@@ -163,3 +161,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
