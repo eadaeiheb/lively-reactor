@@ -1,3 +1,4 @@
+
 export interface Season {
   id_saison: string;
   name_saison: string;
@@ -31,7 +32,7 @@ export interface Video {
   url_video: string;
   url_thumbnail: string;
   created_at: string;
-  seasonName?: string;
+  seasonName: string;
 }
 
 export interface VideosResponse {

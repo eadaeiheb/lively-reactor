@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
@@ -28,15 +29,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(''); // Reset error message before validation
+    setIsLoading(true);
+    setErrorMessage('');
 
     if (!validateEmail(email)) {
       setErrorMessage("Format d'email invalide. Veuillez entrer une adresse email valide.");
+      setIsLoading(false);
       return;
     }
 
     if (!validateCredentials(email)) {
       setErrorMessage("Cet email n'est pas autorisé.");
+      setIsLoading(false);
       return;
     }
 
@@ -55,6 +59,7 @@ const LoginPage = () => {
       }
 
       const data = await response.json();
+      console.log('Login response:', data);
       
       if (data.success && data.user) {
         if (!data.user.id_client || !data.user.email_client) {
@@ -63,6 +68,7 @@ const LoginPage = () => {
 
         if (data.user.user_type !== 'admin') {
           setErrorMessage("Cette interface est réservée aux administrateurs.");
+          setIsLoading(false);
           return;
         }
 
@@ -80,7 +86,11 @@ const LoginPage = () => {
         
         localStorage.setItem('user', JSON.stringify(safeUserData));
         toast.success('Connexion réussie!');
-        navigate('/app');
+        
+        // Small delay to ensure localStorage is set before navigation
+        setTimeout(() => {
+          navigate('/app');
+        }, 100);
       } else {
         if (data.message === 'Compte pas encore actif, merci pour votre patience.') {
           navigate('/not-active');
@@ -91,6 +101,8 @@ const LoginPage = () => {
     } catch (error) {
       console.error('Login error:', error);
       setErrorMessage("Le serveur est temporairement indisponible. Veuillez réessayer plus tard.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,6 +125,7 @@ const LoginPage = () => {
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#699ed0] focus:border-transparent"
               placeholder="Entrez votre adresse e-mail"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -128,6 +141,7 @@ const LoginPage = () => {
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#699ed0] focus:border-transparent"
               placeholder="Entrez votre mot de passe"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -137,9 +151,10 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#699ed0] text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-[#5a8dbd] hover:-translate-y-0.5"
+            disabled={isLoading}
+            className="w-full bg-[#699ed0] text-white font-semibold py-3 rounded-lg transition-all duration-300 hover:bg-[#5a8dbd] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Accéder
+            {isLoading ? 'Connexion en cours...' : 'Accéder'}
           </button>
         </form>
       </div>
