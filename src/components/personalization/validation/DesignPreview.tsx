@@ -14,18 +14,24 @@ interface DesignPreviewProps {
 }
 
 const DesignPreview = ({ design, onDownloadText, onDownloadImage }: DesignPreviewProps) => {
-  if (!design) return null;
+  // Check for corrupted or empty design
+  if (!design || !design.canvasImage || !design.productId || !design.faceId) {
+    return null;
+  }
 
   const textElements = design.textElements || [];
   const uploadedImages = design.uploadedImages || [];
   
   // Find the product details
   const product = products.find(p => p.id === design.productId);
+  if (!product) return null; // Skip if product not found
 
   // Find the product side configuration
   const productConfig = productSidesConfigs.find(config => config.id === design.productId);
   const side = productConfig?.sides.find(side => side.id === design.faceId);
-  const sideName = side?.title || design.faceId;
+  if (!side) return null; // Skip if side configuration not found
+  
+  const sideName = side.title || design.faceId;
 
   return (
     <Card className="p-6 mb-6 border-none shadow-lg bg-white/80 backdrop-blur-sm">
@@ -36,9 +42,9 @@ const DesignPreview = ({ design, onDownloadText, onDownloadImage }: DesignPrevie
         
         {/* Product Information */}
         <div className="space-y-2 text-sm text-gray-600">
-          <p><span className="font-medium">Produit:</span> {product?.name || design.productName}</p>
+          <p><span className="font-medium">Produit:</span> {product.name || design.productName}</p>
           <p><span className="font-medium">Couleur sélectionnée:</span> {design.selectedColor}</p>
-          {product?.description && (
+          {product.description && (
             <p className="text-xs italic">{product.description}</p>
           )}
         </div>
