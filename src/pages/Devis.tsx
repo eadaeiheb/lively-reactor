@@ -37,9 +37,25 @@ const Devis = () => {
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
-  const designData = location.state;
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const designData = location.state;
+
+  useEffect(() => {
+    if (designData) {
+      sessionStorage.setItem('designData', JSON.stringify(designData));
+    }
+  }, [designData]);
+
+  useEffect(() => {
+    if (!location.state) {
+      const cachedData = sessionStorage.getItem('designData');
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        navigate('.', { state: parsedData, replace: true });
+      }
+    }
+  }, [location.state, navigate]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -70,10 +86,10 @@ const Devis = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     console.log('Form submitted:', { ...formData, designData });
+    sessionStorage.removeItem('designData');
     setIsLoading(false);
     setIsSuccess(true);
   };

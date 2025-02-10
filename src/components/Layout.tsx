@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Menu, X, Heart, ClipboardList, Search, PenLine, Trash2, MessageCircle } from "lucide-react";
 import Footer from "./Footer";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { products } from "@/config/products";
 import {
   DropdownMenu,
@@ -15,17 +16,28 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const location = useLocation();
   const [favorites, setFavorites] = useState([
     { id: 1, name: "Article 1", price: "120 DT", image: "/placeholder.svg" },
     { id: 2, name: "Article 2", price: "85 DT", image: "/placeholder.svg" }
   ]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Check if there's cached design data
+    const cachedDesignData = sessionStorage.getItem('designData');
+    if (cachedDesignData) {
+      setCartCount(1);
+    } else {
+      setCartCount(0);
+    }
+  }, [location.pathname]); // Re-run when route changes
+
   const filteredProducts = searchQuery
     ? products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : products.slice(0, 5); // Show first 5 products when no search query
+    : products.slice(0, 5);
 
   const handleCartClick = () => {
     console.log('Navigating to cart page');
