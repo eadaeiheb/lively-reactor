@@ -1,9 +1,11 @@
+
 import { Card } from "@/components/ui/card";
 import { FileText } from "lucide-react";
 import TextElementCard from "./TextElementCard";
 import ImageCard from "./ImageCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { products } from "@/config/products";
+import { productSidesConfigs } from "../config/productSidesConfig";
 
 interface DesignPreviewProps {
   design: any;
@@ -20,11 +22,16 @@ const DesignPreview = ({ design, onDownloadText, onDownloadImage }: DesignPrevie
   // Find the product details
   const product = products.find(p => p.id === design.productId);
 
+  // Find the product side configuration
+  const productConfig = productSidesConfigs.find(config => config.id === design.productId);
+  const side = productConfig?.sides.find(side => side.id === design.faceId);
+  const sideName = side?.title || design.faceId;
+
   return (
     <Card className="p-6 mb-6 border-none shadow-lg bg-white/80 backdrop-blur-sm">
       <div className="space-y-4 mb-6">
         <h3 className="text-xl font-semibold text-primary">
-          Design - {design.faceId}
+          Design - {sideName}
         </h3>
         
         {/* Product Information */}
@@ -40,7 +47,7 @@ const DesignPreview = ({ design, onDownloadText, onDownloadImage }: DesignPrevie
       <div className="aspect-video w-full relative rounded-lg overflow-hidden border mb-6 bg-white shadow-inner">
         <img 
           src={design.canvasImage} 
-          alt={`Design ${design.faceId}`}
+          alt={`Design ${sideName}`}
           className="w-full h-full object-contain"
         />
       </div>
