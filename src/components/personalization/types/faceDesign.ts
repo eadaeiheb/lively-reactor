@@ -1,3 +1,4 @@
+
 export interface FaceDesign {
   faceId: string;
   canvasImage: string;
