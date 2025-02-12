@@ -6,43 +6,37 @@ const metiers = [
     title: 'Médical',
     image: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c',
     description: 'Blouses, uniformes et accessoires pour les professionnels de santé',
-    categories: ['Blouses', 'Uniformes', 'Chaussures', 'Accessoires'],
-    color: 'from-blue-100 to-blue-200'
+    categories: ['Blouses', 'Uniformes', 'Chaussures', 'Accessoires']
   },
   {
     title: 'Industrie',
     image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
     description: 'Équipements de protection et vêtements techniques pour l\'industrie',
-    categories: ['EPI', 'Combinaisons', 'Chaussures de sécurité', 'Gants'],
-    color: 'from-orange-100 to-orange-200'
+    categories: ['EPI', 'Combinaisons', 'Chaussures de sécurité', 'Gants']
   },
   {
     title: 'Bâtiment',
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd',
     description: 'Tenues professionnelles adaptées aux métiers du BTP',
-    categories: ['Vestes', 'Pantalons', 'Casques', 'Accessoires'],
-    color: 'from-yellow-100 to-yellow-200'
+    categories: ['Vestes', 'Pantalons', 'Casques', 'Accessoires']
   },
   {
     title: 'Restauration',
     image: 'https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf',
     description: 'Tenues élégantes et pratiques pour la restauration',
-    categories: ['Vestes de cuisine', 'Tabliers', 'Pantalons', 'Toques'],
-    color: 'from-red-100 to-red-200'
+    categories: ['Vestes de cuisine', 'Tabliers', 'Pantalons', 'Toques']
   },
   {
     title: 'Sécurité',
     image: 'https://images.unsplash.com/photo-1587578016785-bea53a782ea8',
     description: 'Équipements professionnels pour les agents de sécurité',
-    categories: ['Uniformes', 'Chaussures', 'Accessoires', 'Protection'],
-    color: 'from-gray-100 to-gray-200'
+    categories: ['Uniformes', 'Chaussures', 'Accessoires', 'Protection']
   },
   {
     title: 'Transport',
     image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d',
     description: 'Tenues adaptées aux professionnels du transport',
-    categories: ['Uniformes', 'Vestes', 'Accessoires', 'Chaussures'],
-    color: 'from-green-100 to-green-200'
+    categories: ['Uniformes', 'Vestes', 'Accessoires', 'Chaussures']
   }
 ];
 
@@ -81,21 +75,21 @@ const Metiers = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
           {metiers.map((metier, index) => (
             <motion.div
               key={metier.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group relative h-[400px] overflow-hidden transition-all duration-300"
             >
               {/* Background Container with Gradient */}
-              <div className={`absolute bottom-0 w-full h-3/5 bg-gradient-to-br ${metier.color} rounded-2xl transition-all duration-300 group-hover:h-2/3`} />
+              <div className="absolute bottom-0 w-full h-[40%] bg-accent transition-all duration-300" />
               
               {/* Image Container */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-4/5 h-4/5 relative">
+                <div className="w-[80%] aspect-square relative">
                   <img 
                     src={metier.image} 
                     alt={metier.title}
@@ -106,17 +100,17 @@ const Metiers = () => {
               
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                <h3 className="text-2xl font-bold text-white mb-2">
                   {metier.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-sm text-white/90 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   {metier.description}
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {metier.categories.slice(0, 2).map((category) => (
                     <span 
                       key={category}
-                      className="px-3 py-1 bg-white/80 backdrop-blur-sm text-gray-700 text-xs rounded-full"
+                      className="px-3 py-1 bg-white/80 backdrop-blur-sm text-accent text-xs rounded-full"
                     >
                       {category}
                     </span>
