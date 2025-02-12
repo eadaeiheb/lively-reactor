@@ -7,42 +7,42 @@ const metiers = [
     image: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c',
     description: 'Blouses, uniformes et accessoires pour les professionnels de santé',
     categories: ['Blouses', 'Uniformes', 'Chaussures', 'Accessoires'],
-    bgColor: 'bg-[#D3E4FD]'  // Soft Blue
+    color: 'from-blue-100 to-blue-200'
   },
   {
     title: 'Industrie',
     image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
     description: 'Équipements de protection et vêtements techniques pour l\'industrie',
     categories: ['EPI', 'Combinaisons', 'Chaussures de sécurité', 'Gants'],
-    bgColor: 'bg-[#FEC6A1]'  // Soft Orange
+    color: 'from-orange-100 to-orange-200'
   },
   {
     title: 'Bâtiment',
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd',
     description: 'Tenues professionnelles adaptées aux métiers du BTP',
     categories: ['Vestes', 'Pantalons', 'Casques', 'Accessoires'],
-    bgColor: 'bg-[#FEF7CD]'  // Soft Yellow
+    color: 'from-yellow-100 to-yellow-200'
   },
   {
     title: 'Restauration',
     image: 'https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf',
     description: 'Tenues élégantes et pratiques pour la restauration',
     categories: ['Vestes de cuisine', 'Tabliers', 'Pantalons', 'Toques'],
-    bgColor: 'bg-[#FFDEE2]'  // Soft Pink
+    color: 'from-red-100 to-red-200'
   },
   {
     title: 'Sécurité',
     image: 'https://images.unsplash.com/photo-1587578016785-bea53a782ea8',
     description: 'Équipements professionnels pour les agents de sécurité',
     categories: ['Uniformes', 'Chaussures', 'Accessoires', 'Protection'],
-    bgColor: 'bg-[#E5DEFF]'  // Soft Purple
+    color: 'from-gray-100 to-gray-200'
   },
   {
     title: 'Transport',
     image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d',
     description: 'Tenues adaptées aux professionnels du transport',
     categories: ['Uniformes', 'Vestes', 'Accessoires', 'Chaussures'],
-    bgColor: 'bg-[#F2FCE2]'  // Soft Green
+    color: 'from-green-100 to-green-200'
   }
 ];
 
@@ -81,21 +81,21 @@ const Metiers = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-wrap">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {metiers.map((metier, index) => (
             <motion.div
               key={metier.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="w-full md:w-1/2 lg:w-1/3 group relative h-[400px] overflow-hidden transition-all duration-300"
+              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              {/* Background Container with Color */}
-              <div className={`absolute bottom-0 w-full h-[40%] ${metier.bgColor} transition-all duration-300`} />
+              {/* Background Container with Gradient */}
+              <div className={`absolute bottom-0 w-full h-3/5 bg-gradient-to-br ${metier.color} rounded-2xl transition-all duration-300 group-hover:h-2/3`} />
               
               {/* Image Container */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-full h-full relative px-4">
+                <div className="w-4/5 h-4/5 relative">
                   <img 
                     src={metier.image} 
                     alt={metier.title}
