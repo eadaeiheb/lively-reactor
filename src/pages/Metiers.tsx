@@ -6,37 +6,43 @@ const metiers = [
     title: 'Médical',
     image: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c',
     description: 'Blouses, uniformes et accessoires pour les professionnels de santé',
-    categories: ['Blouses', 'Uniformes', 'Chaussures', 'Accessoires']
+    categories: ['Blouses', 'Uniformes', 'Chaussures', 'Accessoires'],
+    bgColor: 'bg-[#D3E4FD]'  // Soft Blue
   },
   {
     title: 'Industrie',
     image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
     description: 'Équipements de protection et vêtements techniques pour l\'industrie',
-    categories: ['EPI', 'Combinaisons', 'Chaussures de sécurité', 'Gants']
+    categories: ['EPI', 'Combinaisons', 'Chaussures de sécurité', 'Gants'],
+    bgColor: 'bg-[#FEC6A1]'  // Soft Orange
   },
   {
     title: 'Bâtiment',
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd',
     description: 'Tenues professionnelles adaptées aux métiers du BTP',
-    categories: ['Vestes', 'Pantalons', 'Casques', 'Accessoires']
+    categories: ['Vestes', 'Pantalons', 'Casques', 'Accessoires'],
+    bgColor: 'bg-[#FEF7CD]'  // Soft Yellow
   },
   {
     title: 'Restauration',
     image: 'https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf',
     description: 'Tenues élégantes et pratiques pour la restauration',
-    categories: ['Vestes de cuisine', 'Tabliers', 'Pantalons', 'Toques']
+    categories: ['Vestes de cuisine', 'Tabliers', 'Pantalons', 'Toques'],
+    bgColor: 'bg-[#FFDEE2]'  // Soft Pink
   },
   {
     title: 'Sécurité',
     image: 'https://images.unsplash.com/photo-1587578016785-bea53a782ea8',
     description: 'Équipements professionnels pour les agents de sécurité',
-    categories: ['Uniformes', 'Chaussures', 'Accessoires', 'Protection']
+    categories: ['Uniformes', 'Chaussures', 'Accessoires', 'Protection'],
+    bgColor: 'bg-[#E5DEFF]'  // Soft Purple
   },
   {
     title: 'Transport',
     image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d',
     description: 'Tenues adaptées aux professionnels du transport',
-    categories: ['Uniformes', 'Vestes', 'Accessoires', 'Chaussures']
+    categories: ['Uniformes', 'Vestes', 'Accessoires', 'Chaussures'],
+    bgColor: 'bg-[#F2FCE2]'  // Soft Green
   }
 ];
 
@@ -84,8 +90,8 @@ const Metiers = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group relative h-[400px] overflow-hidden transition-all duration-300"
             >
-              {/* Background Container with Gradient */}
-              <div className="absolute bottom-0 w-full h-[40%] bg-accent transition-all duration-300" />
+              {/* Background Container with Color */}
+              <div className={`absolute bottom-0 w-full h-[40%] ${metier.bgColor} transition-all duration-300`} />
               
               {/* Image Container */}
               <div className="absolute inset-0 flex items-center justify-center">
@@ -100,17 +106,17 @@ const Metiers = () => {
               
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                <h3 className="text-2xl font-bold text-white mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
                   {metier.title}
                 </h3>
-                <p className="text-sm text-white/90 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-sm text-gray-600 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   {metier.description}
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {metier.categories.slice(0, 2).map((category) => (
                     <span 
                       key={category}
-                      className="px-3 py-1 bg-white/80 backdrop-blur-sm text-accent text-xs rounded-full"
+                      className="px-3 py-1 bg-white/80 backdrop-blur-sm text-gray-700 text-xs rounded-full"
                     >
                       {category}
                     </span>
