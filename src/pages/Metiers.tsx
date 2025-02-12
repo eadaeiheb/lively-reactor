@@ -81,21 +81,21 @@ const Metiers = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
+        <div className="flex flex-wrap">
           {metiers.map((metier, index) => (
             <motion.div
               key={metier.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative h-[400px] overflow-hidden transition-all duration-300"
+              className="w-full md:w-1/2 lg:w-1/3 group relative h-[400px] overflow-hidden transition-all duration-300"
             >
               {/* Background Container with Color */}
               <div className={`absolute bottom-0 w-full h-[40%] ${metier.bgColor} transition-all duration-300`} />
               
               {/* Image Container */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[80%] aspect-square relative">
+                <div className="w-full h-full relative px-4">
                   <img 
                     src={metier.image} 
                     alt={metier.title}
