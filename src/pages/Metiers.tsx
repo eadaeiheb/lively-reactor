@@ -7,48 +7,42 @@ const metiers = [
     image: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c',
     description: 'Blouses, uniformes et accessoires pour les professionnels de santé',
     categories: ['Blouses', 'Uniformes', 'Chaussures', 'Accessoires'],
-    gradient: 'linear-gradient(109.6deg, rgba(223,234,247,1) 11.2%, rgba(244,248,252,1) 91.1%)',
-    color: 'text-blue-600'
+    color: 'from-blue-100 to-blue-200'
   },
   {
     title: 'Industrie',
     image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
     description: 'Équipements de protection et vêtements techniques pour l\'industrie',
     categories: ['EPI', 'Combinaisons', 'Chaussures de sécurité', 'Gants'],
-    gradient: 'linear-gradient(90deg, hsla(29, 92%, 70%, 1) 0%, hsla(0, 87%, 73%, 1) 100%)',
-    color: 'text-orange-600'
+    color: 'from-orange-100 to-orange-200'
   },
   {
     title: 'Bâtiment',
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd',
     description: 'Tenues professionnelles adaptées aux métiers du BTP',
     categories: ['Vestes', 'Pantalons', 'Casques', 'Accessoires'],
-    gradient: 'linear-gradient(90deg, hsla(46, 73%, 75%, 1) 0%, hsla(176, 73%, 88%, 1) 100%)',
-    color: 'text-yellow-600'
+    color: 'from-yellow-100 to-yellow-200'
   },
   {
     title: 'Restauration',
     image: 'https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf',
     description: 'Tenues élégantes et pratiques pour la restauration',
     categories: ['Vestes de cuisine', 'Tabliers', 'Pantalons', 'Toques'],
-    gradient: 'linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%)',
-    color: 'text-red-600'
+    color: 'from-red-100 to-red-200'
   },
   {
     title: 'Sécurité',
     image: 'https://images.unsplash.com/photo-1587578016785-bea53a782ea8',
     description: 'Équipements professionnels pour les agents de sécurité',
     categories: ['Uniformes', 'Chaussures', 'Accessoires', 'Protection'],
-    gradient: 'linear-gradient(90deg, hsla(221, 45%, 73%, 1) 0%, hsla(220, 78%, 29%, 1) 100%)',
-    color: 'text-gray-600'
+    color: 'from-gray-100 to-gray-200'
   },
   {
     title: 'Transport',
     image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d',
     description: 'Tenues adaptées aux professionnels du transport',
     categories: ['Uniformes', 'Vestes', 'Accessoires', 'Chaussures'],
-    gradient: 'linear-gradient(90deg, hsla(139, 70%, 75%, 1) 0%, hsla(63, 90%, 76%, 1) 100%)',
-    color: 'text-green-600'
+    color: 'from-green-100 to-green-200'
   }
 ];
 
@@ -87,48 +81,46 @@ const Metiers = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {metiers.map((metier, index) => (
             <motion.div
               key={metier.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative h-[280px] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
-              style={{ width: '100%', maxWidth: '200px', margin: '0 auto' }}
+              className="group relative h-[400px] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              {/* Gradient Background */}
-              <div 
-                className="absolute inset-0 opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-                style={{ background: metier.gradient }}
-              />
+              {/* Background Container with Gradient */}
+              <div className={`absolute bottom-0 w-full h-3/5 bg-gradient-to-br ${metier.color} rounded-2xl transition-all duration-300 group-hover:h-2/3`} />
               
-              {/* Content Container */}
-              <div className="relative h-full flex flex-col">
-                {/* Image */}
-                <div className="flex-1 p-4 flex items-center justify-center">
+              {/* Image Container */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-4/5 h-4/5 relative">
                   <img 
                     src={metier.image} 
                     alt={metier.title}
-                    className="w-24 h-24 object-cover rounded-full shadow-lg transform group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover rounded-xl shadow-lg transform group-hover:-translate-y-4 transition-transform duration-300"
                   />
                 </div>
-                
-                {/* Text Content */}
-                <div className="p-4 text-center bg-white/90 backdrop-blur-sm">
-                  <h3 className={`text-lg font-bold mb-1 ${metier.color}`}>
-                    {metier.title}
-                  </h3>
-                  <div className="flex flex-wrap justify-center gap-1">
-                    {metier.categories.slice(0, 2).map((category) => (
-                      <span 
-                        key={category}
-                        className="px-2 py-0.5 text-[10px] bg-white/80 text-gray-700 rounded-full"
-                      >
-                        {category}
-                      </span>
-                    ))}
-                  </div>
+              </div>
+              
+              {/* Content */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  {metier.title}
+                </h3>
+                <p className="text-sm text-gray-600 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {metier.description}
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {metier.categories.slice(0, 2).map((category) => (
+                    <span 
+                      key={category}
+                      className="px-3 py-1 bg-white/80 backdrop-blur-sm text-gray-700 text-xs rounded-full"
+                    >
+                      {category}
+                    </span>
+                  ))}
                 </div>
               </div>
             </motion.div>
