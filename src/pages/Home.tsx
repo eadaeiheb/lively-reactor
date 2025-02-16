@@ -30,7 +30,46 @@ const Home = () => {
 
   return (
     <div className="relative">
-      <HeroSlider />
+      <div className="relative h-screen">
+        <HeroSlider />
+        <div className="absolute inset-0 bg-black/50 z-10" />
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full max-w-xl mx-auto px-4"
+          >
+            <img 
+              src="/lovable-uploads/e6064e7c-c1ba-4967-80ff-91a23b78ec62.png"
+              alt="Vilart Production"
+              className="w-full h-auto mb-8"
+            />
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-center text-xl md:text-2xl text-gold-400 font-light tracking-wider mb-8"
+            >
+              VOTRE PARTENAIRE CRÉATIF
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="text-center"
+            >
+              <Link
+                to="/contact"
+                className="inline-flex items-center px-8 py-3 bg-transparent border-2 border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-black transition-all duration-300 rounded-full text-lg group"
+              >
+                Découvrir nos services
+                <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
 
       <section className="py-20 px-4 bg-gradient-to-b from-black to-rich-black">
         <div className="max-w-7xl mx-auto">
