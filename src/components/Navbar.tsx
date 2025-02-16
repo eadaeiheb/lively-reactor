@@ -33,7 +33,7 @@ const Navbar = () => {
             Digital
           </Link>
           <Link to="/events" className="hover:text-gold-500 transition-colors">
-            Événements
+            Évènementiel
           </Link>
           <Link to="/about" className="hover:text-gold-500 transition-colors">
             À Propos
@@ -71,7 +71,7 @@ const Navbar = () => {
             Digital
           </Link>
           <Link to="/events" className="hover:text-gold-500 transition-colors block py-2" onClick={toggleMenu}>
-            Événements
+            Évènementiel
           </Link>
           <Link to="/about" className="hover:text-gold-500 transition-colors block py-2" onClick={toggleMenu}>
             À Propos

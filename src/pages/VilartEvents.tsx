@@ -1,9 +1,39 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Star, ArrowRight, X } from 'lucide-react';
+import { Play, Star, ArrowRight, X, Calendar, MapPin, Ticket } from 'lucide-react';
 import VideoBackground from '../components/VideoBackground';
 import HeroVideo from '../components/HeroVideo';
 import { MediaItem } from '../types/media';
+
+const upcomingEvents = [
+  {
+    id: 1,
+    title: "Festival International de Jazz",
+    date: "15-17 Juillet 2024",
+    location: "Tunis, Tunisie",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819",
+    description: "Trois jours de jazz avec des artistes internationaux",
+    price: "À partir de 80 DT"
+  },
+  {
+    id: 2,
+    title: "Soirée Corporate Excellence",
+    date: "25 Août 2024",
+    location: "Hôtel Four Seasons, Gammarth",
+    image: "https://images.unsplash.com/photo-1511578314322-379afb476865",
+    description: "Une soirée exclusive dédiée aux leaders d'entreprise",
+    price: "Sur invitation"
+  },
+  {
+    id: 3,
+    title: "Festival Électro Beach",
+    date: "10 Septembre 2024",
+    location: "Hammamet, Tunisie",
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
+    description: "Le plus grand événement électro de l'année",
+    price: "À partir de 120 DT"
+  }
+];
 
 const VilartEvents = () => {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
@@ -111,7 +141,7 @@ const VilartEvents = () => {
       {/* Hero Section */}
       <VideoBackground
         videoUrl="https://player.vimeo.com/external/451776276.sd.mp4?s=2e4be06fb91c7a572aa2b74b26c72bfed800c583&profile_id=165&oauth2_token_id=57447761"
-        overlay="bg-black/70"
+        overlay="bg-black/60"
       >
         <div className="relative z-10 h-full flex items-center justify-center">
           <div className="text-center px-4 max-w-6xl mx-auto">
@@ -120,11 +150,11 @@ const VilartEvents = () => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8"
             >
-              <h1 className="text-4xl md:text-7xl font-bold text-white gold-text-shadow">
-                Event Services
+              <h1 className="text-5xl md:text-7xl font-bold text-white">
+                Évènementiel
               </h1>
-              <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-                Creating extraordinary events and unforgettable experiences
+              <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto font-light">
+                Créateurs d'expériences uniques et mémorables
               </p>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -133,16 +163,16 @@ const VilartEvents = () => {
                 className="flex flex-wrap justify-center gap-4"
               >
                 <a
-                  href="#services"
-                  className="px-8 py-4 bg-gold-600 text-black font-semibold rounded-lg hover:bg-gold-500 transition-all duration-300 transform hover:scale-105"
+                  href="#upcoming"
+                  className="px-8 py-4 bg-gold-600 text-black font-semibold rounded-lg hover:bg-gold-500 transition-all duration-300"
                 >
-                  Discover Our Services
+                  Événements à venir
                 </a>
                 <a
                   href="#contact"
-                  className="px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300 transform hover:scale-105"
+                  className="px-8 py-4 border border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300"
                 >
-                  Plan Your Event
+                  Nous contacter
                 </a>
               </motion.div>
             </motion.div>
@@ -150,29 +180,65 @@ const VilartEvents = () => {
         </div>
       </VideoBackground>
 
-      {/* Featured Event Video */}
-      <section className="py-20 px-4 bg-gradient-to-b from-black to-rich-black">
+      {/* Upcoming Events Section */}
+      <section id="upcoming" className="py-20 px-4 bg-black">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-              Featured Events
+              Événements à Venir
             </h2>
             <p className="text-xl text-white/80">
-              Experience the magic of our events
+              Découvrez nos prochains événements exclusifs
             </p>
           </motion.div>
-          
-          <HeroVideo
-            thumbnailUrl="https://images.unsplash.com/photo-1492684223066-81342ee5ff30"
-            videoUrl="https://player.vimeo.com/external/403619009.sd.mp4?s=51fb1fe1c5a2088f1d811e944e6e1231c1f2b21f&profile_id=164&oauth2_token_id=57447761"
-            title="Vilart Events Highlights 2024"
-            description="A glimpse into our most spectacular events"
-          />
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {upcomingEvents.map((event, index) => (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-rich-black rounded-xl overflow-hidden border border-gold-600/20 group hover:border-gold-600/40 transition-all duration-300"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">{event.title}</h3>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-gold-400">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span className="text-sm">{event.date}</span>
+                    </div>
+                    <div className="flex items-center text-gold-400">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      <span className="text-sm">{event.location}</span>
+                    </div>
+                    <div className="flex items-center text-gold-400">
+                      <Ticket className="w-4 h-4 mr-2" />
+                      <span className="text-sm">{event.price}</span>
+                    </div>
+                  </div>
+                  <p className="text-gray-400 text-sm mb-4">{event.description}</p>
+                  <button className="w-full py-2 bg-gold-600/20 text-gold-400 rounded hover:bg-gold-600/30 transition-colors duration-300">
+                    En savoir plus
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
