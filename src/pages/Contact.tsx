@@ -1,43 +1,23 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
 import ParallaxText from '../components/ParallaxText';
 
 const Contact = () => {
-  const [currentBanner, setCurrentBanner] = useState(0);
   const [progress, setProgress] = useState(0);
   
-  const banners = [
-    {
-      image: '/images/banners/digital-banner.jpg',
-      title: 'Digital',
-      description: 'Solutions numériques innovantes'
-    },
-    {
-      image: '/images/banners/production-banner.jpg',
-      title: 'Production',
-      description: 'Excellence artistique'
-    },
-    {
-      image: '/images/banners/events-banner.jpg',
-      title: 'Événements',
-      description: 'Moments inoubliables'
-    }
-  ];
+  const banner = {
+    image: '/images/banners/digital-banner.jpg',
+    title: 'Digital',
+    description: 'Solutions numériques innovantes'
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % banners.length);
-      setProgress(0);
-    }, 4000);
-
     const progressInterval = setInterval(() => {
       setProgress((prev) => Math.min(prev + 1, 100));
-    }, 40); // Updates every 40ms for smooth animation (4000ms / 100)
+    }, 40);
 
     return () => {
-      clearInterval(interval);
       clearInterval(progressInterval);
     };
   }, []);
@@ -70,27 +50,21 @@ const Contact = () => {
 
   return (
     <div className="pt-16">
-      {/* Hero Section with Dynamic Banner */}
+      {/* Hero Section with Single Banner */}
       <div className="relative h-[50vh] flex items-center justify-center overflow-hidden">
-        {banners.map((banner, index) => (
-          <motion.div 
-            key={banner.title}
-            initial={{ opacity: 0 }}
-            animate={{ 
-              opacity: currentBanner === index ? 1 : 0,
-              scale: currentBanner === index ? 1 : 1.1
-            }}
-            transition={{ duration: 1.5 }}
-            className="absolute inset-0"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/95" />
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${banner.image})` }}
-            />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-60" />
-          </motion.div>
-        ))}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/95" />
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${banner.image})` }}
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] opacity-60" />
+        </motion.div>
         
         <ParallaxText y={[0, -100]}>
           <div className="relative text-center px-4 z-10">
@@ -106,62 +80,16 @@ const Contact = () => {
               <div className="w-20 h-1 bg-gradient-to-r from-gold-600 to-gold-400 mx-auto rounded-full mt-6" />
             </motion.div>
             <motion.p
-              key={banners[currentBanner].title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-300 max-w-2xl mx-auto"
             >
-              {banners[currentBanner].description}
+              {banner.description}
             </motion.p>
           </div>
         </ParallaxText>
-
-        {/* Banner Title and Progress Bar */}
-        <div className="absolute bottom-8 left-8 z-20">
-          <motion.div
-            key={banners[currentBanner].title}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="mb-2"
-          >
-            <h3 className="text-gold-400 font-semibold text-xl">
-              {banners[currentBanner].title}
-            </h3>
-          </motion.div>
-          <div className="w-32 h-1 bg-black/50 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gold-400"
-              initial={{ width: '0%' }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.1, ease: 'linear' }}
-            />
-          </div>
-        </div>
-
-        {/* Animated overlay dots */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0" 
-               style={{
-                 backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)',
-                 backgroundSize: '50px 50px'
-               }}
-          />
-        </div>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 right-8 flex space-x-2">
-          {banners.map((_, index) => (
-            <div
-              key={index}
-              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                currentBanner === index ? 'bg-gold-400' : 'bg-white/30'
-              }`}
-            />
-          ))}
-        </div>
       </div>
 
       {/* Contact Form Section */}
