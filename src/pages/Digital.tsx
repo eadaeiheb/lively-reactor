@@ -45,35 +45,43 @@ const Digital = () => {
   ];
 
   return (
-    <div className="pt-16">
-      {/* Hero Section with Gradient Overlay */}
-      <div className="relative h-[50vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/banners/digital-banner.jpg')] bg-cover bg-center opacity-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#222222] via-[#1a1a1a]/90 to-[#1a1a1a]" />
-        <ParallaxText y={[0, -50]}>
-          <div className="relative z-10 text-center px-4">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-6xl font-bold mb-6 text-[#FFD700]"
-            >
+    <div className="min-h-screen bg-rich-black">
+      {/* Hero Section with Banner */}
+      <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/banners/digital-banner.jpg')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-rich-black via-rich-black/95 to-rich-black" />
+        <div className="relative z-10 container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gold-400">
               Services Digitaux
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-xl text-gray-300 max-w-2xl mx-auto"
-            >
+            </h1>
+            <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-8">
               Transformez votre vision en réalité numérique avec nos solutions créatives et innovantes
-            </motion.p>
-          </div>
-        </ParallaxText>
+            </p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-wrap justify-center gap-4"
+            >
+              <button className="px-8 py-3 bg-gold-600 text-black font-semibold rounded-lg hover:bg-gold-500 transition-all duration-300">
+                Nos Services
+              </button>
+              <button className="px-8 py-3 border border-gold-400 text-gold-400 font-semibold rounded-lg hover:bg-gold-400/10 transition-all duration-300">
+                Contactez-nous
+              </button>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Stats Section */}
-      <div className="py-16 bg-[#222222]">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="py-16 bg-black/50 backdrop-blur-sm border-y border-gold-400/10">
+        <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <motion.div
@@ -81,30 +89,30 @@ const Digital = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="text-center p-6 bg-[#1a1a1a] rounded-lg border border-[#FFD700]/10"
+                className="text-center p-6 bg-black/40 rounded-lg border border-gold-400/10 hover:border-gold-400/20 transition-colors"
               >
-                <h3 className="text-3xl md:text-4xl font-bold text-[#FFD700]">
+                <h3 className="text-3xl md:text-4xl font-bold text-gold-400 mb-2">
                   {stat.number}
                 </h3>
-                <p className="text-gray-400 mt-2">{stat.label}</p>
+                <p className="text-white/70">{stat.label}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Services Grid with Modern Design */}
-      <div className="py-20 px-4 bg-[#1a1a1a]">
-        <div className="max-w-7xl mx-auto">
+      {/* Services Grid */}
+      <div className="py-20 px-4">
+        <div className="container mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#FFD700] mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-gold-400 mb-6">
               Nos Services Digitaux
             </h2>
-            <p className="text-gray-400 max-w-3xl mx-auto">
+            <p className="text-white/80 max-w-3xl mx-auto">
               De la conception à la réalisation, nous vous accompagnons dans tous vos projets digitaux avec expertise et créativité.
             </p>
           </motion.div>
@@ -116,19 +124,19 @@ const Digital = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="relative h-full"
+                className="group"
               >
-                <div className="bg-[#222222] p-8 rounded-lg border border-[#FFD700]/10 hover:border-[#FFD700]/30 transition-all duration-300 h-full flex flex-col">
-                  <h3 className="text-xl font-bold text-[#FFD700] mb-4">
+                <div className="h-full bg-black/40 p-8 rounded-lg border border-gold-400/10 hover:border-gold-400/30 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-gold-400 mb-4">
                     {service.title}
                   </h3>
-                  <p className="text-gray-400 mb-6 flex-grow">
+                  <p className="text-white/70 mb-6">
                     {service.description}
                   </p>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-gray-400">
-                        <Check className="h-4 w-4 mr-2 text-[#FFD700]" />
+                      <li key={idx} className="flex items-center text-white/60 group-hover:text-white/70 transition-colors">
+                        <Check className="h-4 w-4 mr-2 text-gold-400" />
                         {feature}
                       </li>
                     ))}
@@ -140,26 +148,25 @@ const Digital = () => {
         </div>
       </div>
 
-      {/* CTA Section with Modern Design */}
-      <div className="py-20 px-4 bg-[#222222]">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* CTA Section */}
+      <div className="py-20 px-4 bg-black/50 backdrop-blur-sm">
+        <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative"
           >
-            <div className="bg-[#1a1a1a] p-12 rounded-lg border border-[#FFD700]/10">
-              <h2 className="text-3xl font-bold text-[#FFD700] mb-6">
+            <div className="max-w-4xl mx-auto text-center bg-black/40 p-12 rounded-lg border border-gold-400/10">
+              <h2 className="text-3xl font-bold text-gold-400 mb-6">
                 Prêt à Démarrer Votre Projet Digital ?
               </h2>
-              <p className="text-gray-400 mb-8">
+              <p className="text-white/80 mb-8">
                 Contactez-nous pour discuter de vos besoins et découvrir comment nous pouvons vous aider à atteindre vos objectifs.
               </p>
               <motion.a
                 href="/contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFD700] text-black font-semibold rounded-lg hover:bg-[#FFD700]/90 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gold-600 text-black font-semibold rounded-lg hover:bg-gold-500 transition-all duration-300"
               >
                 Contactez-Nous
                 <ArrowRight className="h-5 w-5" />
