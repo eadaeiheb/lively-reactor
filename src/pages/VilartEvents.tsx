@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Star, ArrowRight, X, Calendar, MapPin, Ticket } from 'lucide-react';
 import VideoBackground from '../components/VideoBackground';
-import HeroVideo from '../components/HeroVideo';
 import { MediaItem } from '../types/media';
 
 const upcomingEvents = [

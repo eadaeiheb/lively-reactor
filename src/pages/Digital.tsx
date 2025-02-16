@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const Digital = () => {
   const services = [
     {
-      title: "Web Design",
-      description: "Création de sites web modernes et responsives pour une expérience utilisateur optimale.",
-      features: ["Design personnalisé", "Responsive design", "Optimisation SEO", "Maintenance"]
+      title: "Design Graphique",
+      description: "Création d'identités visuelles uniques, logos et supports marketing qui captivent votre audience.",
+      features: ["Identité visuelle", "Logos", "Chartes graphiques", "Supports marketing"]
     },
     {
       title: "Marketing Digital",
@@ -31,6 +31,13 @@ const Digital = () => {
       company: "Startup XYZ",
       quote: "Grâce à leur expertise en marketing digital, nous avons pu atteindre notre public cible et développer notre notoriété."
     }
+  ];
+
+  const stats = [
+    { number: "150+", label: "Projets Réalisés" },
+    { number: "98%", label: "Clients Satisfaits" },
+    { number: "15+", label: "Années d'Expérience" },
+    { number: "24/7", label: "Support Client" }
   ];
 
   return (
