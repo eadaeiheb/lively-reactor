@@ -1,180 +1,206 @@
-
 import { motion } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
-import ParallaxText from '../components/ParallaxText';
 
 const Digital = () => {
   const services = [
     {
-      title: "Design Graphique",
-      description: "Création d'identités visuelles uniques, logos et supports marketing qui captivent votre audience.",
-      features: ["Identité visuelle", "Logos", "Chartes graphiques", "Supports marketing"]
+      title: "Web Design",
+      description: "Création de sites web modernes et responsives pour une expérience utilisateur optimale.",
+      features: ["Design personnalisé", "Responsive design", "Optimisation SEO", "Maintenance"]
     },
     {
-      title: "Applications Mobiles",
-      description: "Développement d'applications mobiles innovantes pour iOS et Android, offrant une expérience utilisateur exceptionnelle.",
-      features: ["iOS & Android", "UX/UI Design", "Performance", "Maintenance"]
+      title: "Marketing Digital",
+      description: "Stratégies de marketing digital pour accroître votre visibilité et atteindre votre public cible.",
+      features: ["SEO", "Publicités en ligne", "Marketing de contenu", "Analyse de données"]
     },
     {
-      title: "Sites Web",
-      description: "Conception et développement de sites web responsifs et modernes qui reflètent votre image de marque.",
-      features: ["Sites vitrines", "E-commerce", "Blogs", "Applications web"]
-    },
-    {
-      title: "UI/UX Design",
-      description: "Création d'interfaces intuitives et d'expériences utilisateur fluides pour vos projets digitaux.",
-      features: ["Wireframes", "Prototypes", "Tests utilisateurs", "Design system"]
-    },
-    {
-      title: "Branding Digital",
-      description: "Développement de votre présence en ligne avec une stratégie de marque cohérente et impactante.",
-      features: ["Stratégie digitale", "Réseaux sociaux", "Content marketing", "SEO"]
-    },
-    {
-      title: "Développement Sur Mesure",
-      description: "Solutions techniques personnalisées pour répondre à vos besoins spécifiques.",
-      features: ["Architecture", "APIs", "Intégration", "Sécurité"]
+      title: "Branding",
+      description: "Développement de l'identité de marque pour une image cohérente et mémorable.",
+      features: ["Logo design", "Charte graphique", "Naming", "Storytelling"]
     }
   ];
 
-  const stats = [
-    { number: "150+", label: "Projets Réalisés" },
-    { number: "98%", label: "Clients Satisfaits" },
-    { number: "15+", label: "Années d'Expérience" },
-    { number: "24/7", label: "Support Client" }
+  const testimonials = [
+    {
+      name: "Jean Dupont",
+      company: "Entreprise ABC",
+      quote: "L'équipe de Vilart Production a transformé notre présence en ligne. Nous avons constaté une augmentation significative de notre chiffre d'affaires."
+    },
+    {
+      name: "Sophie Martin",
+      company: "Startup XYZ",
+      quote: "Grâce à leur expertise en marketing digital, nous avons pu atteindre notre public cible et développer notre notoriété."
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-rich-black">
-      {/* Hero Section with Banner */}
-      <div className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/banners/digital-banner.jpg')] bg-cover bg-center opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-rich-black via-rich-black/95 to-rich-black" />
-        <div className="relative z-10 container mx-auto px-4">
-          <motion.div 
+    <div className="bg-black text-white">
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-4xl md:text-6xl font-bold mb-8"
+          >
+            Solutions Digitales
+          </motion.h1>
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center"
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="text-xl md:text-2xl text-white/80 mb-12"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gold-400">
-              Services Digitaux
-            </h1>
-            <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-8">
-              Transformez votre vision en réalité numérique avec nos solutions créatives et innovantes
-            </p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-wrap justify-center gap-4"
+            Boostez votre présence en ligne avec nos services digitaux sur mesure
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+          >
+            <a
+              href="/contact"
+              className="inline-flex items-center px-8 py-3 bg-gold-400 text-black hover:bg-gold-300 transition-all duration-300 rounded-full text-lg font-medium"
             >
-              <button className="px-8 py-3 bg-gold-600 text-black font-semibold rounded-lg hover:bg-gold-500 transition-all duration-300">
-                Nos Services
-              </button>
-              <button className="px-8 py-3 border border-gold-400 text-gold-400 font-semibold rounded-lg hover:bg-gold-400/10 transition-all duration-300">
-                Contactez-nous
-              </button>
-            </motion.div>
+              Contactez-nous
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </a>
           </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Stats Section */}
-      <div className="py-16 bg-black/50 backdrop-blur-sm border-y border-gold-400/10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center p-6 bg-black/40 rounded-lg border border-gold-400/10 hover:border-gold-400/20 transition-colors"
-              >
-                <h3 className="text-3xl md:text-4xl font-bold text-gold-400 mb-2">
-                  {stat.number}
-                </h3>
-                <p className="text-white/70">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Services Grid */}
-      <div className="py-20 px-4">
-        <div className="container mx-auto">
-          <motion.div 
+      <section className="py-20 px-4 bg-gradient-to-b from-rich-black to-black">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gold-400 mb-6">
-              Nos Services Digitaux
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Nos Services
             </h2>
-            <p className="text-white/80 max-w-3xl mx-auto">
-              De la conception à la réalisation, nous vous accompagnons dans tous vos projets digitaux avec expertise et créativité.
+            <p className="text-xl text-white/80">
+              Des solutions digitales adaptées à vos besoins
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="group"
+                key={service.title}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="relative group h-full"
               >
-                <div className="h-full bg-black/40 p-8 rounded-lg border border-gold-400/10 hover:border-gold-400/30 transition-all duration-300">
-                  <h3 className="text-xl font-bold text-gold-400 mb-4">
-                    {service.title}
-                  </h3>
-                  <p className="text-white/70 mb-6">
-                    {service.description}
-                  </p>
-                  <ul className="space-y-3">
+                <div className="absolute -inset-1 bg-gradient-to-r from-gold-600 to-gold-400 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+                <div className="relative luxury-card p-8 rounded-xl hover:transform hover:scale-105 transition-all duration-300 flex flex-col h-full">
+                  <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+                  <p className="text-white/80 mb-8">{service.description}</p>
+                  <ul className="space-y-3 mb-8 flex-grow">
                     {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-white/60 group-hover:text-white/70 transition-colors">
-                        <Check className="h-4 w-4 mr-2 text-gold-400" />
+                      <li key={idx} className="flex items-center text-white/70">
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: index * 0.2 + idx * 0.1 }}
+                          className="w-2 h-2 bg-gold-400 rounded-full mr-3 flex-shrink-0"
+                        />
                         {feature}
                       </li>
                     ))}
                   </ul>
+                  <a
+                    href="/contact"
+                    className="inline-flex items-center text-gold-400 hover:text-gold-300 group mt-auto"
+                  >
+                    En savoir plus
+                    <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-2 transition-transform" />
+                  </a>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* CTA Section */}
-      <div className="py-20 px-4 bg-black/50 backdrop-blur-sm">
-        <div className="container mx-auto">
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
           >
-            <div className="max-w-4xl mx-auto text-center bg-black/40 p-12 rounded-lg border border-gold-400/10">
-              <h2 className="text-3xl font-bold text-gold-400 mb-6">
-                Prêt à Démarrer Votre Projet Digital ?
-              </h2>
-              <p className="text-white/80 mb-8">
-                Contactez-nous pour discuter de vos besoins et découvrir comment nous pouvons vous aider à atteindre vos objectifs.
-              </p>
-              <motion.a
-                href="/contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gold-600 text-black font-semibold rounded-lg hover:bg-gold-500 transition-all duration-300"
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Témoignages
+            </h2>
+            <p className="text-xl text-white/80">
+              Ce que nos clients disent de nous
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.3 }}
+                className="luxury-card p-8 rounded-xl"
               >
-                Contactez-Nous
-                <ArrowRight className="h-5 w-5" />
-              </motion.a>
-            </div>
+                <p className="text-lg italic mb-4">"{testimonial.quote}"</p>
+                <div className="flex items-center">
+                  <div className="ml-4">
+                    <p className="font-bold">{testimonial.name}</p>
+                    <p className="text-white/60">{testimonial.company}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-gradient-to-t from-rich-black to-black">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-bold mb-8"
+          >
+            Prêt à transformer votre présence digitale ?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-xl md:text-2xl text-white/80 mb-12"
+          >
+            Contactez-nous dès aujourd'hui pour discuter de vos projets
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <a
+              href="/contact"
+              className="inline-flex items-center px-8 py-3 bg-gold-400 text-black hover:bg-gold-300 transition-all duration-300 rounded-full text-lg font-medium"
+            >
+              Contactez-nous
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </a>
           </motion.div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
