@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -26,42 +26,59 @@ const OptimizedImage = ({
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [imgSrc, setImgSrc] = useState<string | null>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    // Check if the image is already loaded in cache
+    // Reset state when src changes
+    setIsLoaded(false);
+    
+    // If priority is true, load immediately
+    if (priority) {
+      setImgSrc(src);
+      return;
+    }
+    
+    // Check if the image is already in browser cache
     const cachedImage = new Image();
     cachedImage.src = src;
     
     if (cachedImage.complete) {
       setIsLoaded(true);
       setImgSrc(src);
-    } else {
-      setIsLoaded(false);
-      
-      if (priority) {
-        // If priority is true, load immediately
-        setImgSrc(src);
-      } else {
-        // Implement Intersection Observer for lazy loading
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              setImgSrc(src);
-              observer.disconnect();
-            }
-          });
-        }, {
-          rootMargin: '200px 0px', // Start loading when image is within 200px of viewport
-          threshold: 0.01
-        });
-        
-        observer.observe(document.getElementById('image-placeholder') || document.body);
-        
-        return () => {
-          observer.disconnect();
-        };
-      }
+      return;
     }
+    
+    // Use Intersection Observer for lazy loading
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setImgSrc(src);
+          observer.disconnect();
+          observerRef.current = null;
+        }
+      },
+      {
+        rootMargin: '200px 0px', // Start loading when image is within 200px of viewport
+        threshold: 0.01
+      }
+    );
+    
+    if (imageRef.current) {
+      observer.observe(imageRef.current);
+      observerRef.current = observer;
+    }
+    
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+    };
   }, [src, priority]);
 
   const handleImageLoad = () => {
@@ -80,13 +97,17 @@ const OptimizedImage = ({
   };
 
   return (
-    <div id="image-placeholder" className={`${className} ${aspectRatioClass} overflow-hidden relative`} style={style}>
+    <div 
+      ref={imageRef}
+      className={`${className} ${aspectRatioClass} overflow-hidden relative`} 
+      style={style}
+    >
       {imgSrc ? (
         <img
           src={imgSrc}
           alt={alt}
           loading={priority ? 'eager' : loading}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${blurClass}`}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${blurClass}`}
           onLoad={handleImageLoad}
           sizes={sizes}
           style={style}

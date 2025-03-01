@@ -31,6 +31,7 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
   const progressInterval = useRef<number | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Enhanced carousel items with mobile and desktop images
   const carouselItems: CarouselImageItem[] = [
@@ -64,15 +65,33 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Set up automatic carousel rotation - Fixed to ensure proper looping
+  // Preload all carousel images
+  useEffect(() => {
+    // Preload both mobile and desktop versions
+    carouselItems.forEach(item => {
+      const img = new Image();
+      img.src = item.image;
+      
+      if (item.mobileImage) {
+        const mobileImg = new Image();
+        mobileImg.src = item.mobileImage;
+      }
+    });
+  }, []);
+
+  // Set up automatic carousel rotation with proper transitions
   useEffect(() => {
     const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
-      setProgress(0);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
+        setProgress(0);
+        setIsTransitioning(false);
+      }, 300); // Match this to your transition duration
     }, 5000);
 
     return () => clearInterval(slideInterval);
-  }, []);
+  }, [carouselItems.length]);
 
   // Handle progress bar animation
   useEffect(() => {
@@ -175,35 +194,44 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
   return (
     <main className="flex-grow">
       <section className="relative h-screen">
-        {carouselItems.map((item, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              currentSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
-            }`}
-          >
-            <OptimizedImage
-              src={isMobile && item.mobileImage ? item.mobileImage : item.image}
-              alt={`Slider image ${index + 1}`}
-              className="w-full h-full object-cover"
-              priority={index === currentSlide}
-              loading={index === currentSlide ? "eager" : "lazy"}
-            />
-            <div className="absolute inset-0 bg-black/1" />
-          </div>
-        ))}
+        <div className="relative w-full h-full overflow-hidden">
+          {carouselItems.map((item, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-500 ${
+                currentSlide === index && !isTransitioning ? 'opacity-100 z-30' : 
+                'opacity-0 z-0'
+              }`}
+              aria-hidden={currentSlide !== index}
+            >
+              <OptimizedImage
+                src={isMobile && item.mobileImage ? item.mobileImage : item.image}
+                alt={`Slider image ${index + 1}`}
+                className="w-full h-full object-cover"
+                priority={index === currentSlide || index === ((currentSlide + 1) % carouselItems.length)}
+                loading={index === currentSlide || index === ((currentSlide + 1) % carouselItems.length) ? "eager" : "lazy"}
+              />
+              <div className="absolute inset-0 bg-black/1" />
+            </div>
+          ))}
+        </div>
 
-        <div className="absolute bottom-8 left-8 flex items-center space-x-2 z-20">
+        <div className="absolute bottom-8 left-8 flex items-center space-x-2 z-40">
           {carouselItems.map((_, index) => (
             <button
               key={index}
               onClick={() => {
-                setCurrentSlide(index);
-                setProgress(0);
+                setIsTransitioning(true);
+                setTimeout(() => {
+                  setCurrentSlide(index);
+                  setProgress(0);
+                  setIsTransitioning(false);
+                }, 300);
               }}
               className={`relative h-1 rounded-full transition-all duration-300 ${
                 currentSlide === index ? 'w-12 bg-white' : 'w-2 bg-white/40'
               }`}
+              aria-label={`Go to slide ${index + 1}`}
             >
               {currentSlide === index && (
                 <div
