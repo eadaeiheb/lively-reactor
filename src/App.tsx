@@ -12,6 +12,7 @@ import Certifications from './pages/Certifications';
 import Products from './pages/Products';
 import ScrollToTop from './components/ScrollToTop';
 import CookieConsent from './components/CookieConsent';
+import CertificationBadge from './components/CertificationBadge';
 import type { ClientType, ProductCategory } from './types';
 import Cookies from 'js-cookie';
 
@@ -120,6 +121,7 @@ function App() {
           {renderPage()}
           <Footer />
           <ScrollToTop />
+          <CertificationBadge />
           <CookieConsent 
             onAccept={handleCookieAccept}
             onDecline={handleCookieDecline}
