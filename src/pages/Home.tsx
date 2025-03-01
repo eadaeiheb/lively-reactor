@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Clock, Users, ChefHat, Award, Globe, Truck, Factory } from 'lucide-react';
 import { STATISTICS, FEATURED_RECIPES } from '../config/data';
@@ -32,68 +31,105 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
   const [selectedRecipe, setSelectedRecipe] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const slideshowInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Enhanced carousel items with mobile and desktop images
   const carouselItems: CarouselImageItem[] = [
     {
-      image: "hero1.png",
-      mobileImage: "hero1mobile.png"
+      image: "/lovable-uploads/f10cb267-d375-4ae4-842c-c11c3c505433.png",
+      mobileImage: "/lovable-uploads/f10cb267-d375-4ae4-842c-c11c3c505433.png"
     },
     {
-      image: "hero2.png",
-      mobileImage: "hero2mobile.png"
+      image: "/lovable-uploads/39a8903e-d8fb-43f8-b2b3-59924c1bd2f6.png",
+      mobileImage: "/lovable-uploads/39a8903e-d8fb-43f8-b2b3-59924c1bd2f6.png"
     },
     {
-      image: "hero3.png",
-      mobileImage: "hero1mobile.png" // This would ideally be hero3mobile.png
+      image: "/lovable-uploads/7d80d140-a206-4b90-a067-f5fd9a569528.png",
+      mobileImage: "/lovable-uploads/7d80d140-a206-4b90-a067-f5fd9a569528.png"
     }
   ];
 
-  // Check if the device is mobile
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     
-    // Initial check
     checkIfMobile();
     
-    // Add event listener for window resize
     window.addEventListener('resize', checkIfMobile);
     
-    // Cleanup
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Preload all carousel images
   useEffect(() => {
-    // Preload both mobile and desktop versions
+    let loadedCount = 0;
+    const totalImages = carouselItems.length * 2;
+    
+    const onImageLoad = () => {
+      loadedCount++;
+      if (loadedCount >= totalImages) {
+        setImagesLoaded(true);
+      }
+    };
+    
     carouselItems.forEach(item => {
       const img = new Image();
+      img.onload = onImageLoad;
+      img.onerror = onImageLoad;
       img.src = item.image;
       
       if (item.mobileImage) {
         const mobileImg = new Image();
+        mobileImg.onload = onImageLoad;
+        mobileImg.onerror = onImageLoad;
         mobileImg.src = item.mobileImage;
+      } else {
+        onImageLoad();
       }
     });
+    
+    return () => {
+      carouselItems.forEach(item => {
+        const img = new Image();
+        img.onload = null;
+        img.onerror = null;
+      });
+    };
   }, []);
 
-  // Set up automatic carousel rotation with proper transitions
   useEffect(() => {
-    const slideInterval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
-        setProgress(0);
-        setIsTransitioning(false);
-      }, 300); // Match this to your transition duration
-    }, 5000);
+    if (slideshowInterval.current) {
+      clearInterval(slideshowInterval.current);
+    }
+    
+    if (imagesLoaded) {
+      slideshowInterval.current = setInterval(() => {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
+          setProgress(0);
+          setIsTransitioning(false);
+          
+          slideshowInterval.current = setInterval(() => {
+            setIsTransitioning(true);
+            setTimeout(() => {
+              setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
+              setProgress(0);
+              setIsTransitioning(false);
+            }, 300);
+          }, 5000);
+        }, 300);
+      }, 5000);
+    }
 
-    return () => clearInterval(slideInterval);
-  }, [carouselItems.length]);
+    return () => {
+      if (slideshowInterval.current) {
+        clearInterval(slideshowInterval.current);
+        slideshowInterval.current = null;
+      }
+    };
+  }, [carouselItems.length, imagesLoaded]);
 
-  // Handle progress bar animation
   useEffect(() => {
     if (progressInterval.current) {
       clearInterval(progressInterval.current);
@@ -101,7 +137,7 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
 
     setProgress(0);
     const startTime = Date.now();
-    const duration = 5000; // 5 seconds
+    const duration = 5000;
 
     progressInterval.current = window.setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -111,7 +147,7 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
       if (newProgress >= 100) {
         clearInterval(progressInterval.current!);
       }
-    }, 16); // ~60fps
+    }, 16);
 
     return () => {
       if (progressInterval.current) {
@@ -195,25 +231,32 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
     <main className="flex-grow">
       <section className="relative h-screen">
         <div className="relative w-full h-full overflow-hidden">
-          {carouselItems.map((item, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-500 ${
-                currentSlide === index && !isTransitioning ? 'opacity-100 z-30' : 
-                'opacity-0 z-0'
-              }`}
-              aria-hidden={currentSlide !== index}
-            >
-              <OptimizedImage
-                src={isMobile && item.mobileImage ? item.mobileImage : item.image}
-                alt={`Slider image ${index + 1}`}
-                className="w-full h-full object-cover"
-                priority={index === currentSlide || index === ((currentSlide + 1) % carouselItems.length)}
-                loading={index === currentSlide || index === ((currentSlide + 1) % carouselItems.length) ? "eager" : "lazy"}
-              />
-              <div className="absolute inset-0 bg-black/1" />
-            </div>
-          ))}
+          {carouselItems.map((item, index) => {
+            const isActive = currentSlide === index;
+            const isNext = (currentSlide + 1) % carouselItems.length === index;
+            const isPrev = (currentSlide - 1 + carouselItems.length) % carouselItems.length === index;
+            
+            if (!isActive && !isNext && !isPrev) return null;
+            
+            return (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  isActive && !isTransitioning ? 'opacity-100 z-30' : 'opacity-0 z-10'
+                }`}
+                aria-hidden={!isActive}
+              >
+                <OptimizedImage
+                  src={isMobile && item.mobileImage ? item.mobileImage : item.image}
+                  alt={`Slider image ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  priority={isActive || isNext}
+                  loading={isActive || isNext ? "eager" : "lazy"}
+                />
+                <div className="absolute inset-0 bg-black/10" />
+              </div>
+            );
+          })}
         </div>
 
         <div className="absolute bottom-8 left-8 flex items-center space-x-2 z-40">
@@ -221,11 +264,25 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
             <button
               key={index}
               onClick={() => {
+                if (slideshowInterval.current) {
+                  clearInterval(slideshowInterval.current);
+                  slideshowInterval.current = null;
+                }
+                
                 setIsTransitioning(true);
                 setTimeout(() => {
                   setCurrentSlide(index);
                   setProgress(0);
                   setIsTransitioning(false);
+                  
+                  slideshowInterval.current = setInterval(() => {
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                      setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
+                      setProgress(0);
+                      setIsTransitioning(false);
+                    }, 300);
+                  }, 5000);
                 }, 300);
               }}
               className={`relative h-1 rounded-full transition-all duration-300 ${
@@ -310,7 +367,6 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
             </div>
           </div>
           
-          {/* Add Made In Tunisia Component here */}
           <MadeInTunisia />
         </div>
       </section>

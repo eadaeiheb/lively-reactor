@@ -25,10 +25,11 @@ const OptimizedImage = ({
   placeholder = 'blur'
 }: OptimizedImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [imgSrc, setImgSrc] = useState<string | null>(null);
+  const [imgSrc, setImgSrc] = useState<string | null>(priority ? src : null);
   const imageRef = useRef<HTMLImageElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
+  // Preload image when src changes or priority is true
   useEffect(() => {
     // Reset state when src changes
     setIsLoaded(false);
@@ -39,7 +40,7 @@ const OptimizedImage = ({
       return;
     }
     
-    // Check if the image is already in browser cache
+    // Create a new image object to check if it's cached
     const cachedImage = new Image();
     cachedImage.src = src;
     
@@ -59,7 +60,6 @@ const OptimizedImage = ({
         if (entries[0].isIntersecting) {
           setImgSrc(src);
           observer.disconnect();
-          observerRef.current = null;
         }
       },
       {
@@ -76,13 +76,21 @@ const OptimizedImage = ({
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
-        observerRef.current = null;
       }
     };
   }, [src, priority]);
 
   const handleImageLoad = () => {
     setIsLoaded(true);
+  };
+
+  const handleImageError = () => {
+    console.error(`Failed to load image: ${src}`);
+    // Retry loading after a short delay
+    setTimeout(() => {
+      const timestamp = new Date().getTime();
+      setImgSrc(`${src}?t=${timestamp}`);
+    }, 1000);
   };
 
   const aspectRatioClass = width && height ? 'aspect-ratio' : '';
@@ -109,6 +117,7 @@ const OptimizedImage = ({
           loading={priority ? 'eager' : loading}
           className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${blurClass}`}
           onLoad={handleImageLoad}
+          onError={handleImageError}
           sizes={sizes}
           style={style}
         />
