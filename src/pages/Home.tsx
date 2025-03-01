@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Clock, Users, ChefHat, Award, Globe, Truck, Factory } from 'lucide-react';
-import { CAROUSEL_ITEMS, STATISTICS, FEATURED_RECIPES } from '../config/data';
+import { STATISTICS, FEATURED_RECIPES } from '../config/data';
 import Recipe from './Recipe';
 import DatesBenefits from '../components/DatesBenefits';
 import { motion } from 'framer-motion';
@@ -15,9 +15,9 @@ interface HomeProps {
   clientType: ClientType;
 }
 
-interface CarouselItem {
+interface CarouselImageItem {
   image: string;
-  mobileImage?: string; // Add optional mobile image property
+  mobileImage?: string;
 }
 
 const Home = ({ onPageChange, clientType }: HomeProps) => {
@@ -31,6 +31,22 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
   const progressInterval = useRef<number | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Enhanced carousel items with mobile and desktop images
+  const carouselItems: CarouselImageItem[] = [
+    {
+      image: "hero1.png",
+      mobileImage: "hero1mobile.png"
+    },
+    {
+      image: "hero2.png",
+      mobileImage: "hero2mobile.png"
+    },
+    {
+      image: "hero3.png",
+      mobileImage: "hero1mobile.png" // This would ideally be hero3mobile.png
+    }
+  ];
 
   // Check if the device is mobile
   useEffect(() => {
@@ -155,22 +171,6 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
   if (selectedRecipe) {
     return <Recipe recipeId={selectedRecipe} onBack={() => setSelectedRecipe(null)} />;
   }
-
-  // Enhanced carousel items with mobile and desktop images
-  const carouselItems = [
-    {
-      image: "hero1.png",
-      mobileImage: "hero1mobile.png"
-    },
-    {
-      image: "hero2.png",
-      mobileImage: "hero2mobile.png"
-    },
-    {
-      image: "hero3.png",
-      mobileImage: "hero1mobile.png" // This would ideally be hero3mobile.png
-    }
-  ];
 
   return (
     <main className="flex-grow">
