@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Clock, Users, ChefHat, Award, Globe, Truck, Factory } from 'lucide-react';
 import { STATISTICS, FEATURED_RECIPES } from '../config/data';
@@ -72,24 +73,25 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
       }
     };
     
-    carouselItems.forEach(item => {
+    // Here's the fixed code - we're not using 'item' in the forEach callback
+    carouselItems.forEach((carouselItem) => {
       const img = new Image();
       img.onload = onImageLoad;
       img.onerror = onImageLoad;
-      img.src = item.image;
+      img.src = carouselItem.image;
       
-      if (item.mobileImage) {
+      if (carouselItem.mobileImage) {
         const mobileImg = new Image();
         mobileImg.onload = onImageLoad;
         mobileImg.onerror = onImageLoad;
-        mobileImg.src = item.mobileImage;
+        mobileImg.src = carouselItem.mobileImage;
       } else {
         onImageLoad();
       }
     });
     
     return () => {
-      carouselItems.forEach(item => {
+      carouselItems.forEach((carouselItem) => {
         const img = new Image();
         img.onload = null;
         img.onerror = null;
