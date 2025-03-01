@@ -48,10 +48,10 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Set up automatic carousel rotation
+  // Set up automatic carousel rotation - Fixed to ensure proper looping
   useEffect(() => {
     const slideInterval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_ITEMS.length);
+      setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
       setProgress(0);
     }, 5000);
 
@@ -168,18 +168,18 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
     },
     {
       image: "hero3.png",
-      mobileImage: "hero1mobile.png" // Updated to use proper hero3mobile.png instead of reusing hero1mobile.png
+      mobileImage: "hero1mobile.png" // This would ideally be hero3mobile.png
     }
   ];
 
   return (
     <main className="flex-grow">
-      <section className="relative h-screen ">
+      <section className="relative h-screen">
         {carouselItems.map((item, index) => (
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              currentSlide === index ? 'opacity-100' : 'opacity-0'
+              currentSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
             <OptimizedImage
@@ -193,7 +193,7 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
           </div>
         ))}
 
-        <div className="absolute bottom-8 left-8 flex items-center space-x-2">
+        <div className="absolute bottom-8 left-8 flex items-center space-x-2 z-20">
           {carouselItems.map((_, index) => (
             <button
               key={index}
