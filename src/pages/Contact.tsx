@@ -110,7 +110,7 @@ export const Contact = () => {
   const thankYouIcons = [Heart, ThumbsUp, Smile, CheckCircle2];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-32 pb-16">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-36 pb-16">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Header */}

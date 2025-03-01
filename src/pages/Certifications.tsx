@@ -29,7 +29,7 @@ const Certifications = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8F7F4] to-white pt-24 pb-16 relative mt-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#F8F7F4] to-white pt-28 pb-16 relative">
       <Helmet>
         <title>Nos Certifications | Tazart - Qualité Certifiée</title>
         <meta name="description" content="Découvrez les certifications de qualité de Tazart, garantissant l'excellence de nos produits traditionnels tunisiens." />

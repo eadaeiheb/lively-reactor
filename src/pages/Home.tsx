@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Clock, Users, ChefHat, Award, Globe, Truck, Factory } from 'lucide-react';
 import { STATISTICS, FEATURED_RECIPES } from '../config/data';
@@ -63,17 +62,17 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
   }, []);
 
   useEffect(() => {
-    let loadedCount = 0;
-    const totalImages = carouselItems.length * 2;
+    let loadedImages = 0;
+    const totalImagesToLoad = carouselItems.length * 2 - carouselItems.filter(item => !item.mobileImage).length;
     
     const onImageLoad = () => {
-      loadedCount++;
-      if (loadedCount >= totalImages) {
+      loadedImages += 1;
+      
+      if (loadedImages === totalImagesToLoad) {
         setImagesLoaded(true);
       }
     };
     
-    // Here's the fixed code - we're not using 'item' in the forEach callback
     carouselItems.forEach((carouselItem) => {
       const img = new Image();
       img.onload = onImageLoad;
@@ -91,13 +90,13 @@ const Home = ({ onPageChange, clientType }: HomeProps) => {
     });
     
     return () => {
-      carouselItems.forEach((carouselItem) => {
+      carouselItems.forEach(() => {
         const img = new Image();
         img.onload = null;
         img.onerror = null;
       });
     };
-  }, []);
+  }, [carouselItems]);
 
   useEffect(() => {
     if (slideshowInterval.current) {
