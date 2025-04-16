@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 const loadCldrData = require("./cldrBase").loadCldrData;
 require("../../../../Plugins/Main/Content/ts/helper/Helper.String");
 require("../../../../Plugins/Main/Content/ts/knockout.custom.datePicker");

@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData knockout module tests", () => {
 	test("knockout observable arrays", done => {
 		expect.assertions(5);

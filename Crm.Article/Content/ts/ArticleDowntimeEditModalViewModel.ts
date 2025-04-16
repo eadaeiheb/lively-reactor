@@ -1,4 +1,4 @@
-﻿import { namespace } from "@Main/namespace";
+import { namespace } from "@Main/namespace";
 import { HelperString } from "@Main/helper/Helper.String";
 import type { ArticleDetailsViewModel } from "./ArticleDetailsViewModel";
 

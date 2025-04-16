@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BusinessRules.StoreRules
+namespace Crm.Article.BusinessRules.StoreRules
 {
 	using Crm.Library.Validation.BaseRules;
 	using Crm.Article.Model;

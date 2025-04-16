@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../JaydataDbModel");
 window.Helper.Note = require("../../../Plugins/Crm/Content/ts/helper/Helper.Note").HelperNote;
 require("../../../Plugins/Crm/Content/ts/NoteViewModel");

@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData include tests", () => {
 	test("deep include", done => {
 		expect.assertions(3);

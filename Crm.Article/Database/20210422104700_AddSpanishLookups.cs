@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Crm.Library.Data.MigratorDotNet.Framework;
 
 namespace Crm.Database.Modify

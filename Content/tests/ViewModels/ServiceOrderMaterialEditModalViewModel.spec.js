@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.moment = require("moment");
 require("../../../Plugins/Crm/Content/ts/OfflineModel");
 require("../../../Plugins/Crm.Service/Content/ts/OfflineModel");

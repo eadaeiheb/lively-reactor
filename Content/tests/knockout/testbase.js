@@ -1,4 +1,4 @@
-﻿window.jQuery = window.$ = require("../../../node_modules/jquery/dist/jquery");
+window.jQuery = window.$ = require("../../../node_modules/jquery/dist/jquery");
 window.ko = require("knockout");
 ko.test = (tag, binding, test, async) => {
 	const div = document.createElement("div");

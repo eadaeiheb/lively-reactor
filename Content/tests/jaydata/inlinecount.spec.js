@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData inlinecount tests", function () {
 	test("inlinecount", done => {
 		expect.assertions(6);

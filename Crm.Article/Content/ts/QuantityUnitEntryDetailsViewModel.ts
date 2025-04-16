@@ -1,4 +1,4 @@
-﻿import {HelperLookup} from "@Main/helper/Helper.Lookup";
+import {HelperLookup} from "@Main/helper/Helper.Lookup";
 import {Breadcrumb} from "@Main/breadcrumbs";
 import {namespace} from "@Main/namespace";
 

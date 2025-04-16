@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Controllers
+namespace Crm.Article.Controllers
 {
 	using Crm.Library.Modularization;
 	using Microsoft.AspNetCore.Mvc;

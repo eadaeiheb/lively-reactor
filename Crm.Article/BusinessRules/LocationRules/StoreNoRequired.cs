@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BusinessRules.LocationRules
+namespace Crm.Article.BusinessRules.LocationRules
 {
 	using Crm.Library.Validation.BaseRules;
 	using Crm.Article.Model;

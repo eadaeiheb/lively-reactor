@@ -1,4 +1,4 @@
-﻿namespace Crm.Database
+namespace Crm.Database
 {
 	using Crm.Library.Data.MigratorDotNet.Framework;
 

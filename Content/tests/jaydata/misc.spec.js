@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData misc tests", () => {
 	test("save copy of entity with changed property", done => {
 		expect.assertions(1);

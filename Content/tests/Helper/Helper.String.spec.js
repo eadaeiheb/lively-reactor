@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 const {format} = require("../../../Plugins/Main/Content/ts/helper/Helper.String");
 
 describe("Helper.String", function () {

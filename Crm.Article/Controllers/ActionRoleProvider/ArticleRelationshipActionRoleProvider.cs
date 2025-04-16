@@ -1,4 +1,4 @@
-﻿using Crm.Library.Model.Authorization.PermissionIntegration;
+using Crm.Library.Model.Authorization.PermissionIntegration;
 
 namespace Crm.Article.Controllers.ActionRoleProvider
 {

@@ -1,4 +1,4 @@
-﻿import type {ArticleDetailsViewModel} from "./ArticleDetailsViewModel";
+import type {ArticleDetailsViewModel} from "./ArticleDetailsViewModel";
 import {namespace} from "@Main/namespace";
 
 export class ArticleDetailsPricesTabViewModel extends window.Main.ViewModels.GenericListViewModel<Crm.Article.Rest.Model.CrmArticle_Price, Crm.Article.Rest.Model.ObservableCrmArticle_Price> {

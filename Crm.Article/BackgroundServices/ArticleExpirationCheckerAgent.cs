@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BackgroundServices
+namespace Crm.Article.BackgroundServices
 {
 	using System;
 	using System.Linq;

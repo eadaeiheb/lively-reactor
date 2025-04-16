@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Database
+namespace Crm.Article.Database
 {
 	using ForeignKeyConstraint = Library.Data.MigratorDotNet.Framework.ForeignKeyConstraint;
 	using System.Data;

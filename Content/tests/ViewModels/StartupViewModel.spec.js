@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../JaydataDbModel");
 window.async = require("../../../node_modules/async/dist/async");
 require("../../../Plugins/Main/Content/ts/DefaultViewModel");

@@ -1,4 +1,4 @@
-﻿﻿require("../testbase");
+﻿require("../testbase");
 require("../JaydataDbModel");
 require("../../../Plugins/Main/Content/ts/ViewModelBase");
 require("../../../Plugins/Crm.PerDiem.Germany/Content/ts/PerDiemAllowanceEntryEditModalViewModel");

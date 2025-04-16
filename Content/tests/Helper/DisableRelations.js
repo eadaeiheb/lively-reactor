@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
 	//stop OfflineModel.js registering any relations
 	const registerTable = window.Helper.Database.registerTable;
 	window.Helper.Database.registerTable = function (storageKey, columns, indices) {

@@ -1,4 +1,4 @@
-﻿window.jQuery = window.$ = require("jquery");
+window.jQuery = window.$ = require("jquery");
 require("../../../Plugins/Main/Content/ts/namespace");
 window.ko = require("knockout");
 require("../../../Plugins/Main/Content/ts/ViewModelBase");

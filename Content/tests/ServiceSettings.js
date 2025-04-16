@@ -1,4 +1,4 @@
-﻿(function() {
+(function() {
 	window.Crm = window.Crm ?? {};
 	window.Crm.Service = window.Crm.Service ?? {};
 	window.Crm.Service.Settings = window.Crm.Service.Settings ?? {

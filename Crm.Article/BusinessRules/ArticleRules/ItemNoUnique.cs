@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BusinessRules.ArticleRules
+namespace Crm.Article.BusinessRules.ArticleRules
 {
 	using System.Linq;
 

@@ -1,4 +1,4 @@
-﻿function InitializeMainSettings(){
+function InitializeMainSettings(){
 	window.Main = {};
 	window.Main.Settings = window.Main.Settings ?? {
 		"Person" : {

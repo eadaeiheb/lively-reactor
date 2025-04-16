@@ -1,4 +1,4 @@
-﻿namespace Crm.Database.Modify
+namespace Crm.Database.Modify
 {
 	using System.Collections.Generic;
 

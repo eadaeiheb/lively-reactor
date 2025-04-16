@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData date tests", () => {
 
 	test("websql date functions", done => {

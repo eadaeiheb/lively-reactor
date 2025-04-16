@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 const XHRMock = require("../xhr-mock-2.4.1");
 require("../../../Plugins/Crm/Content/ts/OfflineModel");
 require("../../../Plugins/Crm.Service/Content/ts/OfflineModel");

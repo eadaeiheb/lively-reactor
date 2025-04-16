@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 
 describe("JayData complex type tests", () => {
 	test("map with complex fields", done => {

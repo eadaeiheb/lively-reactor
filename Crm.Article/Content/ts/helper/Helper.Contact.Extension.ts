@@ -1,4 +1,4 @@
-﻿;
+;
 (function () {
 	const getLink = window.Helper.Contact.getLink;
 	window.Helper.Contact.getLink = function (contactId, contactType) {

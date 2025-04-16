@@ -1,4 +1,4 @@
-﻿window.ko.validationRules.add("CrmArticle_Article",
+window.ko.validationRules.add("CrmArticle_Article",
 	function (entity: Crm.Article.Rest.Model.ObservableCrmArticle_Article) {
 		entity.ArticleTypeKey.extend({
 			required: {

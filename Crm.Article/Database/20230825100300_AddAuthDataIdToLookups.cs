@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Database
+namespace Crm.Article.Database
 {
 	using Crm.Article.Model;
 	using Crm.Article.Model.Lookups;

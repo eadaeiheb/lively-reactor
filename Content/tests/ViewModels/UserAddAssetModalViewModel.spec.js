@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../JaydataDbModel");
 require("knockout.validation");
 window.Helper.Lookup = require("../../../Plugins/Main/Content/ts/helper/Helper.Lookup").HelperLookup;

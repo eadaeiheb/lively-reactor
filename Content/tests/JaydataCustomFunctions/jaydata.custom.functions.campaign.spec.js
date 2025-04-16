@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../JaydataDbModel");
 const {addCriteriaToFilterString, createCompanyFilter, createPeopleFilter, createPotentialFilter, createCampaignFilter} =  require("../../../Plugins/Crm.Campaigns/Content/ts/jaydata.custom.functions");
 

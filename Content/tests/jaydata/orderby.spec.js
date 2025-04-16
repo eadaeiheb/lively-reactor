@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 
 describe("JayData order by tests", () => {
 

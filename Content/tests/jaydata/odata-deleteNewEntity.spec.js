@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 const XHRMock = require("../xhr-mock-2.4.1");
 describe("JayData oData delete newly created entiy", () => {
 	test("do not try to delete nonexistant entity", async () => {

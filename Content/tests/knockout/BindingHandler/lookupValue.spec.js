@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../../../../Plugins/Main/Content/ts/knockout.custom.lookupValue");
 
 describe("knockout lookupValue custom binding", () => {

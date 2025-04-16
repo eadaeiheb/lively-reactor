@@ -1,4 +1,4 @@
-﻿export class OverlappingArticleUserRelationshipValidator {
+export class OverlappingArticleUserRelationshipValidator {
 
 	static getValidationFunction(articleUserRelationship) {
 		return function (val, params, callback) {

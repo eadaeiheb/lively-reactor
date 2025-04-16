@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Controllers;
+namespace Crm.Article.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 

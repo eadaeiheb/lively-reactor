@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.Helper.Date = require("../../../Plugins/Main/Content/ts/helper/Helper.Date").HelperDate;
 window.moment = require("moment");
 

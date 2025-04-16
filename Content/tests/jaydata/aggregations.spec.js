@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData aggregation tests", () => {
 	test("group by with order by", done => {
 		expect.assertions(9);

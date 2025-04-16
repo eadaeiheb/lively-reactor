@@ -1,4 +1,4 @@
-﻿namespace Crm.Article
+namespace Crm.Article
 {
 	using Crm.Library.Modularization;
 

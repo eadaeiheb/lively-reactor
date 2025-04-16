@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.moment = require("moment");
 ko.validation = require("knockout.validation");
 require("../JaydataDbModel");

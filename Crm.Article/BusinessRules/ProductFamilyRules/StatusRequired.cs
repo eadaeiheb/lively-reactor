@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BusinessRules.ProductFamilyRules
+namespace Crm.Article.BusinessRules.ProductFamilyRules
 {
 	using Crm.Article.Model;
 	using Crm.Library.Validation.BaseRules;

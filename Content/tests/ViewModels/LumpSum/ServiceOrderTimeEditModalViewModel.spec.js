@@ -1,4 +1,4 @@
-﻿require("../../testbase");
+require("../../testbase");
 require("../../ServiceSettings");
 require("../../../../node_modules/knockout.validation/dist/knockout.validation");
 require("../../../../Plugins/Main/Content/ts/knockout.custom");

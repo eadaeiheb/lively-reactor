@@ -1,4 +1,4 @@
-﻿window.jQuery = window.$ = require("jquery");
+window.jQuery = window.$ = require("jquery");
 const {HelperBatch} = require("../../../Plugins/Main/Content/ts/helper/Helper.Batch");
 
 describe("Helper.Batch", () => {

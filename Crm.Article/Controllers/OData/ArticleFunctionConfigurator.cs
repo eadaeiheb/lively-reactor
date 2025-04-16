@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Controllers.OData
+namespace Crm.Article.Controllers.OData
 {
 	using Crm.Article.Model;
 	using Crm.Article.Rest.Model;

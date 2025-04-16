@@ -46,7 +46,7 @@ namespace Crm.Article.Database
 					new Column("ModifyUser", DbType.String, 256, ColumnProperty.NotNull),
 					new Column("IsActive", DbType.Boolean, ColumnProperty.NotNull, true),
 					new Column("TenantKey", DbType.Int32, ColumnProperty.Null));
-				InsertLookupValue("Accessory", "Zubehör", "Zubehör von", "de");
+				InsertLookupValue("Accessory", "Zubehï¿½r", "Zubehï¿½r von", "de");
 				InsertLookupValue("Accessory", "Accessory", "Accessory of", "en");
 				InsertLookupValue("Set", "Set", "Verwendet in Set", "de", "Set", true);
 				InsertLookupValue("Set", "Set", "Used in set", "en", "Set", true);

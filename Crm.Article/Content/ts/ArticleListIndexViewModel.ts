@@ -1,4 +1,4 @@
-﻿import {namespace} from "@Main/namespace";
+import {namespace} from "@Main/namespace";
 import {HelperString} from "@Main/helper/Helper.String";
 import {HelperDatabase} from "@Main/helper/Helper.Database";
 import {HelperArticle} from "./helper/Helper.Article";

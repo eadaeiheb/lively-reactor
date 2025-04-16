@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Controllers.OData
+namespace Crm.Article.Controllers.OData
 {
 	using System;
 	using System.Linq;

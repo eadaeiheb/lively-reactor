@@ -1,4 +1,4 @@
-﻿import {namespace} from "@Main/namespace";
+import {namespace} from "@Main/namespace";
 import type {ArticleDetailsViewModel} from "./ArticleDetailsViewModel";
 import {HelperArticle} from "./helper/Helper.Article";
 import {HelperCompany} from "@Crm/helper/Helper.Company";

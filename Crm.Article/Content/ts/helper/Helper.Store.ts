@@ -1,4 +1,4 @@
-﻿import { HelperString } from "@Main/helper/Helper.String";
+import { HelperString } from "@Main/helper/Helper.String";
 
 export class HelperStore {
 	

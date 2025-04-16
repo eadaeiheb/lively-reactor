@@ -1,4 +1,4 @@
-﻿const $ = require("jquery");
+const $ = require("jquery");
 global.$ = $;
 require("../../Plugins/Main/Content/ts/Login");
 

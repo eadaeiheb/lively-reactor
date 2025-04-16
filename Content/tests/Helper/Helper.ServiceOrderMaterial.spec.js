@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.Helper.ServiceOrderMaterial = require("../../../Plugins/Crm.Service/Content/ts/helper/Helper.ServiceOrderMaterial").HelperServiceOrderMaterial;
 
 describe("Helper.ServiceOrderMaterial", () => {

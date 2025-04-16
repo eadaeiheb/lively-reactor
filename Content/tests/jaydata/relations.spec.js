@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData relation tests", () => {
 	test("1:n array without back reference", done => {
 		expect.assertions(2);

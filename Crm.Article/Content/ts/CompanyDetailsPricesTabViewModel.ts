@@ -1,4 +1,4 @@
-﻿import type {CompanyDetailsViewModel} from "@Crm/CompanyDetailsViewModel";
+import type {CompanyDetailsViewModel} from "@Crm/CompanyDetailsViewModel";
 import {namespace} from "@Main/namespace";
 
 

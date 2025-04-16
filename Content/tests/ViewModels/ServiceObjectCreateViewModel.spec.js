@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.Helper.Lookup = require("../../../Plugins/Main/Content/ts/helper/Helper.Lookup").HelperLookup;
 window.Helper.Lookup.setDefaultLanguage("en");
 require("../../../node_modules/knockout-punches/knockout.punches");

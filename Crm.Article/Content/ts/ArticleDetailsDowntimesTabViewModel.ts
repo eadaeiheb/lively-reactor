@@ -1,4 +1,4 @@
-﻿import { namespace } from "@Main/namespace";
+import { namespace } from "@Main/namespace";
 import type { ArticleDetailsViewModel } from "./ArticleDetailsViewModel";
 import { HelperConfirm } from "@Main/helper/Helper.Confirm";
 import { HelperDatabase } from "@Main/helper/Helper.Database";

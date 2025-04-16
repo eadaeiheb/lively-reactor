@@ -1,4 +1,4 @@
-﻿import {HelperDatabase} from "@Main/helper/Helper.Database";
+import {HelperDatabase} from "@Main/helper/Helper.Database";
 
 export class HelperProductFamily {
 

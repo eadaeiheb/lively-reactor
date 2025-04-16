@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BusinessRules.QuantityUnitEntryRules
+namespace Crm.Article.BusinessRules.QuantityUnitEntryRules
 {
 	using Crm.Article.Model;
 	using Crm.Library.Validation;

@@ -1,4 +1,4 @@
-﻿import {HelperLookup} from "@Main/helper/Helper.Lookup";
+import {HelperLookup} from "@Main/helper/Helper.Lookup";
 import {namespace} from "@Main/namespace";
 
 export class QuantityUnitEntryListIndexViewModel extends window.Main.ViewModels.GenericListViewModel<Crm.Article.Rest.Model.CrmArticle_QuantityUnitEntry, Crm.Article.Rest.Model.ObservableCrmArticle_QuantityUnitEntry> {

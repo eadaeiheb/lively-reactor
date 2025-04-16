@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 describe("JayData queryable tests", () => {
 	test("queryable as filter parameter", done => {
 		expect.assertions(2);

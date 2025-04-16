@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.moment = require("moment/min/moment-with-locales");
 const loadCldrData = require("./cldrBase").loadCldrData;
 require("../../../../Plugins/Main/Content/ts/knockout.custom.money");

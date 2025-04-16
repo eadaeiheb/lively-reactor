@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../../../../Plugins/Main/Content/ts/knockout.custom.durationInput");
 window.moment = require("moment/min/moment-with-locales");
 require("../../../../node_modules/moment-duration-format/lib/moment-duration-format")(window.moment);

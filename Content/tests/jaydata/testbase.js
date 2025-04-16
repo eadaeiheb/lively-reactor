@@ -1,4 +1,4 @@
-﻿window.jQuery = window.$ = require("jquery");
+window.jQuery = window.$ = require("jquery");
 require("../jquery.mockjax");
 window.openDatabase = require("websql");
 window.ko = require("knockout");

@@ -1,4 +1,4 @@
-﻿($data.Queryable as any).prototype.specialFunctions.filterByArticleDescription = {
+($data.Queryable as any).prototype.specialFunctions.filterByArticleDescription = {
 	"oData": function (urlSearchParams, data) {
 		if (data.language && data.filter) {
 			urlSearchParams.append("filterByArticleDescriptionLanguage", data.language);

@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.Controllers.ActionRoleProvider
+namespace Crm.Article.Controllers.ActionRoleProvider
 {
 	using Crm.Article.Model;
 	using Crm.Article.Model.Lookups;

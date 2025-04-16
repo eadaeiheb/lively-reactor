@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../../../../Plugins/Main/Content/ts/helper/Helper.String");
 require("../../../../Plugins/Main/Content/ts/knockout.custom.text");
 

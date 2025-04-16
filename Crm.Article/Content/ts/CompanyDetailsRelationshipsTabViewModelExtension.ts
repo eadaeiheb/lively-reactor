@@ -1,4 +1,4 @@
-﻿import type {GenericListViewModel} from "@Main/GenericListViewModel";
+import type {GenericListViewModel} from "@Main/GenericListViewModel";
 import type {CompanyDetailsViewModel} from "@Crm/CompanyDetailsViewModel";
 import {Mixin} from "ts-mixer";
 

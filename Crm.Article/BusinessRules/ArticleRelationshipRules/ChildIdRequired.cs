@@ -1,4 +1,4 @@
-﻿namespace Crm.Article.BusinessRules.ArticleRelationshipRules
+namespace Crm.Article.BusinessRules.ArticleRelationshipRules
 {
 	using Crm.Article.Model.Relationships;
 	using Crm.Library.Validation;

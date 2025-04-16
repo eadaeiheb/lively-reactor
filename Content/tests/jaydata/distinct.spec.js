@@ -1,4 +1,4 @@
-﻿require("./testbase");
+require("./testbase");
 
 describe("JayData distinct tests", () => {
 	test("distinct", done => {

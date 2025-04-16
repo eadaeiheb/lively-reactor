@@ -26,7 +26,7 @@ namespace Crm.Article.Database
 			{
 				sb.AppendLine("INSERT INTO [LU].[QuantityUnit] (Name, Language, Value)");
 				sb.AppendLine("VALUES");
-				sb.AppendLine("('Stück',		'de',	'Pieces'),");
+				sb.AppendLine("('Stï¿½ck',		'de',	'Pieces'),");
 				sb.AppendLine("('Pieces',		'en',	'Pieces')");
 			}
 			Database.ExecuteNonQuery(sb.ToString());

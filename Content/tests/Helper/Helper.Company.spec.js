@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.Helper.Company = require("../../../Plugins/Crm/Content/ts/helper/Helper.Company").HelperCompany;
 require("../JaydataDbModel");
 

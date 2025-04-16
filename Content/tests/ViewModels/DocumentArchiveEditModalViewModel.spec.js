@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../JaydataDbModel");
 require("bootstrap");
 require("../../../Plugins/Main/Content/ts/ViewModelBase");

@@ -1,4 +1,4 @@
-﻿window = window || {};
+window = window || {};
 window.ko = window.ko || {
 	observable: jest.fn(x => {
 		let obs = function (val) {

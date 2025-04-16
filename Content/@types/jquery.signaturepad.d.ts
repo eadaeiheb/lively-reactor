@@ -1,4 +1,4 @@
-﻿// from https://github.com/thread-pond/signature-pad/issues/94#issuecomment-25021226
+// from https://github.com/thread-pond/signature-pad/issues/94#issuecomment-25021226
 interface signaturePadOptions {
 	/**
 	 * The defaultAction Default: typeIt. - Other values: drawIt - how the object is initialized, does it allow typing by default or drawing by default?

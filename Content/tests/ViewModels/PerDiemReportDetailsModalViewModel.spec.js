@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 window.moment = require("moment");
 require("../../../Plugins/Main/Content/ts/ViewModelBase");
 require("../../../Plugins/Crm.PerDiem/Content/ts/PerDiemReportDetailsModalViewModel");

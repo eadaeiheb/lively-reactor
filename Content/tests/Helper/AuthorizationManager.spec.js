@@ -1,4 +1,4 @@
-﻿require("../testbase");
+require("../testbase");
 require("../../../Plugins/Main/Content/ts/helper/Helper.Url");
 require("../../../Plugins/Main/Content/ts/AuthorizationManager");
 const {HelperUrl} = require("../../../Plugins/Main/Content/ts/helper/Helper.Url");
