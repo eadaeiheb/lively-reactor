@@ -3,6 +3,14 @@ require("../testbase");
 require("../knockout/testbase");
 require("../JaydataDbModel");
 
+// Initialize the namespace structure
+window.Crm = window.Crm || {};
+window.Crm.Order = window.Crm.Order || {};
+window.Crm.Order.ViewModels = window.Crm.Order.ViewModels || {};
+
+// Import and register the BaseOrderPdfModalViewModel class
+require("../../Crm.Order/Content/ts/BaseOrderPdfModalViewModel");
+
 describe("BaseOrderPdfModalViewModel", () => {
     test("updates article thumbnail when initializing", async () => {
         expect.assertions(4);
