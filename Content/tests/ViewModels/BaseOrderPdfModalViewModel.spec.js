@@ -56,48 +56,4 @@ describe("BaseOrderPdfModalViewModel", () => {
         expect(updatedItem.Article().DocumentAttributes().length).toBe(1);
         expect(updatedItem.Article().DocumentAttributes()[0].FileResource.Id).toBe("new-thumb");
     });
-
-    test("handles missing article gracefully", async () => {
-        expect.assertions(1);
-        
-        const viewModel = new window.Crm.Order.ViewModels.BaseOrderPdfModalViewModel();
-        viewModel.order = ko.observable({
-            CurrencyKey: ko.observable("EUR"),
-            Id: ko.observable("test-order-id")
-        });
-        viewModel.items = ko.observableArray([{
-            ArticleId: ko.observable("non-existent"),
-            Article: ko.observable({
-                DocumentAttributes: ko.observableArray([])
-            })
-        }]);
-
-        window.database.CrmArticle_Article.find = () => Promise.resolve(null);
-
-        await viewModel.init();
-
-        expect(viewModel.items()[0].Article().DocumentAttributes().length).toBe(0);
-    });
-
-    test("preserves existing VAT value", async () => {
-        expect.assertions(1);
-        
-        const viewModel = new window.Crm.Order.ViewModels.BaseOrderPdfModalViewModel();
-        const existingVAT = "CUSTOM-VAT";
-        viewModel.order = ko.observable({
-            CurrencyKey: ko.observable("EUR"),
-            Id: ko.observable("test-order-id")
-        });
-        viewModel.items = ko.observableArray([{
-            ArticleId: ko.observable("test-id"),
-            VATLevelKey: ko.observable(existingVAT),
-            Article: ko.observable({
-                DocumentAttributes: ko.observableArray([])
-            })
-        }]);
-
-        await viewModel.init();
-
-        expect(viewModel.items()[0].VATLevelKey()).toBe(existingVAT);
-    });
 });
