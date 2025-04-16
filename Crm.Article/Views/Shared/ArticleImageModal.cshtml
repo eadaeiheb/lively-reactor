@@ -1,0 +1,35 @@
+@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+<div class="modal fade" id="{{Id}}" tabindex="-1" role="dialog" aria-labelledby="imagePopUpModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header card-header ch-alt">
+				<button type="button" class="close" data-dismiss="modal" aria-label="@(Html.Localize("Close"))">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body p-t-25">
+				<figure class="article-preview">
+					<img class="img-responsive" data-bind="fileResource: $root.getDocumentAttributeByCurrentIndex($data).FileResource" />
+				</figure>
+				<div class='pre-line word-break-word'>
+					<div data-bind='text: { value: $root.getDocumentAttributeByCurrentIndex($data).Description, expand: true, limit: 80 }'></div>
+				</div>
+			</div>
+			<div class="modal-footer card-header ch-alt p-15" data-bind="visible: $root.getDocumentAttributeCount($data) > 1">
+				<ul class="list-unstyled keyboard-context flex-centering">
+					<li class="p-r-15">
+						<a class="btn btn-default btn-icon waves-effect waves-circle waves-float" data-bind="click: $root.stepImageLeft">
+							<i class="zmdi zmdi-arrow-left"></i>
+						</a>
+					</li>
+					<li>
+						<a class="btn btn-default btn-icon waves-effect waves-circle waves-float" data-bind="click: $root.stepImageRight">
+							<i class="zmdi zmdi-arrow-right"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

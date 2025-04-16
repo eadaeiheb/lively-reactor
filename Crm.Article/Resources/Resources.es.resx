@@ -1,0 +1,735 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ArticleSearch" xml:space="preserve">
+    <value>Búsqueda de artículos</value>
+  </data>
+  <data name="VATLevel" xml:space="preserve">
+    <value>IVA</value>
+  </data>
+  <data name="PercentageValue" xml:space="preserve">
+    <value>Valor porcentual</value>
+  </data>
+  <data name="OtherInformation" xml:space="preserve">
+    <value>Otros datos</value>
+  </data>
+  <data name="ConfirmDeleteArticle" xml:space="preserve">
+    <value>¿Realmente desea eliminar este elemento?</value>
+  </data>
+  <data name="CreateArticle" xml:space="preserve">
+    <value>Crear {Article}</value>
+  </data>
+  <data name="AddMaterial" xml:space="preserve">
+    <value>Añadir {Material}</value>
+  </data>
+  <data name="CreateService" xml:space="preserve">
+    <value>Crear servicio</value>
+  </data>
+  <data name="CreateTool" xml:space="preserve">
+    <value>Crear herramienta</value>
+  </data>
+  <data name="DeleteMaterial" xml:space="preserve">
+    <value>Eliminar material</value>
+  </data>
+  <data name="DeleteService" xml:space="preserve">
+    <value>Eliminar servicio</value>
+  </data>
+  <data name="DeleteTool" xml:space="preserve">
+    <value>Eliminar herramienta</value>
+  </data>
+  <data name="EditArticle" xml:space="preserve">
+    <value>Editar {Article}</value>
+  </data>
+  <data name="EditArticleWithItemNo" xml:space="preserve">
+    <value>Editar artículo con 	número de artículo</value>
+  </data>
+  <data name="EditMaterial" xml:space="preserve">
+    <value>Editar material</value>
+  </data>
+  <data name="EditService" xml:space="preserve">
+    <value>Editar servicio</value>
+  </data>
+  <data name="EditTool" xml:space="preserve">
+    <value>Editar herramienta</value>
+  </data>
+  <data name="CrmArticle_QuantityUnit" xml:space="preserve">
+    <value>Cantidad de unidades</value>
+  </data>
+  <data name="CrmArticle_Article" xml:space="preserve">
+    <value>Artículos</value>
+  </data>
+  <data name="AdditionalCosts" xml:space="preserve">
+    <value>Coste adicional</value>
+  </data>
+  <data name="IsSerial" xml:space="preserve">
+    <value>Tiene el número de serie</value>
+  </data>
+  <data name="SerialRequired" xml:space="preserve">
+    <value>Número de serie requerido</value>
+  </data>
+  <data name="SaveArticleRelationship" xml:space="preserve">
+    <value>Guardar las relaciones de los artículos</value>
+  </data>
+  <data name="ResolveSetArticle" xml:space="preserve">
+    <value>Resolver set article</value>
+  </data>
+  <data name="ShowAccessory" xml:space="preserve">
+    <value>Mostrar accesorio</value>
+  </data>
+  <data name="ArticleRelationshipType" xml:space="preserve">
+    <value>Tipo de relación del artículo</value>
+  </data>
+  <data name="HasQuantity" xml:space="preserve">
+    <value>Tiene cantidad</value>
+  </data>
+  <data name="InverseValue" xml:space="preserve">
+    <value>Valor inverso</value>
+  </data>
+  <data name="QuantityValue" xml:space="preserve">
+    <value>Cantidad</value>
+  </data>
+  <data name="ArticleRelationship" xml:space="preserve">
+    <value>Relación del artículo</value>
+  </data>
+  <data name="CreateUpdate" xml:space="preserve">
+    <value>Crear actualización</value>
+  </data>
+  <data name="Read" xml:space="preserve">
+    <value>Leer</value>
+  </data>
+  <data name="CrmArticle_ArticleRelationshipType" xml:space="preserve">
+    <value>Tipo de relación del artículo</value>
+  </data>
+  <data name="CrmArticle_ArticleRelationship" xml:space="preserve">
+    <value>Relación del artículo</value>
+  </data>
+  <data name="CrmArticle_ArticleDescription" xml:space="preserve">
+    <value>Descripción del artículo</value>
+  </data>
+  <data name="CrmArticle_ArticleGroup01" xml:space="preserve">
+    <value>Grupo 1 de artículos</value>
+  </data>
+  <data name="CrmArticle_ArticleGroup02" xml:space="preserve">
+    <value>Grupo 2 de artículos</value>
+  </data>
+  <data name="CrmArticle_ArticleGroup03" xml:space="preserve">
+    <value>Grupo 3 de artículos</value>
+  </data>
+  <data name="CrmArticle_ArticleGroup04" xml:space="preserve">
+    <value>Grupo 4 de artículos</value>
+  </data>
+  <data name="CrmArticle_ArticleGroup05" xml:space="preserve">
+    <value>Grupo 5 de artículos</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Imagen</value>
+  </data>
+  <data name="Tool" xml:space="preserve">
+    <value>Herramienta</value>
+  </data>
+  <data name="Cost" xml:space="preserve">
+    <value>Coste</value>
+  </data>
+  <data name="CrmArticle_ArticleType" xml:space="preserve">
+    <value>Tipo de artículo</value>
+  </data>
+  <data name="CrmArticle_VATLevel" xml:space="preserve">
+    <value>Nivel de IVA</value>
+  </data>
+  <data name="ArticleEmptySlate" xml:space="preserve">
+    <value>Artículo pizarra vacía</value>
+  </data>
+  <data name="SpareParts" xml:space="preserve">
+    <value>Piezas de recambio</value>
+  </data>
+  <data name="ArticleList" xml:space="preserve">
+    <value>Lista de artículos</value>
+  </data>
+  <data name="DeleteArticle" xml:space="preserve">
+    <value>Eliminar artículo</value>
+  </data>
+  <data name="Articles" xml:space="preserve">
+    <value>Artículos</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Borrador</value>
+  </data>
+  <data name="AddChild" xml:space="preserve">
+    <value>Añadir subfamilia</value>
+  </data>
+  <data name="ChildProductFamilies" xml:space="preserve">
+    <value>Subfamilias de producto</value>
+  </data>
+  <data name="CreateProductFamily" xml:space="preserve">
+    <value>Crear {ProductFamily}</value>
+  </data>
+  <data name="NoProductFamilies" xml:space="preserve">
+    <value>No se han encontrado familias de productos.</value>
+  </data>
+  <data name="ProductFamilies" xml:space="preserve">
+    <value>Familias de producto</value>
+  </data>
+  <data name="ProductFamily" xml:space="preserve">
+    <value>Familia de producto</value>
+  </data>
+  <data name="ProductFamilyKey" xml:space="preserve">
+    <value>Familia de producto</value>
+  </data>
+  <data name="RetiredProducts" xml:space="preserve">
+    <value>Productos retirados</value>
+  </data>
+  <data name="IsWarehouseManaged" xml:space="preserve">
+    <value>Gestionado por almacén</value>
+  </data>
+  <data name="CircularHierarchyReferenceDetected" xml:space="preserve">
+    <value>Se ha detectado una referencia circular en la jerarquía de esta familia de productos.</value>
+  </data>
+  <data name="CrmArticle_ProductFamily" xml:space="preserve">
+    <value>Familias de productos</value>
+  </data>
+  <data name="Description-hu" xml:space="preserve">
+    <value>Descripción en húngaro</value>
+  </data>
+  <data name="Descriptions" xml:space="preserve">
+    <value>Descripciones</value>
+  </data>
+  <data name="EditProductFamilyDescriptions" xml:space="preserve">
+    <value>Editar descripciones de las familias de productos</value>
+  </data>
+  <data name="ProductFamilyAlreadyHasParent" xml:space="preserve">
+    <value>Esta familia de productos ya tiene una familia padre.</value>
+  </data>
+  <data name="ProductFamilyEmptySlate" xml:space="preserve">
+    <value>No se han encontrado familias de productos que cumplan con los criterios de búsqueda.</value>
+  </data>
+  <data name="ProductFamilyIsChild" xml:space="preserve">
+    <value>Esta familia de productos ya es descendiente de la familia actual.</value>
+  </data>
+  <data name="ProductFamilyIsCurrentParent" xml:space="preserve">
+    <value>Esta familia de productos es la familia padre de la familia de productos actual.</value>
+  </data>
+  <data name="RuleViolation.ProductFamilyIsCurrentProductFamily" xml:space="preserve">
+    <value>Esta ya es la familia de productos actual.</value>
+  </data>
+  <data name="ChildProductFamilyCreated" xml:space="preserve">
+    <value>Subfamilia de producto creada</value>
+  </data>
+  <data name="CreateChildProductFamily" xml:space="preserve">
+    <value>Crear subfamilia de producto</value>
+  </data>
+  <data name="ProductFamilyCreated" xml:space="preserve">
+    <value>Familia de producto creada</value>
+  </data>
+  <data name="PurchasePrice" xml:space="preserve">
+    <value>Precio de compra</value>
+  </data>
+  <data name="CrmArticle_ProductFamilyDescription" xml:space="preserve">
+    <value>Descripciónes de la familia de producto</value>
+  </data>
+  <data name="CrmArticle_ProductFamilyStatus" xml:space="preserve">
+    <value>Estados de la familia de producto</value>
+  </data>
+  <data name="ArticleNo" xml:space="preserve">
+    <value>Número de elemento</value>
+  </data>
+  <data name="CommercialInformation" xml:space="preserve">
+    <value>Información comercial</value>
+  </data>
+  <data name="AccessoryOf" xml:space="preserve">
+    <value>Accesorio de</value>
+  </data>
+  <data name="VariableValue" xml:space="preserve">
+    <value>Valor variable</value>
+  </data>
+  <data name="AddArticleRelationship" xml:space="preserve">
+    <value>Añadir relación de artículos</value>
+  </data>
+  <data name="AddCompanyRelationship" xml:space="preserve">
+    <value>Añadir relación con la empresa</value>
+  </data>
+  <data name="ArticleCompanyRelationships" xml:space="preserve">
+    <value>Relaciones artículo-empresa</value>
+  </data>
+  <data name="CrmArticle_ArticleCompanyRelationship" xml:space="preserve">
+    <value>Relaciones artículo-empresa</value>
+  </data>
+  <data name="CrmArticle_ArticleCompanyRelationshipType" xml:space="preserve">
+    <value>Tipos de relación artículo-empresa</value>
+  </data>
+  <data name="ArticleRelationships" xml:space="preserve">
+    <value>Relaciones de artículos</value>
+  </data>
+  <data name="GuaranteeInMonths" xml:space="preserve">
+    <value>Garantía (meses)</value>
+  </data>
+  <data name="WarrantyInMonths" xml:space="preserve">
+    <value>Garantía legal (meses)</value>
+  </data>
+  <data name="LeadTimeInDays" xml:space="preserve">
+    <value>Tiempo de reabastecimiento</value>
+  </data>
+  <data name="IsDiscontinued" xml:space="preserve">
+    <value>Artículo descatalogado</value>
+  </data>
+  <data name="ManufacturerItemNo" xml:space="preserve">
+    <value>Número de artículo del fabricante</value>
+  </data>
+  <data name="ExpirationDate" xml:space="preserve">
+    <value>Fecha de caducidad</value>
+  </data>
+  <data name="Discontinued" xml:space="preserve">
+    <value>Descatalogado</value>
+  </data>
+  <data name="Upcoming" xml:space="preserve">
+    <value>Próximos productos</value>
+  </data>
+  <data name="IsEnabled" xml:space="preserve">
+    <value>Activado</value>
+  </data>
+  <data name="BarCode" xml:space="preserve">
+    <value>Código de barras</value>
+  </data>
+  <data name="ScanBarcode" xml:space="preserve">
+    <value>Escanear código de barras</value>
+  </data>
+  <data name="AssignedFrom" xml:space="preserve">
+    <value>Asignado Desde</value>
+  </data>
+  <data name="AssignedTo" xml:space="preserve">
+    <value>Asignado a</value>
+  </data>
+  <data name="QuantitiesEmptyState" xml:space="preserve">
+    <value>No hay cantidades para mostrar</value>
+  </data>
+  <data name="AssignedArticles" xml:space="preserve">
+    <value>Vehículos y herramientas asignados</value>
+  </data>
+  <data name="NoAssignedArticles" xml:space="preserve">
+    <value>No hay vehículos ni herramientas asignados</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Instrumentos</value>
+  </data>
+  <data name="Vehicles" xml:space="preserve">
+    <value>Vehículos</value>
+  </data>
+  <data name="CrmArticle_DrivingLicenceCategory" xml:space="preserve">
+    <value>Categorías de permiso de conducción</value>
+  </data>
+  <data name="CrmArticle_ArticleUserRelationship" xml:space="preserve">
+    <value>Artículo Relaciones entre usuarios</value>
+  </data>
+  <data name="VehiclesAndTools" xml:space="preserve">
+    <value>Vehículos y herramientas</value>
+  </data>
+  <data name="DrivingLicenceCategory" xml:space="preserve">
+    <value>Categoría de permiso de conducción</value>
+  </data>
+  <data name="ToolTuv" xml:space="preserve">
+    <value>Fechas de inspección periódicas</value>
+  </data>
+  <data name="VehicleTuv" xml:space="preserve">
+    <value>Inspección principal</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Equipo</value>
+  </data>
+  <data name="OverlappingByArticleUserRelationship" xml:space="preserve">
+    <value>{0} ya en uso (entre {1} - {2}) por el usuario: {3}</value>
+  </data>
+  <data name="ArticleDowntimeReason" xml:space="preserve">
+    <value>Motivo de la inactividad</value>
+  </data>
+  <data name="ArticleIsOutOfService" xml:space="preserve">
+    <value>{0} está fuera de servicio entre {1} y {2}, por favor elija otro periodo.</value>
+  </data>
+  <data name="CrmArticle_ArticleDowntimeReason" xml:space="preserve">
+    <value>Motivos de inactividad del artículo</value>
+  </data>
+  <data name="Downtimes" xml:space="preserve">
+    <value>Tiempos de inactividad</value>
+  </data>
+  <data name="AddArticleDowntime" xml:space="preserve">
+    <value>Añadir tiempo de inactividad</value>
+  </data>
+  <data name="EditArticleDowntime" xml:space="preserve">
+    <value>Editar el tiempo de inactividad</value>
+  </data>
+  <data name="NoDowntimes" xml:space="preserve">
+    <value>Aún no se han registrado tiempos de inactividad.</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Imágenes</value>
+  </data>
+  <data name="RuleViolation.RespectQuantityStep" xml:space="preserve">
+    <value>{0} debe respetar el paso de cantidad {1}</value>
+  </data>
+  <data name="CrmArticle_ArticleDowntime" xml:space="preserve">
+    <value>Tiempo de inactividad del artículo</value>
+  </data>
+  <data name="CrmArticle_QuantityUnitEntry" xml:space="preserve">
+    <value>Cantidad de unidades</value>
+  </data>
+  <data name="QuantityUnitGroups" xml:space="preserve">
+    <value>Grupos de unidades de cantidad</value>
+  </data>
+  <data name="QuantityUnits" xml:space="preserve">
+    <value>Unidades de cantidad</value>
+  </data>
+  <data name="Factor" xml:space="preserve">
+    <value>Factor</value>
+  </data>
+  <data name="Divisor" xml:space="preserve">
+    <value>Divisor</value>
+  </data>
+  <data name="CompanyPriceGroup" xml:space="preserve">
+    <value>Precio grupal</value>
+  </data>
+  <data name="CompanyPriceLevel" xml:space="preserve">
+    <value>nivel de precios</value>
+  </data>
+  <data name="ValidFor" xml:space="preserve">
+    <value>Válida para</value>
+  </data>
+  <data name="MinQuantity" xml:space="preserve">
+    <value>Tau maualalo</value>
+  </data>
+  <data name="atPrice" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="Prices" xml:space="preserve">
+    <value>Precios</value>
+  </data>
+  <data name="CompanyPrices" xml:space="preserve">
+    <value>Precios específicos de la empresa</value>
+  </data>
+  <data name="AllPrices" xml:space="preserve">
+    <value>Todas las Preises</value>
+  </data>
+  <data name="PriceLevelPrices" xml:space="preserve">
+    <value>Precios específicos del nivel de precios</value>
+  </data>
+  <data name="PriceGroupPrices" xml:space="preserve">
+    <value>Precios específicos del grupo de precios</value>
+  </data>
+  <data name="PriceList" xml:space="preserve">
+    <value>Lista de precios</value>
+  </data>
+  <data name="NoCustomerPrices" xml:space="preserve">
+    <value>Sin precios al cliente</value>
+  </data>
+  <data name="PricesEmptyStateTitle" xml:space="preserve">
+    <value>No se encontraron precios para el filtro seleccionado</value>
+  </data>
+  <data name="SalesInformation" xml:space="preserve">
+    <value>Informacion sobre ventas</value>
+  </data>
+  <data name="NextQuantity" xml:space="preserve">
+    <value>Siguiente precio más bajo a partir de {0}</value>
+  </data>
+  <data name="PriceGroup" xml:space="preserve">
+    <value>Precio grupal</value>
+  </data>
+  <data name="PriceLevel" xml:space="preserve">
+    <value>nivel de precios</value>
+  </data>
+  <data name="NetPricePerUnit" xml:space="preserve">
+    <value>Precio neto</value>
+  </data>
+  <data name="RuleViolation.QuantityStep" xml:space="preserve">
+    <value>Inc. ctd. es {0}</value>
+  </data>
+  <data name="QuantityUnitGroup" xml:space="preserve">
+    <value>Grupo de unidades de cantidad</value>
+  </data>
+  <data name="EditQuantityUnit" xml:space="preserve">
+    <value>Editar unidad de cantidad</value>
+  </data>
+  <data name="EditQuantityUnitGroup" xml:space="preserve">
+    <value>Editar grupo de unidades de cantidad</value>
+  </data>
+  <data name="CreateQuantityUnit" xml:space="preserve">
+    <value>Crear unidad de cantidad</value>
+  </data>
+  <data name="CreateQuantityUnitGroup" xml:space="preserve">
+    <value>Crear grupo de unidades de cantidad</value>
+  </data>
+  <data name="NoQuantityUnits" xml:space="preserve">
+    <value>Sin unidades de cantidad</value>
+  </data>
+  <data name="CrmArticle_CompanyPriceGroup" xml:space="preserve">
+    <value>Precio grupal</value>
+  </data>
+  <data name="CrmArticle_CompanyPriceLevel" xml:space="preserve">
+    <value>Nivel de precios</value>
+  </data>
+  <data name="DefaultStoreNo" xml:space="preserve">
+    <value>Tienda por defecto</value>
+  </data>
+  <data name="DefaultLocationNo" xml:space="preserve">
+    <value>Ubicación por defecto</value>
+  </data>
+  <data name="FromLocation" xml:space="preserve">
+    <value>Desde la ubicación</value>
+  </data>
+  <data name="CrmArticle_Location" xml:space="preserve">
+    <value>Ubicaciones</value>
+  </data>
+  <data name="CrmArticle_Store" xml:space="preserve">
+    <value>Tiendas</value>
+  </data>
+  <data name="Store" xml:space="preserve">
+    <value>Almacén</value>
+  </data>
+  <data name="StoreLocation" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="UserDefaultStoreMessage" xml:space="preserve">
+    <value>{0} tiene un número de tienda por defecto de {1}.</value>
+  </data>
+  <data name="AddLocation" xml:space="preserve">
+    <value>Agregar ubicación de almacenamiento</value>
+  </data>
+  <data name="Locations" xml:space="preserve">
+    <value>ubicaciones de almacenamiento</value>
+  </data>
+  <data name="AddStore" xml:space="preserve">
+    <value>Agregar almacén</value>
+  </data>
+  <data name="EditStore" xml:space="preserve">
+    <value>Editar almacén</value>
+  </data>
+  <data name="Stores" xml:space="preserve">
+    <value>almacenes</value>
+  </data>
+  <data name="LocationsEmptySlateDescription" xml:space="preserve">
+    <value>No hay lugares de almacenamiento</value>
+  </data>
+  <data name="EditLocation" xml:space="preserve">
+    <value>Editar la ubicación del stock</value>
+  </data>
+  <data name="Stock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="NoStock" xml:space="preserve">
+    <value>No se dispone de información sobre existencias</value>
+  </data>
+  <data name="QuantityExceedsStock" xml:space="preserve">
+    <value>La cantidad no puede superar las existencias</value>
+  </data>
+  <data name="CompanyKey" xml:space="preserve">
+    <value>Empresa</value>
+  </data>
+  <data name="CompanyPriceLevelKey" xml:space="preserve">
+    <value>nivel de precios</value>
+  </data>
+  <data name="CompanyPriceGroupKey" xml:space="preserve">
+    <value>Precio grupal</value>
+  </data>
+  <data name="InStock" xml:space="preserve">
+    <value>En stock</value>
+  </data>
+  <data name="Inspection" xml:space="preserve">
+    <value>Inspección</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+  <data name="Parent" xml:space="preserve">
+    <value>Padre</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Serie</value>
+  </data>
+  <data name="InsufficientStock" xml:space="preserve">
+    <value>Stock insuficiente</value>
+  </data>
+  <data name="OutOfStock" xml:space="preserve">
+    <value>Agotado</value>
+  </data>
+  <data name="Unassigned" xml:space="preserve">
+    <value>Sin asignar</value>
+  </data>
+  <data name="DefaultName" xml:space="preserve">
+    <value>Nombre predeterminado</value>
+  </data>
+  <data name="SerialNoLocation" xml:space="preserve">
+    <value>Publicaciones seriadas sin ubicación</value>
+  </data>
+  <data name="SerialsNoStore" xml:space="preserve">
+    <value>Publicaciones seriadas sin almacén</value>
+  </data>
+  <data name="CustomSerialNo" xml:space="preserve">
+    <value>N.º de serie personalizado</value>
+  </data>
+  <data name="SerialDropdown" xml:space="preserve">
+    <value>N.º de serie Menú desplegable</value>
+  </data>
+  <data name="NoSerials" xml:space="preserve">
+    <value>Sin números de serie</value>
+  </data>
+  <data name="LicensePlate" xml:space="preserve">
+    <value>Placa de matrícula</value>
+  </data>
+  <data name="SerialNoStorageAreaNoLocation" xml:space="preserve">
+    <value>Publicaciones seriadas sin área de almacenamiento y ubicación</value>
+  </data>
+  <data name="NoLocations" xml:space="preserve">
+    <value>Sin ubicaciones de almacenamiento</value>
+  </data>
+  <data name="EditStorageArea" xml:space="preserve">
+    <value>Editar área de almacenamiento</value>
+  </data>
+  <data name="AddStorageArea" xml:space="preserve">
+    <value>Agregar área de almacenamiento</value>
+  </data>
+  <data name="StorageAreasEmptyStateDescription" xml:space="preserve">
+    <value>Sin áreas de almacenamiento</value>
+  </data>
+  <data name="CrmArticle_StorageArea" xml:space="preserve">
+    <value>Área de almacenamiento</value>
+  </data>
+  <data name="DefaultStorageAreaNo" xml:space="preserve">
+    <value>Área de almacenamiento predeterminada</value>
+  </data>
+  <data name="StorageAreas" xml:space="preserve">
+    <value>Áreas de almacenamiento</value>
+  </data>
+  <data name="StorageArea" xml:space="preserve">
+    <value>Área de almacenamiento</value>
+  </data>
+  <data name="StorageAreaNo" xml:space="preserve">
+    <value>Número de área de almacenamiento</value>
+  </data>
+  <data name="BaseQuantityUnit" xml:space="preserve">
+    <value>Unidad de cantidad base</value>
+  </data>
+  <data name="BaseQuantityStep" xml:space="preserve">
+    <value>Etapa de cantidad base</value>
+  </data>
+  <data name="NoArticleInstallationsInfo" xml:space="preserve">
+    <value>No hay Instalaciones asignadas a este Artículo.</value>
+  </data>
+  <data name="IsCustom" xml:space="preserve">
+    <value>Está personalizado</value>
+  </data>
+  <data name="IsGroup" xml:space="preserve">
+    <value>Grupo Is</value>
+  </data>
+</root>

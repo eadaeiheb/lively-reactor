@@ -1,0 +1,5 @@
+<!-- ko if: $root.table === "CrmArticle_VATLevel" -->
+<form-element params="value: CountryKey, caption: 'Country', type: 'select2'">
+	<select class="form-control" data-bind="select2autocompleter: { data: value, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('Main_Country'), placeholder: Helper.String.getTranslatedString('Unspecified') }"></select>
+</form-element>
+<!-- /ko -->

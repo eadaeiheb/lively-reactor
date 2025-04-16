@@ -1,0 +1,448 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Modularization.Extensions
+@using Crm.Library.Globalization.Extensions
+<div role="tabpanel" class="tab-pane animated fadeIn" id="tab-details">
+	<pmb-block params="icon: 'label-alt-outline', caption: 'BasicInformation', context: { article: article }, onAfterSave: $root.reloadProductFamily.bind($root),	condition: window.AuthorizationManager.isAuthorizedForAction($root.contactType(), 'Edit')">
+		<pmbb-view>
+			<!-- ko with: article -->
+			<pmbb-view-entry params="caption: 'ItemNo'">
+				<span class="itemNo" data-bind="text: ItemNo"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ItemNo"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ManufacturerItemNo'">
+				<span data-bind="text: ManufacturerItemNo"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ManufacturerItemNo"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'BarCode'">
+				<span data-bind="text: BarCode"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: BarCode"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Description'">
+				<span class="description" data-bind="text: Description"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Description"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ProductFamily'">
+				<!-- ko if: ProductFamily() -->
+				<a href="#" data-bind="attr: { href: '#/Crm.Article/ProductFamily/DetailsTemplate/' + ProductFamily().Id() }">
+					<span data-bind="text: ProductFamily().Name"></span>
+				</a>
+				<!-- /ko -->
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot:  ProductFamily"></span>
+			</pmbb-view-entry>
+			<!-- ko if: ArticleTypeKey() === "Vehicle" || ArticleTypeKey() === "Tool" -->
+			<pmbb-view-entry params="caption: 'Manufacturer'">
+				<span data-bind="text: Manufacturer"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Manufacturer"></span>
+			</pmbb-view-entry>			
+			<pmbb-view-entry params="caption: 'Model'">
+				<span data-bind="text: Model"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Model"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: $root.getTuvCaption($data)">
+				<span class="description" data-bind="text: TUV"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: TUV"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Inspection'">
+				<span class="description" data-bind="text: Inspection"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Inspection"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Station'">
+				<!-- ko with: Station -->
+				<span data-bind="text: Name"></span>
+				<!-- /ko -->
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Station"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+			<!-- ko if: ArticleTypeKey() === "Vehicle" -->
+			<pmbb-view-entry params="caption: 'DrivingLicenceCategory'">
+				<span data-bind="lookupValue: DrivingLicenceCategoryKey, lookups: $root.lookups.drivinglicenceCategories"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: DrivingLicenceCategoryKey"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'LicensePlate'">
+				<span class="LicensePlate" data-bind="text: LicensePlate"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: LicensePlate"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+			<!-- ko if: ArticleTypeKey() === "Tool" -->
+			<pmbb-view-entry params="caption: 'EAN'">
+				<span class="description" data-bind="text: EAN"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: EAN"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Serial'">
+				<span class="description" data-bind="text: Serial"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Serial"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Skills'">
+				<!-- ko if: RequiredSkillKeys().length > 0 -->
+				<span data-bind="text: $root.getSkillsFromKeys(RequiredSkillKeys()).map(function(x){ return x.text; }).join(', ')"></span>
+				<!-- /ko -->
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', if: RequiredSkillKeys().length === 0"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Assets'">
+				<!-- ko if: RequiredAssetKeys().length > 0 -->
+				<span data-bind="text: $root.getAssetsFromKeys(RequiredAssetKeys()).map(function(x){ return x.text; }).join(', ')"></span>
+				<!-- /ko -->
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', if: RequiredAssetKeys().length === 0"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+			<!-- /ko -->
+		</pmbb-view>
+		<pmbb-edit>
+			<!-- ko with: article -->
+			<pmbb-edit-entry params="caption: 'ItemNo', validationElement: ItemNo">
+				<input type="text" class="form-control" data-bind="value: ItemNo">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ManufacturerItemNo', validationElement: ManufacturerItemNo">
+				<input type="text" class="form-control" data-bind="value: ManufacturerItemNo">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'BarCode', validationElement: BarCode">
+				<div class="input-group">
+					<input type="text" class="form-control" data-bind="value: BarCode">
+					<!-- ko component: { name: "barcode-scanner", params: { value: BarCode } } -->
+					<!-- /ko -->
+				</div>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Description', validationElement: Description">
+				<input id="Description" type="text" class="form-control" data-bind="value: Description">
+			</pmbb-edit-entry>
+			<!-- ko if: ArticleTypeKey() === "Vehicle" || ArticleTypeKey() === "Tool" -->
+			<pmbb-edit-entry params="caption: 'Manufacturer', validationElement: Manufacturer">
+				<input type="text" class="form-control" data-bind="value: Manufacturer">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Model', validationElement: Model">
+				<input type="text" class="form-control" data-bind="value: Model">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'TUV', validationElement: TUV">
+				<input type="text" class="form-control" data-bind="value: TUV">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Inspection', validationElement: Inspection">
+				<input type="text" class="form-control" data-bind="value: Inspection">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Station', validationElement: StationKey">
+				<select class="form-control" data-bind="select2autocompleter: { data: StationKey, autocompleteOptions: { orderBy: ['Name'], table: 'Crm_Station', customFilter: Helper.Station.getSelect2Filter.bind($data), mapDisplayObject: Helper.Station.mapForSelect2Display, onSelect: Helper.Station.onSelect.bind($parent,$data), placeholder: $parent.placeholder } }">
+				</select>
+			</pmbb-edit-entry>
+			<!-- /ko -->
+			<pmbb-edit-entry params="caption: 'ProductFamily'">
+				<select name="ProductFamily" class="form-control" data-bind="select2autocompleter: { data: ProductFamilyKey, autocompleteOptions: { table: 'CrmArticle_ProductFamily', orderBy: ['Name'], mapDisplayObject: function (c) { return { id: c.Id, text: c.Name, item: c }; }, placeholder: $parent.placeholder} }"></select>
+			</pmbb-edit-entry>
+			<!-- ko if: ArticleTypeKey() === "Vehicle" -->
+			<pmbb-edit-entry params="caption: 'DrivingLicenceCategory', validationElement: DrivingLicenceCategoryKey">
+				<select name="DrivingLicenceCategoryKey" class="form-control" data-bind="select2autocompleter: { data: DrivingLicenceCategoryKey, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_DrivingLicenceCategory'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'LicensePlate', validationElement: LicensePlate">
+				<input type="text" class="form-control" data-bind="value: LicensePlate">
+			</pmbb-edit-entry>
+			<!-- /ko -->
+			<!-- ko if: ArticleTypeKey() == "Tool" -->
+			<pmbb-edit-entry params="caption: 'EAN', validationElement: EAN">
+				<input type="text" class="form-control" data-bind="value: EAN">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Serial', validationElement: Serial">
+				<input type="text" class="form-control" data-bind="value: Serial">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Skills'">
+				<select class="form-control" multiple="multiple" data-bind="select2autocompleter: { data: RequiredSkillKeys, autocompleteOptions: { table: 'Main_Skill', customFilter: Helper.Lookup.queryLookup, mapDisplayObject: Helper.Lookup.mapLookupForSelect2Display, getElementByIdQuery: Helper.Lookup.getLookupByKeyQuery, placeholder: $parent.placeholder } }">
+				</select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Assets'">
+				<select class="form-control" multiple="multiple" data-bind="select2autocompleter: { data: RequiredAssetKeys, autocompleteOptions: { table: 'Main_Asset', customFilter: Helper.Lookup.queryLookup, mapDisplayObject: Helper.Lookup.mapLookupForSelect2Display, getElementByIdQuery: Helper.Lookup.getLookupByKeyQuery, placeholder: $parent.placeholder } }">
+				</select>
+			</pmbb-edit-entry>
+						<!-- /ko -->
+			<!-- /ko -->
+		</pmbb-edit>
+	</pmb-block>
+	<!-- ko ifnot: $root.article().ArticleTypeKey() == "Vehicle" -->
+	<pmb-block params="icon: 'equalizer', caption: 'CommercialInformation', context: { article: article }, condition: window.AuthorizationManager.isAuthorizedForAction($root.contactType(), 'Edit')">
+		<pmbb-view>
+			<!-- ko with: article -->
+			<!-- ko ifnot: ArticleTypeKey() == "Tool" -->
+			<pmbb-view-entry params="caption: 'SalesPrice'">
+				<!-- ko if: Price() != null && Price() >= 0 -->
+				<span class="price" data-bind="money: Price"></span>
+				<span data-bind="lookupValue: CurrencyKey, lookups: $root.lookups.currencies"></span>
+				<!-- /ko -->
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Price() != null && Price() >= 0">
+				</span>
+			</pmbb-view-entry>
+			<!-- ko if: window.AuthorizationManager.currentUserHasPermission("Article::ViewPurchasePrices") -->
+			<pmbb-view-entry params="caption: 'PurchasePrice'">
+				<!-- ko if: PurchasePrice() != null && PurchasePrice() >= 0 -->
+				<span data-bind="money: PurchasePrice"></span>
+				<span data-bind="lookupValue: CurrencyKey, lookups: $root.lookups.currencies"></span>
+				<!-- /ko -->
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: PurchasePrice() != null && PurchasePrice() >= 0">
+				</span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+			<!-- /ko -->
+			<pmbb-view-entry params="caption: 'CurrencyKey'">
+				<span data-bind="lookupValue: CurrencyKey, lookups: $root.lookups.currencies"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: CurrencyKey"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'QuantityUnitGroup'">
+				<span data-bind="text: QuantityUnitEntry()?.Name"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: QuantityUnitEntry"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'BaseQuantityUnit'">
+				<span data-bind="lookupValue: QuantityUnitEntry() ? QuantityUnitEntry()?.QuantityUnitKey : QuantityUnitKey, lookups: $root.lookups.quantityUnit"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: QuantityUnitKey"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'BaseQuantityStep'">
+				<span class="BaseQuantityStep" data-bind="text: QuantityUnitEntry() ? QuantityUnitEntry()?.QuantityStep : QuantityStep"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'Enabled'">
+				<!-- ko if: IsEnabled() === true -->
+				<span data-bind="translatedText: 'Yes'"></span>
+				<!-- /ko -->
+				<!-- ko if: IsEnabled() === false -->
+				<span data-bind="translatedText: 'No'"></span>
+				<!-- /ko -->
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ValidFrom'">
+				<span data-bind="dateText: ValidFrom"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ValidFrom"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ValidTo'">
+				<span data-bind="dateText: ValidTo"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ValidTo"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ArticleGroup01Key'">
+				<span data-bind="lookupValue: ArticleGroup01Key, lookups: $root.lookups.articleGroups01"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ArticleGroup01Key"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ArticleGroup02Key'">
+				<span data-bind="lookupValue: ArticleGroup02Key, lookups: $root.lookups.articleGroups02"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ArticleGroup02Key"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ArticleGroup03Key'">
+				<span data-bind="lookupValue: ArticleGroup03Key, lookups: $root.lookups.articleGroups03"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ArticleGroup03Key"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ArticleGroup04Key'">
+				<span data-bind="lookupValue: ArticleGroup04Key, lookups: $root.lookups.articleGroups04"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ArticleGroup04Key"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'ArticleGroup05Key'">
+				<span data-bind="lookupValue: ArticleGroup05Key, lookups: $root.lookups.articleGroups05"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ArticleGroup05Key"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'VATLevelKey'">
+				<span data-bind="lookupValue: VATLevelKey, lookups: $root.lookups.vatLevel"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: VATLevelKey"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'WarrantyInMonths'">
+				<span class="description" data-bind="text: WarrantyInMonths"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', if: WarrantyInMonths() == null"></span>
+			</pmbb-view-entry>
+			<pmbb-view-entry params="caption: 'GuaranteeInMonths'">
+				<span class="description" data-bind="text: GuaranteeInMonths"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', if: GuaranteeInMonths() == null"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+		</pmbb-view>
+		<pmbb-edit>
+			<!-- ko with: article -->
+			<!-- ko ifnot: ArticleTypeKey() == "Tool" -->
+			<pmbb-edit-entry params="caption: 'Price', validationElement: Price">
+				<input id="Price" type="number" class="form-control" data-bind="value: Price">
+			</pmbb-edit-entry>
+			<!-- ko if: window.AuthorizationManager.currentUserHasPermission("Article::ViewPurchasePrices") -->
+			<pmbb-edit-entry params="caption: 'PurchasePrice', validationElement: PurchasePrice">
+				<input type="number" class="form-control" data-bind="value: PurchasePrice">
+			</pmbb-edit-entry>
+			<!-- /ko -->
+			<!-- /ko -->
+			<pmbb-edit-entry params="caption: 'Currency', validationElement: CurrencyKey">
+				<select name="CurrencyKey" class="form-control" data-bind="select2autocompleter: { data: CurrencyKey, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('Main_Currency'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'QuantityUnitGroup', validationElement: QuantityUnitEntryKey">
+				<select name="QuantityUnitEntryKey" class="form-control" data-bind="select2autocompleter: { data: QuantityUnitEntryKey, autocompleteOptions: Helper.QuantityUnit.getQuantityUnitEntryAutocompleteOptions($root, null, true, $data) }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'BaseQuantityUnit', validationElement: QuantityUnitKey">
+				<select name="QuantityUnitKey" class="form-control" data-bind="select2autocompleter: { data: QuantityUnitKey, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_QuantityUnit'), placeholder: $parent.placeholder }, disable: QuantityUnitEntryKey() != null"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'BaseQuantityStep', validationElement: QuantityStep">
+				<input type="number" class="form-control" data-bind="value: QuantityStep, disable: QuantityUnitEntryKey() != null" />
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'Enabled', validationElement: IsEnabled">
+				<input type="checkbox" class="form-control" data-bind="value: IsEnabled, checked: IsEnabled">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ValidFrom', validationElement: ValidFrom">
+				<input type="text" class="form-control date-picker" data-bind="datePicker: ValidFrom" placeholder="@(Html.Localize("ClickHere"))">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ValidTo', validationElement: ValidTo">
+				<input type="text" class="form-control date-picker" data-bind="datePicker: ValidTo" placeholder="@(Html.Localize("ClickHere"))">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ArticleGroup01Key'">
+				<select name="ArticleGroup01Key" class="form-control" data-bind="select2autocompleter: { data: ArticleGroup01Key, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_ArticleGroup01'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ArticleGroup02Key'">
+				<select name="ArticleGroup02Key" class="form-control" data-bind="select2autocompleter: { data: ArticleGroup02Key, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_ArticleGroup02'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ArticleGroup03Key'">
+				<select name="ArticleGroup03Key" class="form-control" data-bind="select2autocompleter: { data: ArticleGroup03Key, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_ArticleGroup03'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ArticleGroup04Key'">
+				<select name="ArticleGroup04Key" class="form-control" data-bind="select2autocompleter: { data: ArticleGroup04Key, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_ArticleGroup04'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'ArticleGroup05Key'">
+				<select name="ArticleGroup05Key" class="form-control" data-bind="select2autocompleter: { data: ArticleGroup05Key, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_ArticleGroup05'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'VATLevelKey', validationElement: VATLevelKey">
+				<select name="VATLevelKey" class="form-control" data-bind="select2autocompleter: { data: VATLevelKey, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_VATLevel'), placeholder: $parent.placeholder }"></select>
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'WarrantyInMonths', validationElement: WarrantyInMonths">
+				<input id="WarrantyInMonths" type="number" class="form-control" data-bind="value: WarrantyInMonths">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'GuaranteeInMonths', validationElement: GuaranteeInMonths">
+				<input id="GuaranteeInMonths" type="number" class="form-control" data-bind="value: GuaranteeInMonths">
+			</pmbb-edit-entry>
+			<!-- /ko -->
+		</pmbb-edit>
+	</pmb-block>
+	<!-- /ko -->
+	<div data-bind="if: $root.article().ArticleTypeKey() == 'Material'">
+		<pmb-block params="icon: 'wrench', caption: 'MaterialAndStockInformation', context: { article: article },	condition: window.AuthorizationManager.isAuthorizedForAction($root.contactType(), 'Edit')">
+			<pmbb-view>
+				<!-- ko with: article -->
+				<pmbb-view-entry params="caption: 'IsSerial'">
+					<!-- ko if: IsSerial() === true -->
+					<span data-bind="translatedText: 'Yes'"></span>
+					<!-- /ko -->
+					<!-- ko if: IsSerial() === false -->
+					<span data-bind="translatedText: 'No'"></span>
+					<!-- /ko -->
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'IsBatch'">
+					<!-- ko if: IsBatch() === true -->
+					<span data-bind="translatedText: 'Yes'"></span>
+					<!-- /ko -->
+					<!-- ko if: IsBatch() === false -->
+					<span data-bind="translatedText: 'No'"></span>
+					<!-- /ko -->
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'DangerousGoodsFlag'">
+					<!-- ko if: DangerousGoodsFlag() === true -->
+					<span data-bind="translatedText: 'Yes'"></span>
+					<!-- /ko -->
+					<!-- ko if: DangerousGoodsFlag() === false -->
+					<span data-bind="translatedText: 'No'"></span>
+					<!-- /ko -->
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'IsSparePart'">
+					<!-- ko if: IsSparePart() === true -->
+					<span data-bind="translatedText: 'Yes'"></span>
+					<!-- /ko -->
+					<!-- ko if: IsSparePart() === false -->
+					<span data-bind="translatedText: 'No'"></span>
+					<!-- /ko -->
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'IsWarehouseManaged'">
+					<!-- ko if: IsWarehouseManaged() === true -->
+					<span data-bind="translatedText: 'Yes'"></span>
+					<!-- /ko -->
+					<!-- ko if: IsWarehouseManaged() === false -->
+					<span data-bind="translatedText: 'No'"></span>
+					<!-- /ko -->
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'MinimumStock'">
+					<span class="description" data-bind="text: MinimumStock"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: MinimumStock() == null"></span>
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'LeadTimeInDays'">
+					<span class="description" data-bind="text: LeadTimeInDays"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: LeadTimeInDays() == null"></span>
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'WeightWithUnitKG'">
+					<span class="weight" data-bind="text: Weight, if: Weight() >= 0"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: Weight() < 0 || Weight() === null">
+					</span>
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'WeightNetWithUnitKG'">
+					<span data-bind="text: WeightNet, if: WeightNet() >= 0"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: WeightNet() < 0 || WeightNet() === null">
+					</span>
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'LengthWithUnitCM'">
+					<span data-bind="text: Length, if: Length() >= 0"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: Length() < 0 || Length() === null">
+					</span>
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'WidthWithUnitCM'">
+					<span data-bind="text: Width, if: Width() >= 0"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: Width() < 0 || Width() === null">
+					</span>
+				</pmbb-view-entry>
+				<pmbb-view-entry params="caption: 'HeightWithUnitCM'">
+					<span data-bind="text: Height, if: Height() >= 0"></span>
+					<span class="c-gray" data-bind="translatedText: 'Unspecified', if: Height() < 0 || Height() === null">
+					</span>
+				</pmbb-view-entry>
+				@(Html.PluginRenderActions("ArticleDetailsMaterialViewExtension"))
+				<!-- /ko -->
+			</pmbb-view>
+			<pmbb-edit>
+				<!-- ko with: article -->
+				<pmbb-edit-entry params="caption: 'IsSerial'">
+					<input type="checkbox" class="form-control" data-bind="value: IsSerial, checked: IsSerial">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'IsBatch'">
+					<input type="checkbox" class="form-control" data-bind="value: IsBatch, checked: IsBatch">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'DangerousGoodsFlag'">
+					<input type="checkbox" class="form-control" data-bind="value: DangerousGoodsFlag, checked: DangerousGoodsFlag">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'IsSparePart'">
+					<input type="checkbox" class="form-control" data-bind="value: IsSparePart, checked: IsSparePart">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'IsWarehouseManaged'">
+					<input type="checkbox" class="form-control" data-bind="value: IsWarehouseManaged, checked: IsWarehouseManaged">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'MinimumStock', validationElement: MinimumStock">
+					<input id="MinimumStock" type="number" class="form-control" data-bind="value: MinimumStock">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'LeadTimeInDays', validationElement: LeadTimeInDays">
+					<input id="LeadTimeInDays" type="number" class="form-control" data-bind="value: LeadTimeInDays">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'WeightWithUnitKG', validationElement: Weight">
+					<input id="WeightWithUnitKG" type="number" class="form-control" data-bind="value: Weight">
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'WeightNetWithUnitKG', validationElement: WeightNet">
+					<input type="number" class="form-control" data-bind="value: WeightNet" />
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'LengthWithUnitCM', validationElement: Length">
+					<input type="number" class="form-control" data-bind="value: Length" />
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'WidthWithUnitCM', validationElement: Width">
+					<input type="number" class="form-control" data-bind="value: Width" />
+				</pmbb-edit-entry>
+				<pmbb-edit-entry params="caption: 'HeightWithUnitCM', validationElement: Height">
+					<input type="number" class="form-control" data-bind="value: Height" />
+				</pmbb-edit-entry>
+				@(Html.PluginRenderActions("ArticleDetailsMaterialEditExtension"))
+				<!-- /ko -->
+			</pmbb-edit>
+		</pmb-block>
+	</div>
+	<pmb-block params="icon: 'translate', caption: 'Descriptions', context: { article: article }, onSave: $root.onSave.bind($root),	condition: window.AuthorizationManager.isAuthorizedForAction($root.contactType(), 'Edit')">
+		<pmbb-view>
+			<!-- ko foreach: $root.descriptions -->
+			<pmbb-view-entry params="caption: Name">
+				<span class="p-0" data-bind="text: Value"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Value"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+		</pmbb-view>
+		<pmbb-edit>
+			<!-- ko foreach: $root.descriptions -->
+			<pmbb-edit-entry params="caption: Name">
+				<input type="text" class="form-control" data-bind="value: Value">
+			</pmbb-edit-entry>
+			<!-- /ko -->
+		</pmbb-edit>
+	</pmb-block>
+	@Html.PluginRenderActions("ArticleMaterialDetailsTabExtensions")
+	@Html.PluginRenderActions("ContactMaterialDetailsTabExtensions")
+</div>

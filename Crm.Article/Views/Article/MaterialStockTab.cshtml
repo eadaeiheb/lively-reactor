@@ -1,0 +1,31 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Modularization.Extensions
+@using Crm.Library.Globalization.Extensions
+<div role="tabpanel" class="tab-pane animated fadeIn" id="tab-stock" data-bind="with: tabs()['tab-stock']">
+	<empty-state-box params="mood: 'sad', title: 'NoStock'" data-bind="visible: items().length === 0">
+	</empty-state-box>
+	<div class="generic-list listview lv-bordered">
+		<div class="lv-body">
+			<div data-bind="foreach: items">
+				<div class="lv-item media">
+					<div class="media-body">
+						<div class="row">
+							<div class="col-xs-6">
+								<div class="lv-title">
+									<a data-bind="attr: { href: '#/Crm.Article/Store/DetailsTemplate/' + StoreKey() }">
+										<span data-bind="text: Store().StoreNo"></span>
+									</a>
+								</div>
+								<!-- ko if: StorageArea() --><span data-bind="text: StorageArea()?.StorageAreaNo"></span>: <!-- /ko -->
+								<span data-bind="text: Location()?.LocationNo"></span>
+							</div>
+							<div class="col-xs-6">
+								<span data-bind="text: Quantity"></span> <span data-bind="lookupValue: $root.article().QuantityUnitEntry().QuantityUnitKey, lookups: $root.lookups.quantityUnit"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

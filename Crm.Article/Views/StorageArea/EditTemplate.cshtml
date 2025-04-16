@@ -1,0 +1,27 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+
+<div class="modal-header card-header ch-alt">
+	<button type="button" class="close" data-dismiss="modal" aria-label="@(Html.Localize("Close"))">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title" data-bind="visible: storageArea().innerInstance.entityState === 20">@(Html.Localize("AddStorageArea"))</h4>
+	<h4 class="modal-title" data-bind="visible: storageArea().innerInstance.entityState !== 20">@(Html.Localize("EditStorageArea"))</h4>
+</div>
+<div class="modal-body card-body card-padding">
+	<form role="form" data-bind="with: storageArea">
+		<form-element params="value: StorageAreaNo, caption: 'StorageAreaNo', type: 'text'"></form-element>
+		<form-element id="Locations" params="value: $root.selectedLocationIds, caption: 'Locations'">
+			<select name="Locations" multiple="multiple" class="form-control" data-bind="select2autocompleter: { data: $root.selectedLocationIds, autocompleteOptions: { orderBy: ['LocationNo'], table: 'CrmArticle_Location', mapDisplayObject: function (location) { return { id: location.Id, item: location, text: location.LocationNo }}, placeholder: placeholder, customFilter: $root.getLocationsCustomFilter(), getElementByIdQuery: $root.getLocationsByIds} }">
+			</select>
+		</form-element>
+	</form>
+</div>
+<div class="modal-footer card-header ch-alt p-15" >
+	<button type="button" class="btn btn-lg btn-default f-13 waves-effect"  data-dismiss="modal" data-bind="click: cancel, disable: loading">
+		@(Html.Localize("Cancel"))
+	</button>
+	<button type="button" class="btn btn-lg btn-primary f-13 waves-effect" data-bind="click: save, disable: loading">
+		@(Html.Localize("Save"))
+	</button>
+</div>

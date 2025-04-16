@@ -1,0 +1,18 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.CrmModel>
+@using Crm.Library.Extensions
+@using Crm.ViewModels
+@using Crm.Library.Modularization.Extensions
+
+
+<div role="tabpanel" class="tab-pane" id="tab-prices" data-bind="with: tabs()['tab-prices']">
+	@Html.RenderAction("GenericListHeader", "PriceList", new { plugin = "Crm.Article" })
+	<empty-state-box params="mood: 'sad', title: 'PricesEmptyStateTitle'" data-bind="visible: items().length === 0">
+	</empty-state-box>
+	@Html.PluginRenderActions("MaterialGenericListResourceExtensions")
+	<div class="generic-list listview lv-bordered">
+		<div class="lv-body" data-bind="foreach: items">
+			 @await Html.PartialAsync("MaterialPrice")
+		</div>
+	</div>
+	 @await Html.PartialAsync("MaterialPaging")
+</div>

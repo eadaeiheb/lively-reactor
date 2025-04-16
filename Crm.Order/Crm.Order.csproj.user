@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Content Update="Resources\Resources.de.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Update="Resources\Resources.en.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Update="Resources\Resources.es.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Update="Resources\Resources.fr.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Update="Resources\Resources.hu.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,69 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+@using Crm.Library.Modularization.Extensions
+
+<div role="tabpanel" class="tab-pane animated fadeIn" id="tab-storage-areas" data-bind="with: tabs()['tab-storage-areas']">
+	<div class="content-header placeholder">
+		<div class="lv-header-alt generic-list-header main-section listview">
+			<div class="card-header d-flex flex-auto">
+				<div class="caption d-flex flex-auto">
+					<h2>&nbsp;</h2>
+				</div>
+			</div>
+		</div>
+		<floating-action-button params="position: 'top', showWhenDropdownIsToggled: true">
+			@Html.PluginRenderActions("StoreStorageAreasTabMaterialsTabPrimaryAction")
+		</floating-action-button>
+	</div>
+	<empty-state-box params="mood: 'excited', title: 'StorageAreas', text: 'StorageAreasEmptyStateDescription'" data-bind="visible: items().length === 0 && !isFiltered()">
+	</empty-state-box>
+	<div class="generic-list listview lv-bordered">
+		<div class="lv-body">
+			<div class="panel-group p-l-20 p-r-20" role="tablist" id="accordion-stores">
+				<!-- ko foreach: items -->
+				<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: $index(), array: $parent.items }">
+					<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $index() }">
+						<h4 class="panel-title">
+							<div class="lv-avatar pull-left" data-bind="text: Helper.Store.getStoreNameAbbrevation($data.StorageAreaNo()), style: {backgroundColor: 'green'}"></div>
+
+							<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-locations" data-bind="attr: { href: '#collapse-locations-' + $index(), 'aria-controls': 'collapse-locations-' + $index()}" style="width: calc(100% - 42px)">
+								<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="text: StorageAreaNo"></span>
+							</a>
+							<lv-actions style="position: absolute; top: 0px; right: 7px;">@Html.PluginRenderActions("StorageAreaItemTemplateActions")</lv-actions>
+						</h4>
+					</div>
+					<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-locations-' + $index(), 'aria-labelledby': 'heading-locations-' + $index() }">
+						<div class="panel-body" style="padding-top:0px">
+							<!-- ko if: Locations().length > 0 -->
+							<div class="generic-list listview lv-bordered">
+								<div class="lv-body">
+									<!-- ko foreach: Locations -->
+									<div class="lv-item media" >
+										@await Html.PartialAsync("GenericListBulkControl")
+										<div class="lv-avatar pull-left" data-bind="text: Helper.Store.getStoreNameAbbrevation($data.LocationNo()), style: {backgroundColor: 'orange'}"></div>
+										<div class="media-body">
+											<div class="row">
+												<div class="col-xs-12">
+													<div class="lv-title">
+														<span data-bind="text: LocationNo"></span>
+													</div>
+												</div>
+											</div>
+											<lv-actions>@Html.PluginRenderActions("LocationItemTemplateActions")</lv-actions>
+										</div>
+									</div>
+									<!-- /ko -->
+								</div>
+							</div>
+							<!-- /ko -->
+							<!-- ko if: Locations().length === 0 -->
+							@Html.Localize("NoLocations")
+							<!-- /ko -->
+						</div>
+					</div>
+				</div>
+				<!-- /ko -->
+			</div>
+		</div>
+	</div>
+</div>

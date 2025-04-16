@@ -1,0 +1,145 @@
+@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+@using Crm.Library.Modularization.Extensions
+
+<div class="container">
+	<div class="card">
+		<form role="form" class="root-form">
+			<collapsible-block params="id: 'general'" class="morph">
+				<collapsible-block-header params="customCss: 'bg-white', swapIcons: true">
+					<span>@(Html.Localize("General"))</span>
+				</collapsible-block-header>
+				<collapsible-block-content params="context: { offer: $root.offer }">
+					<!-- ko with: offer -->
+					@Html.PluginRenderActions("OfferCreateFormGeneralTop")
+					<div class="flex-input-row">
+						<!-- ko if: window.Crm.Order.Settings.Offer.OfferNoIsCreateable && (!window.Helper.Offline || window.Helper.Offline.status === 'online') -->
+						<div>
+							<div class="form-group" data-bind="validationElement: OrderNo" title="">
+								<div class="fg-line">
+									<label class="fg-label control-label" data-bind="visible: 'OrderNo'">
+										<span>@Html.Localize("OfferNo")</span>
+									</label>
+									<input type="text" class="form-control fg-input" name="OrderNo" data-bind="value: OrderNo, attr: { maxlength: 20}">
+								</div>
+								<small class="help-block pre-line" data-bind="validationMessage: OrderNo" style="display: none;"></small>
+							</div>
+						</div>
+						<!-- /ko -->
+						<div data-bind="visible: $root.lookups.orderCategories.$array.length !== 1">
+							<div class="form-group" data-bind="validationElement: OrderCategoryKey">
+								<div class="fg-line select">
+									<label class="fg-label control-label">@(Html.Localize("OrderCategory"))</label>
+									<select name="OrderCategoryKey" class="form-control" data-bind="select2autocompleter: { data: OrderCategoryKey, default: Helper.Lookup.getLookupValue($root.lookups.orderCategories, OrderCategoryKey), autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmOrder_OrderCategory')}">
+									</select>
+								</div>
+								<small class="help-block" data-bind="validationMessage: OrderCategoryKey"></small>
+							</div>
+						</div>
+					</div>
+					<div class="flex-input-row">
+						<div>
+							<form-element id="OrderEntryType" params="value: OrderEntryType, caption: 'OrderEntryType', type: 'select'">
+								<select name="OrderEntryType" class="form-control" data-bind="select2autocompleter: { data: value, default: Helper.Lookup.getLookupValue($root.lookups.orderEntryTypes, OrderEntryType), autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmOrder_OrderEntryType')}">
+								</select>
+							</form-element>
+						</div>
+						<div>
+							<form-element id="ContactId" params="value: ContactId, caption: 'Company', type: 'select2'">
+								<div class="input-group">
+									<select name="ContactId" class="form-control" data-bind="select2autocompleter: { data: value, autocompleteOptions: { table: 'Crm_Company', orderBy: ['Name'], joins: Helper.Company.getAutocompleteJoins(), customFilter: Helper.Company.getSelect2Filter, mapDisplayObject: Helper.Company.mapDisplayNameWithAddressForSelect2 } }">
+									</select>
+									<!-- ko component: { name: "generic-list-selection", params: { value: value, controller: 'CompanyList', plugin: 'Crm', caption: caption, customFilter: Helper.Company.getSelect2Filter } } -->
+									<!-- /ko -->
+								</div>
+							</form-element>
+						</div>
+					</div>
+					<div class="flex-input-row" data-bind="visible: ContactId">
+						<!-- ko if: Crm.Order.Settings.OrderDeliveryAddressEnabled -->
+						<div>
+							<div class="form-group" data-bind="validationElement: DeliveryAddressId">
+								<div class="fg-line select">
+									<label class="fg-label control-label">@(Html.Localize("DeliveryAddress")) <span class="required">*</span></label>
+									<address-selector params="addressId: DeliveryAddressId, lookups: $root.lookups, addresses: $root.addresses" />
+								</div>
+								<small class="help-block" data-bind="validationMessage: DeliveryAddressId"></small>
+							</div>
+						</div>
+						<!-- /ko -->
+						<!-- ko if: Crm.Order.Settings.OrderBillingAddressEnabled -->
+						<div>
+							<div class="form-group" data-bind="validationElement: BillingAddressId">
+								<div class="fg-line select">
+									<label class="fg-label control-label">@(Html.Localize("BillAddress")) <span class="required">*</span></label>
+									<address-selector params="addressId: BillingAddressId, lookups: $root.lookups, addresses: $root.addresses" />
+								</div>
+								<small class="help-block" data-bind="validationMessage: BillingAddressId"></small>
+							</div>
+						</div>
+						<!-- /ko -->
+					</div>
+					<div class="flex-input-row">
+						<div>
+							<form-element id="ContactPersonId" params=" value: ContactPersonId, caption: 'ContactPerson', type: 'select2'">
+								<div class="input-group">
+									<select class="form-control" data-bind="select2autocompleter: { data: value, autocompleteOptions: { table: 'Crm_Person', orderBy: ['Surname'], customFilter: $root.personAutocompleteFilter.bind($root), mapDisplayObject: function (p) { return { id: p.Id, text: Helper.Person.getDisplayName(p),item: p }; }, placeholder: Helper.String.getTranslatedString('Unspecified'), onSelect:  $root.onPersonSelect.bind($root) } }">
+									</select>
+									<!-- ko component: { name: "generic-list-selection", params: { value: value, controller: 'PersonList', plugin: 'Crm', caption: caption, customFilter: $root.personAutocompleteFilter.bind($root), onSelect: $root.onPersonSelect.bind($root) } } -->
+									<!-- /ko -->
+								</div>
+							</form-element>
+						</div>
+						<div>
+							<form-element id="CurrencyKey" params="value: CurrencyKey, caption: 'Currency', type: 'select2'">
+								<select class="form-control" data-bind="select2autocompleter: { data: value, default: Helper.Lookup.getLookupValue($root.lookups.currencies, CurrencyKey), autocompleteOptions: Helper.Lookup.getAutocompleteOptions('Main_Currency'), placeholder: placeholder }">
+								</select>
+							</form-element>
+						</div>
+					</div>
+					@Html.PluginRenderActions("OfferCreateFormGeneralBottom")
+					<!-- /ko -->
+				</collapsible-block-content>
+			</collapsible-block>
+
+			<div class="top-separator"></div>
+
+			<collapsible-block params="id: 'extended-data'" class="morph">
+				<collapsible-block-header params="customCss: 'bg-white', swapIcons: true">
+					<span>@(Html.Localize("ExtendedData"))</span>
+				</collapsible-block-header>
+				<collapsible-block-content params="context: { offer: $root.offer }">
+					<!-- ko with: offer -->
+					@Html.PluginRenderActions("OfferCreateFormExtendedDataTop")
+					<div class="flex-input-row">
+						<div>
+							<div class="form-group has-feedback" data-bind="validationElement: ValidTo">
+								<label class="control-label">@(Html.Localize("ValidTo"))</label>
+								<div class="dtp-container fg-line">
+									<input name="ValidTo" type="text" class="form-control date-picker" data-bind="datePicker: ValidTo, datePickerOptions: { config: { minDate: new Date() } }" placeholder="@(Html.Localize("ClickHere"))">
+								</div>
+								<span class="zmdi zmdi-calendar form-control-feedback"></span>
+								<small class="help-block" data-bind="validationMessage: ValidTo"></small>
+							</div>
+						</div>
+						<!-- ko if: Crm.Order.Settings.OrderPrivateDescriptionEnabled -->
+						<div>
+							<div class="form-group">
+								<div class="fg-line">
+									<label class="fg-label control-label">@(Html.Localize("T_AdditionalInformation"))</label>
+									<textarea class="form-control fg-input" data-bind="value: PrivateDescription, autosize: true"></textarea>
+								</div>
+							</div>
+						</div>
+						<!-- /ko -->
+					</div>
+					@Html.PluginRenderActions("OfferCreateFormExtendedDataBottom")
+					<!-- /ko -->
+				</collapsible-block-content>
+			</collapsible-block>
+
+			@Html.PluginRenderActions("OfferCreateForm")
+		</form>
+		@await Html.PartialAsync("CreateFormFooter")
+	</div>
+</div>

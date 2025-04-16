@@ -1,0 +1,18 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.CrmModel>
+@using Crm.ViewModels
+@using Crm.Library.Globalization.Extensions
+@using Crm.Library.Modularization.Extensions
+
+
+<div role="tabpanel" class="tab-pane" id="tab-quantity-units" data-bind="with: tabs()['tab-quantity-units']">
+	<div class="generic-list listview lv-bordered">
+		<div class="lv-body">
+			<!-- ko with: article().QuantityUnitEntry -->
+			@await Html.PartialAsync("MaterialQuantityUnitEntry")
+			<!-- /ko -->
+			<div data-bind="foreach: items">
+				@await Html.PartialAsync("MaterialQuantityUnitEntry")
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,114 @@
+﻿@using Crm.Library.Extensions
+@using Crm.Library.Globalization.Extensions
+@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.GenericListViewModel>
+
+<div class="lv-item media">
+	<!-- ko if: $root instanceof window.Crm.ViewModels.CompanyDetailsViewModel -->
+	<!-- ko with: Article -->
+	<div>
+		<!-- ko if: DocumentAttributes().filter(x => x.UseForThumbnail()).length > 0 -->
+		<div class="lv-avatar pull-left" data-bind="fileResource: DocumentAttributes().filter(x => x.UseForThumbnail())[0].FileResource"></div>
+		<!-- /ko -->
+		<!-- ko if: DocumentAttributes().filter(x => x.UseForThumbnail()).length === 0 -->
+		<div class="lv-avatar bgm-gray pull-left" data-bind="text: Helper.Article.getArticleTypeAbbreviation($data, $parents[1].lookups.articleTypes)"></div>
+		<!-- /ko -->
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- ko if: $root instanceof window.Crm.Article.ViewModels.ArticleDetailsViewModel -->
+	<div>
+		<div class="lv-avatar bgm-gray pull-left" data-bind="text: $parent.getAvatarAbbreviation($data)"></div>
+	</div>
+	<!-- /ko -->
+	<div class="media-body">
+		<!-- ko if: $root instanceof window.Crm.ViewModels.CompanyDetailsViewModel -->
+		<!-- ko with: Article -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="lv-title">
+					<a data-bind="attr: { href: '#/Crm.Article/Article/DetailsTemplate/' + Id() }">
+						<span data-bind="text: Helper.Article.getArticleAutocompleteDisplay($data, window.Helper.String.defaultLanguage)"></span>
+						<small class="c-gray" data-bind="lookupValue: ArticleTypeKey, lookups: $parents[1].lookups.articleTypes"></small>
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko if: $root instanceof window.Crm.Article.ViewModels.ArticleDetailsViewModel -->
+		<!-- ko if: CompanyKey -->
+		<!-- ko with: Company -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="lv-title">
+					<a data-bind="attr: { href: '#/Crm/Company/DetailsTemplate/' + Id() }">
+						<span data-bind="text: Helper.Company.getDisplayName($data)"></span>
+					</a>
+				</div> (@Html.Localize("Company"))
+			</div>
+		</div>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko if: CompanyPriceLevelKey -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="lv-title">
+					<span data-bind="lookupValue: CompanyPriceLevelKey, lookups: $parent.lookups.companyPriceLevels"></span>
+				</div> (@Html.Localize("PriceLevel"))
+			</div>
+		</div>
+		<!-- /ko -->
+		<!-- ko if: CompanyPriceGroupKey -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="lv-title">
+					<span data-bind="lookupValue: CompanyPriceGroupKey, lookups: $parent.lookups.companyPriceGroups"></span>
+				</div> (@Html.Localize("PriceGroup"))
+			</div>
+		</div>
+		<!-- /ko -->
+		@Html.RenderAction("MaterialPriceArticleTabCustomerTargetExtension")
+		<!-- /ko -->
+		<div class="row media-body">
+			<div class="col-xs-12">
+				<!-- ko if: $root instanceof window.Crm.ViewModels.CompanyDetailsViewModel -->
+				<small class="small">
+					@Html.Localize("ValidFor")
+					<!-- ko if: CompanyKey -->
+					@Html.Localize("Company") (<span data-bind="text: window.Helper.Company.getDisplayName($root.company)"></span>)
+					<!-- /ko -->
+					<!-- ko if: CompanyPriceLevelKey -->
+					@Html.Localize("PriceLevel") (<span data-bind="lookupValue: CompanyPriceLevelKey, lookups: $parent.lookups.companyPriceLevels"></span>)
+					<!-- /ko -->
+					<!-- ko if: CompanyPriceGroupKey -->
+					@Html.Localize("PriceGroup") (<span data-bind="lookupValue: CompanyPriceGroupKey, lookups: $parent.lookups.companyPriceGroups"></span>)
+					<!-- /ko -->
+					@Html.RenderAction("MaterialPriceCompanyTabCustomerTargetExtension")
+				</small>
+				<!-- /ko -->
+				<div class="p-t-15">
+					<strong>
+						1 <span data-bind="lookupValue: QuantityUnitEntry().QuantityUnitKey, lookups: $parent.lookups.quantityUnits"></span>
+						@Html.Localize("atPrice")
+						<span data-bind="money: NetPricePerUnit"></span><span data-bind="lookupValue: CurrencyKey, lookups: $parent.lookups.currencies"></span>
+					</strong>
+				</div>
+				<ul class="lv-attrs">
+					<li>
+						@Html.Localize("MinQuantity"): <span data-bind="money: MinQuantity"></span> <span data-bind="lookupValue: QuantityUnitEntry().QuantityUnitKey, lookups: $parent.lookups.quantityUnits"></span>
+					</li>
+					<!-- ko if: ValidFrom -->
+					<li>
+						@Html.Localize("ValidFrom"): <span data-bind="dateText: ValidFrom"></span>
+					</li>
+					<!-- /ko -->
+					<!-- ko if: ValidTo -->
+					<li>
+						@Html.Localize("ValidTo"): <span data-bind="dateText: ValidTo"></span>
+					</li>
+					<!-- /ko -->
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

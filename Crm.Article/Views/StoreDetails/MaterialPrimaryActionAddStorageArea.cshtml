@@ -1,0 +1,7 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+<li data-bind="with: $parent">
+	<a id="add-location" href="#" data-mfb-label="@(Html.Localize("AddStorageArea"))" data-route="Crm.Article/StorageArea/EditTemplate/?storeId={{$root.store().Id}}" data-toggle="modal" data-target="#modal">
+		<i class="zmdi zmdi-plus"></i>
+	</a>
+</li>

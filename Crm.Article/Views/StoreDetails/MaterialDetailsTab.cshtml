@@ -1,0 +1,46 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+
+<div role="tabpanel" class="tab-pane animated fadeIn" id="tab-details" data-bind="with: tabs()['tab-details']">
+	<pmb-block  params="icon: 'account', caption: 'General', context: {store: store }">
+		<pmbb-view>
+			<!-- ko with: store -->
+			<pmbb-view-entry params="caption: 'DefaultName'">
+				<span data-bind="text: Name"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Name"></span>
+			</pmbb-view-entry>
+			
+			<pmbb-view-entry params="caption: 'StoreNo'">
+				<span data-bind="text: StoreNo"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: StoreNo"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+		</pmbb-view>
+		<pmbb-edit>
+			<!-- ko with: store -->
+			<pmbb-edit-entry params="caption: 'DefaultName', validationElement: Name">
+				<input type="text" class="form-control" data-bind="value: Name">
+			</pmbb-edit-entry>
+			<pmbb-edit-entry params="caption: 'StoreNo', validationElement: StoreNo">
+				<input type="text" class="form-control" data-bind="value: StoreNo">
+			</pmbb-edit-entry>
+			<!-- /ko -->
+		</pmbb-edit>
+	</pmb-block>
+	<pmb-block params="icon: 'translate', caption: 'Localization', context: { store: store }, onSave: $root.onSave.bind($root),	condition: window.AuthorizationManager.isAuthorizedForAction('Store', 'Edit')">
+		<pmbb-view>
+			<!-- ko foreach: $root.names -->
+			<pmbb-view-entry params="caption: Name">
+				<span class="p-0" data-bind="text: Value"></span>
+				<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Value"></span>
+			</pmbb-view-entry>
+			<!-- /ko -->
+		</pmbb-view>
+		<pmbb-edit>
+			<!-- ko foreach: $root.names -->
+			<pmbb-edit-entry params="caption: Name">
+				<input type="text" class="form-control" data-bind="value: Value">
+			</pmbb-edit-entry>
+			<!-- /ko -->
+		</pmbb-edit>
+	</pmb-block>
+</div>

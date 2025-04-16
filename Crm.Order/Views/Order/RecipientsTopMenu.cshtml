@@ -1,0 +1,8 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+
+<li data-bind="visible: order().SendConfirmation() === false && order().ConfirmationSent() === false">
+	<a id="report-recipients" href="#" data-bind="attr: { 'data-route' : 'Crm.Order/BaseOrder/RecipientsTemplate/' + $root.baseOrder().Id() + '?orderType='+$root.baseOrder().OrderType() }" data-toggle="modal" data-target="#modal">
+		@(Html.Localize("Recipients"))
+	</a>
+</li>

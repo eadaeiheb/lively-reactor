@@ -1,0 +1,180 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+@using Crm.Library.Modularization.Extensions
+@using Crm.Article.Model
+
+<ul class="top-menu">
+	@Html.PluginRenderActions("ContactDetailsTopMenu")
+</ul>
+
+<div class="container">
+	<div id="profile-main" class="divided-detail">
+		<div class="pm-overview c-overflow card w-100" tabindex="4">
+			<block>
+				<block-header>
+					<div>
+						<div data-bind="text: $root.title"></div>
+						<div class="f-13 m-t-5">
+							<span data-bind="text: $root.additionalTitle"></span>
+						</div>
+					</div>
+				</block-header>
+				<block-content>
+					<div class="flex-block">
+						<!-- ko if: $root.thumbnailDocumentAttribute() -->
+						<div class="header-thumbnail">
+							<div class="image-container" role="button" data-bind="fileResource: $root.thumbnailDocumentAttribute().FileResource" data-toggle="modal" data-target="#{{$root.article().Id}}">
+							</div>
+						</div>
+						<!-- ko with: $root.article -->
+						@await Html.PartialAsync("ArticleImageModal")
+						<!-- /ko -->
+						<!-- /ko -->
+
+						<pmb-block id="header-general-pmb" params="context: { article: $root.article }, onAfterSave: $root.reloadProductFamily.bind($root),	condition: window.AuthorizationManager.isAuthorizedForAction($root.contactType(), 'Edit')">
+							<pmbb-view>
+								<!-- ko with: article -->
+								<div class="field-block">
+									<div>
+										<pmbb-view-entry params="caption: 'ItemNo'">
+											<span class="itemNo" data-bind="text: ItemNo"></span>
+											<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ItemNo"></span>
+										</pmbb-view-entry>
+									</div>
+									<div>
+										<pmbb-view-entry params="caption: 'ManufacturerItemNo'">
+											<span data-bind="text: ManufacturerItemNo"></span>
+											<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: ManufacturerItemNo"></span>
+										</pmbb-view-entry>
+									</div>
+									<div>
+										<pmbb-view-entry params="caption: 'BarCode'">
+											<span data-bind="text: BarCode"></span>
+											<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: BarCode"></span>
+										</pmbb-view-entry>
+									</div>
+									<div>
+										<pmbb-view-entry params="caption: 'Description'">
+											<span class="description" data-bind="text: Description"></span>
+											<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Description"></span>
+										</pmbb-view-entry>
+									</div>
+									<div>
+										<pmbb-view-entry params="caption: 'ProductFamily'">
+											<!-- ko if: ProductFamily() -->
+											<a href="#" data-bind="attr: { href: '#/Crm.Article/ProductFamily/DetailsTemplate/' + ProductFamily().Id() }">
+												<span data-bind="text: ProductFamily().Name"></span>
+											</a>
+											<!-- /ko -->
+											<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot:  ProductFamily"></span>
+										</pmbb-view-entry>
+									</div>
+								</div>
+								<!-- /ko -->
+							</pmbb-view>
+							<pmbb-edit>
+								<!-- ko with: article -->
+								<div class="field-block">
+									<div>
+										<pmbb-edit-entry params="caption: 'ItemNo', validationElement: ItemNo">
+											<input type="text" class="form-control" data-bind="value: ItemNo">
+										</pmbb-edit-entry>
+									</div>
+									<div>
+										<pmbb-edit-entry params="caption: 'ManufacturerItemNo', validationElement: ManufacturerItemNo">
+											<input type="text" class="form-control" data-bind="value: ManufacturerItemNo">
+										</pmbb-edit-entry>
+									</div>
+									<div>
+										<pmbb-edit-entry params="caption: 'BarCode', validationElement: BarCode">
+											<input type="text" class="form-control" data-bind="value: BarCode">
+											<!-- ko component: { name: "barcode-scanner", params: { value: BarCode } } -->
+											<!-- /ko -->
+										</pmbb-edit-entry>
+									</div>
+									<div>
+										<pmbb-edit-entry params="caption: 'Description', validationElement: Description">
+											<input id="Description" type="text" class="form-control" data-bind="value: Description">
+										</pmbb-edit-entry>
+									</div>
+									<div>
+										<pmbb-edit-entry params="caption: 'ProductFamily'">
+											<select name="ProductFamily" class="form-control" data-bind="select2autocompleter: { data: ProductFamilyKey, autocompleteOptions: { table: 'CrmArticle_ProductFamily', orderBy: ['Name'], mapDisplayObject: function (c) { return { id: c.Id, text: c.Name, item: c }; }, placeholder: $parent.placeholder} }"></select>
+										</pmbb-edit-entry>
+									</div>
+								</div>
+								<!-- /ko -->
+							</pmbb-edit>
+						</pmb-block>
+					</div>
+					<div class="flex-block">
+						@Html.PluginRenderActions("MaterialArticleHeaderExtensions")
+						@Html.PluginRenderActions("MaterialContactHeaderExtensions")
+					</div>
+				</block-content>
+			</block>
+		</div>
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="card detail-main-block">
+					<div class="pm-overview">
+						<ul class="tab-nav morph" role="tablist" tabindex="1">
+							@Html.PluginRenderActions("ArticleDetailsMaterialTabHeader")
+						</ul>
+					</div>
+					<div class="pm-body clearfix">
+						<div class="tab-content">
+							@Html.PluginRenderActions("ArticleDetailsMaterialTab")
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="row">
+					<div class="col-lg-12 col-md-6">
+						<div class="card detail-side-block">
+							<collapsible-block params="id: 'tags'">
+								<collapsible-block-header params="icon: 'tag'">
+									<span>@(Html.Localize("Tags"))</span>
+								</collapsible-block-header>
+								<collapsible-block-content>
+									<!-- ko with: $root -->
+									@await Html.PartialAsync("ContactDetailsTagBlock", typeof(Article))
+									<!-- /ko -->
+								</collapsible-block-content>
+							</collapsible-block>
+						</div>
+					</div>
+					<div class="col-lg-12 col-md-6">
+						<div class="card detail-side-block">
+							<collapsible-block params="id: 'background-info'">
+								<collapsible-block-header params="icon: 'equalizer'">
+									<span>@(Html.Localize("BackgroundInfo"))</span>
+								</collapsible-block-header>
+								<collapsible-block-content>
+									<pmb-block params="context: { article: $root.article }, condition: window.AuthorizationManager.isAuthorizedForAction($root.contactType(), 'Edit')">
+										<pmbb-view>
+											<!-- ko with: article -->
+											<span data-bind="text: BackgroundInfo" class="pre-line"></span>
+											<span data-bind="translatedText: 'BackgroundInformationEmptyState', ifnot: BackgroundInfo"></span>
+											<!-- /ko -->
+										</pmbb-view>
+										<pmbb-edit>
+											<!-- ko with: article -->
+											<div class="fg-line">
+												<textarea class="form-control" rows="5" placeholder="@(Html.Localize("BackgroundInfo"))..." data-bind="value: BackgroundInfo"></textarea>
+											</div>
+											<!-- /ko -->
+										</pmbb-edit>
+									</pmb-block>
+								</collapsible-block-content>
+							</collapsible-block>
+						</div>
+					</div>
+				</div>
+				@Html.PluginRenderActions("MaterialArticleSidebarExtensions")
+				@Html.PluginRenderActions("MaterialContactSidebarExtensions")
+			</div>
+		</div>
+	</div>
+</div>

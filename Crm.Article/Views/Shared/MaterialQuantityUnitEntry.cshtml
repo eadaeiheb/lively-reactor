@@ -1,0 +1,71 @@
+﻿@using Crm.Library.Globalization.Extensions
+@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.GenericListViewModel>
+
+<div class="lv-item media">
+	@await Html.PartialAsync("GenericListBulkControl")
+	<div class="media-body">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="lv-title">
+					<!-- ko if: IsGroup() && !($root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryDetailsViewModel) -->
+					<a data-bind="attr: { href: '#/Crm.Article/QuantityUnitEntry/DetailsTemplate/' + Id() }">
+						<b data-bind="text: Name"></b>
+					</a>
+					<br/>
+					<!-- /ko -->
+					<!-- ko if: !IsGroup() || $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryDetailsViewModel -->
+						<b data-bind="text: Name"></b>
+					<br/>
+					<!-- /ko -->
+					<b data-bind="lookupValue: QuantityUnitKey, lookups: $root.lookups.quantityUnit"></b>
+					<!-- ko if: Description -->
+					<br/>
+					<small data-bind="text: Description"></small>
+					<!-- /ko -->
+				</div>
+			</div>
+		</div>
+		<div>
+			<ul class="lv-attrs">
+				<li>
+					@Html.Localize("QuantityStep"): <span data-bind="money: QuantityStep"></span>
+				</li>
+				<!-- ko if: Factor -->
+				<li>
+					@Html.Localize("Factor"): <span data-bind="money: Factor"></span>
+				</li>
+				<!-- /ko -->
+				<!-- ko if: Divisor -->
+				<li>
+					@Html.Localize("Divisor"): <span data-bind="money: Divisor"></span>
+				</li>
+				<!-- /ko -->
+			</ul>
+		</div>
+		<!-- ko if: $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryDetailsViewModel || $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryListIndexViewModel || IsGroup()-->
+		<lv-actions>
+			<!-- ko if: IsGroup -->
+			<li>
+				<a href="#" data-bind="attr: { href: '#/Crm.Article/QuantityUnitEntry/DetailsTemplate/' + Id() }">
+					@(Html.Localize("Details"))
+				</a>
+			</li>
+			<!-- /ko -->
+			<!-- ko if: $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryDetailsViewModel || $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryListIndexViewModel -->
+			<li>
+				<a href="#" data-route="Crm.Article/QuantityUnitEntry/EditTemplate/{{Id}}" data-toggle="modal" data-target="#modal">
+					@(Html.Localize("Edit"))
+				</a>
+			</li>
+			<!-- /ko -->
+			<!-- ko if: $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryDetailsViewModel || $root instanceof window.Crm.Article.ViewModels.QuantityUnitEntryListIndexViewModel -->
+			<li>
+				<a href="#" data-bind="click: $root.remove">
+					@(Html.Localize("Delete"))
+				</a>
+			</li>
+			<!-- /ko -->
+		</lv-actions>
+		<!-- /ko -->
+	</div>
+</div>

@@ -1,0 +1,13 @@
+﻿window.jQuery = window.$ = require("jquery");
+require("../jquery.mockjax");
+window.openDatabase = require("websql");
+window.ko = require("knockout");
+window.$data = require("../../../Plugins/Main/Content/js/jaydata/jaydata");
+require("../../../Plugins/Main/Content/js/jaydata/jaydata-compatibility");
+require("../../../Plugins/Main/Content/js/jaydata/jaydatamodules/deferred");
+require("../../../Plugins/Main/Content/js/jaydata/jaydatamodules/knockout");
+require("../../../Plugins/Main/Content/js/jaydata/jaydataproviders/SqLiteProProvider");
+require("../../../Plugins/Main/Content/js/jaydata/jaydataproviders/oDataProvider");
+require("../../../Plugins/Main/Content/ts/jaydata.custom");
+$data.defaults.defaultDatabaseName = ":memory:";
+$data.defaults.queryCache = true;

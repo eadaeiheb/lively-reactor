@@ -1,0 +1,6 @@
+<!-- ko if: database.CrmArticle_VATLevel && $data.innerInstance instanceof database.CrmArticle_VATLevel.CrmArticle_VATLevel -->
+<div>
+	<small class="f-500" data-bind="text: window.Helper.String.getTranslatedString('Country') + ': '"></small>
+	<small data-bind="text: CountryKey() || Helper.String.getTranslatedString('Unspecified')"></small>
+</div>
+<!-- /ko -->

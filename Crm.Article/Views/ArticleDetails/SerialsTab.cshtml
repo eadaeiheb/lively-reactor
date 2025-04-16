@@ -1,0 +1,175 @@
+@inherits Crm.Library.Modularization.CrmViewUserControl
+<div role="tabpanel" class="tab-pane animated fadeIn" id="tab-serials" data-bind="with: tabs()['tab-serials']">
+	<empty-state-box params="mood: 'sad', title: 'NoSerials'" data-bind="visible: items().length === 0">
+	</empty-state-box>
+	<div class="generic-list listview lv-bordered">
+		<div class="lv-body">
+			<div class="panel-group p-l-20 p-r-20" role="tablist" id="accordion-stores">
+				<!-- ko foreach: items -->
+				<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: $index(), array: $parent.items }">
+					<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $index() }">
+						<h4 class="panel-title">
+							<div class="lv-avatar pull-left" data-bind="text: Helper.Store.getStoreNameAbbrevation($data.Name()), style: {backgroundColor: 'blue'}">
+							</div>
+							<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-stores" data-bind="click: toggleLocations.bind($data), attr: { href: '#collapse-store-' + $index(), 'aria-controls': 'collapse-store-' + $index()}">
+								<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="text: Name"></span>
+							</a>
+						</h4>
+					</div>
+					<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-store-' + $index(), 'aria-labelledby': 'heading-store-' + $index() }">
+						<div class="panel-body">
+							<!-- ko with: storageAreasVm -->
+							<div class="panel-group p-l-20 p-r-20" role="tablist" id="accordion-storageArea">
+								<!-- ko foreach: items -->
+								<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: $index(), array: $parent.items }">
+									<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $parents[1].Id() + '-storageArea' + $index() }">
+			                            <h4 class="panel-title">
+											<div class="lv-avatar pull-left" data-bind="text: Helper.Store.getStoreNameAbbrevation($data.StorageAreaNo()), style: {backgroundColor: 'green'}"></div>
+			                                <a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-storageArea" data-bind="click: toggleLocations.bind($data), attr: { href: '#collapse-' + $parents[1].Id() + '-storageArea' + $index(), 'aria-controls': 'collapse-' + $parents[1].Id() + '-storageArea' + $index()}">
+                                				<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="text: StorageAreaNo"></span>
+			                                </a>
+			                            </h4>
+			                        </div>
+									<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-' + $parents[1].Id() + '-storageArea' + $index(), 'aria-labelledby': 'heading-' + $parents[1].Id() + '-storageArea' + $index() }">
+										<div class="panel-body">
+											<!-- ko with: locationsVm -->
+											<div class="panel-group p-l-20 p-r-20" role="tablist" id="accordion-storageAreaLocation">
+												<!-- ko foreach: items -->
+												<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: $index(), array: $parent.items }">
+													<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $parents[3].Id() + '-storageArea' + $parents[1].StorageAreaNo() + '-location' + $index() }">
+														<h4 class="panel-title">
+															<div class="lv-avatar pull-left" data-bind="text: Helper.Store.getStoreNameAbbrevation($data.LocationNo()), style: {backgroundColor: 'orange'}"></div>
+															<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-storageAreaLocation" data-bind="click: toggleSerials.bind($data), attr: { href: '#collapse-' + $parents[3].Id() + '-storageArea'+ $parents[1].StorageAreaNo() + '-location' + $index(), 'aria-controls': 'collapse-' + $parents[3].Id() + '-storageArea'+ $parents[1].StorageAreaNo() + '-location' + $index()}">
+																<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="text: LocationNo"></span>
+															</a>
+														</h4>
+													</div>
+													<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-' + $parents[3].Id() + '-storageArea'+ $parents[1].StorageAreaNo() + '-location' + $index(), 'aria-labelledby': 'heading-' + $parents[3].Id() + '-storageArea'+ $parents[1].StorageAreaNo() + '-location' + $index() }">
+														<div class="panel-body">
+															<!-- ko with: serialVm -->
+															<ul class="lv-attrs" data-bind="foreach: items">
+																<li>
+																	<span data-bind="text: SerialNo"></span>
+																</li>
+															</ul>
+															<!-- /ko -->
+														</div>
+													</div>
+												</div>
+												<!-- /ko -->
+												<!-- ko if: serialWithoutLocationExists -->
+												<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: -1, array: items }">
+													<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $parents[2].StoreNo() + '-storageArea-' + $parent.StorageAreaNo() + '-no-location'}">
+														<h4 class="panel-title">
+															<div class="lv-avatar pull-left" data-bind="text: 'N', style: {backgroundColor: 'grey'}"></div>
+															<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-storageAreaLocation" data-bind="click: toggleSerials.bind($data), attr: { href: '#collapse-' + $parents[2].StoreNo() + '-storageArea-' + $parent.StorageAreaNo() + '-no-location', 'aria-controls': 'collapse-' + $parents[2].StoreNo() + '-storageArea-' + $parent.StorageAreaNo() + '-no-location'}">
+																<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="translatedText: 'SerialNoLocation'"></span>
+															</a>
+														</h4>
+													</div>
+													<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-' + $parents[2].StoreNo() + '-storageArea-' + $parent.StorageAreaNo() + '-no-location', 'aria-labelledby': 'heading-' + $parents[2].StoreNo() + '-storageArea-' + $parent.StorageAreaNo() + '-no-location'}">
+														<div class="panel-body">
+															<!-- ko with: serialVm -->
+															<ul class="lv-attrs" data-bind="foreach: items">
+																<li>
+																	<span data-bind="text: SerialNo"></span>
+																</li>
+															</ul>
+															<!-- /ko -->
+														</div>
+													</div>
+												</div>
+												<!-- /ko -->
+											</div>
+											<!-- /ko -->
+										</div>
+									</div>
+								</div>
+								<!-- /ko -->
+							</div>
+							<!-- ko if: serialWithoutStorageAreaExists -->
+							<!-- ko with: locationsVm -->
+							<div class="panel-group p-l-20 p-r-20" role="tablist" id="accordion-location">
+								<!-- ko foreach: items -->
+								<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: $index(), array: $parent.items }">
+									<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $parents[2].StoreNo() + '-location' + $index() }">
+										<h4 class="panel-title">
+											<div class="lv-avatar pull-left" data-bind="text: Helper.Store.getStoreNameAbbrevation($data.LocationNo()), style: {backgroundColor: 'orange'}">
+											</div>
+											<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-location" data-bind="click: toggleSerials.bind($data), attr: { href: '#collapse-location-' + $parents[2].StoreNo() + '-location' + $index(), 'aria-controls': 'collapse-location-' + $parents[2].StoreNo() + '-location' + $index()}">
+												<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="text: LocationNo"></span>
+											</a>
+										</h4>
+									</div>
+									<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-location-' + $parents[2].StoreNo() + '-location' + $index(), 'aria-labelledby': 'heading-location-' + $parents[2].StoreNo() + '-location' + $index() }">
+										<div class="panel-body">
+											<!-- ko with: serialVm -->
+											<ul class="lv-attrs" data-bind="foreach: items">
+												<li>
+													<span data-bind="text: SerialNo"></span>
+												</li>
+											</ul>
+											<!-- /ko -->
+										</div>
+									</div>
+								</div>
+								<!-- /ko -->
+								<!-- ko if: serialWithoutLocationExists -->
+								<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: -1, array: items }">
+									<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-' + $parents[1].StoreNo() + '-no-location'}">
+										<h4 class="panel-title">
+											<div class="lv-avatar pull-left" data-bind="text: 'N', style: {backgroundColor: 'grey'}"></div>
+											<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-location" data-bind="click: toggleSerials.bind($data), attr: { href: '#collapse-' + $parents[1].StoreNo() + '-no-location', 'aria-controls': 'collapse-' + $parents[1].StoreNo() + '-no-location'}">
+												<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="translatedText: 'SerialNoStorageAreaNoLocation'"></span>
+											</a>
+										</h4>
+									</div>
+									<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-' + $parents[1].StoreNo() + '-no-location', 'aria-labelledby': 'heading-' + $parents[1].StoreNo() + '-no-location'}">
+										<div class="panel-body">
+											<!-- ko with: serialVm -->
+											<ul class="lv-attrs" data-bind="foreach: items">
+												<li>
+													<span data-bind="text: SerialNo"></span>
+												</li>
+											</ul>
+											<!-- /ko -->
+										</div>
+									</div>
+								</div>
+								<!-- /ko -->
+							</div>
+							<!-- /ko -->
+							<!-- /ko -->
+							<!-- /ko -->
+						</div>
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if: serialWithoutStoreExists -->
+				<div class="panel panel-collapse" data-bind="infiniteScrollItem: { index: -1, array: items }">
+					<div class="panel-heading" role="tab" data-bind="attr: { id: 'heading-no-store' }">
+						<h4 class="panel-title">
+							<div class="lv-avatar pull-left" data-bind="text: 'N', style: {backgroundColor: 'grey'}">
+							</div>
+							<a class="p-b-25 m-t-15" data-toggle="collapse" data-parent="#accordion-stores" data-bind="click: toggleSerials.bind($data), attr: { href: '#collapse-no-store', 'aria-controls': 'collapse-no-store'}">
+								<i class="zmdi zmdi-chevron-down zmdi-hc-lg"></i><span data-bind="translatedText: 'SerialsNoStore'"></span>
+							</a>
+						</h4>
+					</div>
+					<div class="collapse" role="tabpanel" data-bind="attr: { id: 'collapse-no-store', 'aria-labelledby': 'heading-no-store'}">
+						<div class="panel-body">
+							<!-- ko with: serialVm -->
+							<ul class="lv-attrs" data-bind="foreach: items">
+								<li>
+									<span data-bind="text: SerialNo"></span>
+								</li>
+							</ul>
+							<!-- /ko -->
+						</div>
+					</div>
+				</div>
+				<!-- /ko -->
+			</div>
+		</div>
+	</div>
+</div>

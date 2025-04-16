@@ -1,0 +1,8 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+
+<!-- ko if: $root.filterByType()  -->
+<floating-action-button params="href: '#/Crm.Article/Article/CreateTemplate?filterByType=VehicleAndTool', icon: 'plus', title: 'CreateArticle'"></floating-action-button>
+<!-- /ko -->
+<!-- ko ifnot: $root.filterByType()  -->
+<floating-action-button params="href: '#/Crm.Article/Article/CreateTemplate', icon: 'plus', title: 'CreateArticle'"></floating-action-button>
+<!-- /ko -->

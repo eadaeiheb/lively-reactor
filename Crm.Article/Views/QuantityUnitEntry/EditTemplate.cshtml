@@ -1,0 +1,40 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+
+<div class="modal-header card-header ch-alt" data-bind="with: quantityUnit">
+	<button type="button" class="close" data-dismiss="modal" aria-label="@(Html.Localize("Close"))">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title" data-bind="visible: innerInstance.entityState === 20 && IsGroup()">@(Html.Localize("CreateQuantityUnitGroup"))</h4>
+	<h4 class="modal-title" data-bind="visible: innerInstance.entityState !== 20 && IsGroup()">@(Html.Localize("EditQuantityUnitGroup"))</h4>
+	<h4 class="modal-title" data-bind="visible: innerInstance.entityState === 20 && !IsGroup()">@(Html.Localize("CreateQuantityUnit"))</h4>
+	<h4 class="modal-title" data-bind="visible: innerInstance.entityState !== 20 && !IsGroup()">@(Html.Localize("EditQuantityUnit"))</h4>
+</div>
+<div class="modal-body card-body card-padding">
+	<form role="form" action="#" data-bind="with: quantityUnit">
+		<!-- ko if: IsGroup() -->
+		<form-element params="value: Name, caption: 'Name', type: 'textarea'"></form-element>
+		<!-- /ko -->
+		<form-element params="value: QuantityUnitKey, caption: 'QuantityUnit', type: 'select'">
+			<select name="QuantityUnitKey" class="form-control" data-bind="select2autocompleter: { data: value, default: null, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_QuantityUnit')}">
+			</select>
+		</form-element>
+		<!-- ko if: IsGroup() -->
+		<form-element params="value: Description, caption: 'Description', type: 'textarea'"></form-element>
+		<!-- /ko -->
+		<form-element params="value: QuantityStep, caption: 'QuantityStep', type: 'number', min: 0"></form-element>
+		<!-- ko if: !IsGroup() -->
+		<form-element params="value: Factor, caption: 'Factor', type: 'number', min: 0"></form-element>
+		<form-element params="value: Divisor, caption: 'Divisor', type: 'number', min: 0"></form-element>
+		<span data-bind="money: Factor"></span> <span data-bind="lookupValue: $root.quantityUnitGroup().QuantityUnitKey, lookups: $root.lookups.quantityUnits"></span> = <span data-bind="money: Divisor"></span> <span data-bind="lookupValue: QuantityUnitKey, lookups: $root.lookups.quantityUnits"></span>
+		<!-- /ko -->
+	</form>
+</div>
+<div class="modal-footer card-header ch-alt p-15">
+	<button type="button" class="btn btn-lg btn-default f-13 waves-effect" data-bind="click: Helper.Database.clearTrackedEntities" data-dismiss="modal">
+		@(Html.Localize("Cancel"))
+	</button>
+	<button type="button" class="btn btn-lg btn-primary f-13 waves-effect" data-bind="click: save, disable: loading">
+		@(Html.Localize("Save"))
+	</button>
+</div>

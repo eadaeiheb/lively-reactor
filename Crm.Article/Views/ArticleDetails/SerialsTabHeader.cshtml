@@ -1,0 +1,9 @@
+@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.GenericListViewModel>
+@using Crm.Library.Globalization.Extensions
+<!-- ko if: article().IsSerial() -->
+<li role="presentation">
+	<a class="col-xs-4" href="#tab-serials" aria-controls="tab-serials" role="tab" data-toggle="tab" aria-expanded="false">
+		@(Html.Localize("Serials"))
+	</a>
+</li>
+<!-- /ko -->

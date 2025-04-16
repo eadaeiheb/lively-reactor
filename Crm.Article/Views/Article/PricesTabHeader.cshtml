@@ -1,0 +1,10 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Globalization.Extensions
+
+<!-- ko if: $root.article().QuantityUnitEntry -->
+<li role="presentation">
+	<a class="col-xs-4" href="#tab-prices" aria-controls="tab-prices" role="tab" data-toggle="tab" aria-expanded="false">
+		@(Html.Localize("Prices"))
+	</a>
+</li>
+<!-- /ko -->

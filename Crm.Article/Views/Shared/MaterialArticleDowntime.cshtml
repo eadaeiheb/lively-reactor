@@ -1,0 +1,39 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.GenericListViewModel>
+@using Crm.Library.Modularization.Extensions
+@using Crm.Library.Globalization.Extensions
+
+<div class="lv-item media" id="{{Id}}">
+	<div>
+		<div class="lv-avatar bgm-red pull-left" data-bind="text: DowntimeReasonKey()[0]"></div>
+		<div class="lv-title">
+			<span data-bind="lookupValue: DowntimeReasonKey, lookups: $parent.lookups.articleDowntimeReasons"></span>
+			<span class="c-gray" data-bind="text: Description"></span>
+		</div>
+	</div>
+	<div class="media-body panel-heading">
+		<div class="row">
+			<div class="col-sm-12">
+				<ul class="lv-attrs">
+					<li data-bind="visible: From">
+						<span data-bind="translatedText: 'From'"></span>:
+						<span data-bind="dateText: From"></span>
+					</li>
+					<li data-bind="visible: To">
+						<span data-bind="translatedText: 'To'"></span>:
+						<span data-bind="dateText: To"></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<lv-actions>
+			<li>
+				<a href="#" data-bind="attr: { 'data-route': 'Crm.Article/ArticleDowntime/EditTemplate/' + Id() }" data-toggle="modal" data-target="#modal">
+					@(Html.Localize("Edit"))
+				</a>
+			</li>
+			<li>
+				<a href="#" data-bind="click: $parents[2].delete">@(Html.Localize("Delete"))</a>
+			</li>
+		</lv-actions>
+	</div>
+</div>

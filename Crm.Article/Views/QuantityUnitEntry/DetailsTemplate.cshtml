@@ -1,0 +1,102 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Modularization.Extensions
+@using Crm.Article.Model
+@using Crm.Library.Globalization.Extensions
+
+<div class="container">
+	<div id="profile-main" class="divided-detail">
+		<div class="pm-overview c-overflow card w-100" tabindex="4">
+			<block params="context: { quantityUnitGroup: $root.quantityUnitGroup }">
+				<block-header>
+					<div>
+						<div data-bind="text: $root.quantityUnitGroup().Name"></div>
+						<div class="f-13 m-t-5">
+							<span data-bind="lookupValue: $root.quantityUnitGroup().QuantityUnitKey, lookups: $root.lookups.quantityUnit"></span>
+						</div>
+					</div>
+					<lv-actions>
+						<li>
+							<a href="#" data-route="Crm.Article/QuantityUnitEntry/EditTemplate/{{$root.quantityUnitGroup().Id()}}" data-toggle="modal" data-target="#modal">
+								@(Html.Localize("Edit"))
+							</a>
+						</li>
+					</lv-actions>
+				</block-header>
+				<block-content>
+					<pmb-block params="context: { quantityUnitGroup: $root.quantityUnitGroup }">
+						<pmbb-view>
+							<!-- ko with: quantityUnitGroup -->
+							<div class="row">
+								<div class="col-lg-8">
+									<pmbb-view-entry params="caption: 'Description'">
+										<span data-bind="text: Description"></span>
+										<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: Description"></span>
+									</pmbb-view-entry>
+								</div>
+								<div class="col-lg-4">
+									<pmbb-view-entry params="caption: 'QuantityStep'">
+										<span class="itemNo" data-bind="money: QuantityStep"></span>
+										<span class="c-gray" data-bind="translatedText: 'Unspecified', if: QuantityStep() === null"></span>
+									</pmbb-view-entry>
+								</div>
+							</div>
+							<!-- /ko -->
+						</pmbb-view>
+						<pmbb-edit>
+							<!-- ko with: quantityUnitGroup -->
+							<div class="row">
+								<div class="col-lg-8">
+									<pmbb-edit-entry params="caption: 'Description', validationElement: Description">
+										<input type="text" class="form-control" data-bind="value: Description">
+									</pmbb-edit-entry>
+								</div>
+								<div class="col-lg-4">
+									<pmbb-edit-entry params="caption: 'QuantityStep', validationElement: QuantityStep">
+										<input type="number" class="form-control" data-bind="value: QuantityStep">
+									</pmbb-edit-entry>
+								</div>
+							</div>
+							<!-- /ko -->
+						</pmbb-edit>
+					</pmb-block>
+				</block-content>
+			</block>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card detail-main-block">
+					<div class="pm-body clearfix">
+						<div class="panel-heading active">
+							<div class="card-header p-20 ch-alt">
+								<div class="panel-title max-width-100">
+									<span class="d-flex flex-v-center f-17 c-black">
+										<div data-bind="translatedText: 'QuantityUnits'"></div>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="generic-list listview lv-bordered">
+							<div class="lv-body">
+								<div data-bind="foreach: items">
+									@await Html.PartialAsync("MaterialQuantityUnitEntry")
+								</div>
+							</div>
+						</div>
+						<empty-state-box params="mood: 'sad', title: 'QuantityUnits', text: 'NoQuantityUnits'" data-bind="visible: items().length === 0">
+						</empty-state-box>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<floating-action-button>
+		<li data-bind="with: $root">
+			<a href="#" data-mfb-label="@(Html.Localize("AddQuantityUnit"))"
+			   data-route="Crm.Article/QuantityUnitEntry/EditTemplate/?groupId={{$root.quantityUnitGroup().Id()}}" data-toggle="modal" data-target="#modal">
+				<i class="zmdi zmdi-shopping-cart"></i>
+			</a>
+		</li>
+	</floating-action-button>
+</div>
+

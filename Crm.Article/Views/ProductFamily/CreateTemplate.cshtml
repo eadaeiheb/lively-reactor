@@ -1,0 +1,31 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl
+@using Crm.Library.Extensions
+@using Crm.Library.Globalization.Extensions
+@using Crm.Library.Modularization.Extensions
+
+<div class="container">
+	<div class="card">
+		<div class="card-body card-padding">
+			<form role="form" data-bind="with: productFamily">
+				<div class="flex-input-row">
+					<div>
+						<form-element params="value: Name, caption: 'Name', type: 'text'"></form-element>
+					</div>
+					<div>
+						<form-element id="StatusKey" params="value: StatusKey, caption: 'Status', type: 'select'">
+							<select name="StatusKey" class="form-control" data-bind="select2autocompleter: { data: value, default: Helper.Lookup.getLookupValue($root.lookups.productFamilyStatuses, value), autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_ProductFamilyStatus'), placeholder: placeholder}">
+							</select>
+						</form-element>
+					</div>
+				</div>
+				<div class="flex-input-row">
+					<div>
+						<form-element params="value: BackgroundInfo, caption: 'BackgroundInfo', type: 'textarea'"></form-element>
+					</div>
+				</div>
+				@Html.PluginRenderActions("ProductFamilyCreateForm")
+			</form>
+		</div>
+		 @await Html.PartialAsync("CreateFormFooter") 
+	</div>
+</div>

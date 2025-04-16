@@ -1,0 +1,7 @@
+﻿@inherits Crm.Library.Modularization.CrmViewUserControl<Main.ViewModels.GenericListViewModel>
+
+<script type="text/html" id="article-autocomplete-template">
+	<div id="{{Id}}" class="listview">
+		@await Html.PartialAsync("MaterialArticle")
+	</div>
+</script>

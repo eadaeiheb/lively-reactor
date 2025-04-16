@@ -1,0 +1,32 @@
+﻿@using Crm.Library.Extensions
+@using Crm.Library.Modularization.Extensions
+@inherits Crm.Library.Modularization.CrmViewUserControl<dynamic>
+
+<pmb-block params="icon: 'money', caption: 'SalesInformation', context: { company: company }, condition: window.AuthorizationManager.isAuthorizedForAction('Company', 'Edit')">
+	<pmbb-view>
+		<!-- ko with: company().ExtensionValues -->
+		<pmbb-view-entry params="caption: 'CompanyPriceGroup'">
+			<span data-bind="if: CompanyPriceGroupKey, lookupValue: CompanyPriceGroupKey, lookups: $root.lookups.companyPriceGroups"></span>
+			<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: CompanyPriceGroupKey"></span>
+		</pmbb-view-entry>
+		@Html.PluginRenderActions("CompanySalesInformation")
+		<pmbb-view-entry params="caption: 'CompanyPriceLevel'">
+			<span data-bind="if: CompanyPriceLevelKey, lookupValue: CompanyPriceLevelKey, lookups: $root.lookups.companyPriceLevels"></span>
+			<span class="c-gray" data-bind="translatedText: 'Unspecified', ifnot: CompanyPriceLevelKey"></span>
+		</pmbb-view-entry>
+		@Html.PluginRenderActions("CompanySalesInformation2")
+		<!-- /ko -->
+	</pmbb-view>
+	<pmbb-edit>
+		<!-- ko with: company().ExtensionValues -->
+		<pmbb-edit-entry params="caption: 'CompanyPriceGroup', validationElement: CompanyPriceGroupKey">
+			<select class="form-control" data-bind="select2autocompleter: { data: CompanyPriceGroupKey, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_CompanyPriceGroup'), placeholder: $parent.placeholder}"></select>
+		</pmbb-edit-entry>
+		@Html.PluginRenderActions("CompanySalesInformationEdit")
+		<pmbb-edit-entry params="caption: 'CompanyPriceLevel', validationElement: CompanyPriceLevelKey">
+			<select class="form-control" data-bind="select2autocompleter: { data: CompanyPriceLevelKey, autocompleteOptions: Helper.Lookup.getAutocompleteOptions('CrmArticle_CompanyPriceLevel'), placeholder: $parent.placeholder}"></select>
+		</pmbb-edit-entry>
+		@Html.PluginRenderActions("CompanySalesInformationEdit2")
+		<!-- /ko -->
+	</pmbb-edit>
+</pmb-block>
