@@ -8,15 +8,20 @@ describe("BaseOrderPdfModalViewModel", () => {
         expect.assertions(4);
 
         // Initialize test dependencies and mock namespaces
+        window.Main = window.Main || {};
+        window.Main.ViewModels = window.Main.ViewModels || {};
+        window.Main.ViewModels.ViewModelBase = class ViewModelBase {
+            loading = ko.observable(false);
+        };
+        
         window.Crm = window.Crm || {};
         window.Crm.Order = window.Crm.Order || {};
-        window.Crm.Order.ViewModels = {
-            BaseOrderDetailsViewModel: {
-                prototype: {
-                    getCalculatedPriceWithDiscount: function() { return ko.observable(100); },
-                    getDiscountPercentageValue: function() { return ko.observable(0); },
-                    getDiscountExactValue: function() { return ko.observable(0); }
-                }
+        window.Crm.Order.ViewModels = window.Crm.Order.ViewModels || {};
+        window.Crm.Order.ViewModels.BaseOrderDetailsViewModel = {
+            prototype: {
+                getCalculatedPriceWithDiscount: function() { return ko.observable(100); },
+                getDiscountPercentageValue: function() { return ko.observable(0); },
+                getDiscountExactValue: function() { return ko.observable(0); }
             }
         };
 
