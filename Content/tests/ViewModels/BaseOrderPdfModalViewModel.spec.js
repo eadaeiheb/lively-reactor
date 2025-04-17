@@ -32,7 +32,8 @@ describe("BaseOrderPdfModalViewModel", () => {
         const viewModel = new window.Crm.Order.ViewModels.BaseOrderPdfModalViewModel();
         const mockOrder = {
             CurrencyKey: ko.observable("EUR"),
-            Id: ko.observable("test-order-id")
+            Id: ko.observable("test-order-id"),
+            ResponsibleUser: ko.observable("test-user-id") // Add this function
         };
         const mockArticleId = "test-article-id";
         const mockOrderItem = {
@@ -64,6 +65,28 @@ describe("BaseOrderPdfModalViewModel", () => {
                 find: () => Promise.resolve({
                     DocumentAttributes: mockDocumentAttributes
                 })
+            },
+            Main_User: {
+                find: () => Promise.resolve({
+                    asKoObservable: () => ({ /* mock user properties */ })
+                })
+            },
+            CrmOrder_CalculationPosition: {
+                filter: () => ({
+                    toArray: () => Promise.resolve([])
+                })
+            },
+            Crm_Address: {
+                filter: () => ({
+                    take: () => ({
+                        toArray: () => Promise.resolve([])
+                    })
+                })
+            },
+            Main_Site: {
+                GetCurrentSite: () => ({
+                    first: () => Promise.resolve({})
+                })
             }
         };
 
@@ -74,6 +97,11 @@ describe("BaseOrderPdfModalViewModel", () => {
         window.Helper.Lookup = window.Helper.Lookup || {};
         window.Helper.Lookup.getLocalizedArrayMap = () => Promise.resolve({});
         window.Helper.Lookup.getLocalizedArrayMaps = () => Promise.resolve();
+
+        // Mock document.getElementById
+        document.getElementById = jest.fn().mockImplementation(() => ({
+            content: "fallback-user-id"
+        }));
 
         // Act
         await viewModel.init();
