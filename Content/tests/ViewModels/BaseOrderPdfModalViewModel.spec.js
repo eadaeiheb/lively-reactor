@@ -3,31 +3,25 @@ require("../testbase");
 require("../knockout/testbase");
 require("../JaydataDbModel");
 
-// Initialize the namespace structure
-window.Main = window.Main || {};
-window.Main.ViewModels = window.Main.ViewModels || {};
-window.Main.ViewModels.ViewModelBase = class ViewModelBase {
-    loading = ko.observable(false);
-};
-
-window.Crm = window.Crm || {};
-window.Crm.Order = window.Crm.Order || {};
-window.Crm.Order.ViewModels = window.Crm.Order.ViewModels || {};
-
-// Mock the BaseOrderDetailsViewModel prototype
-window.Crm.Order.ViewModels.BaseOrderDetailsViewModel = {
-    prototype: {
-        getCalculatedPriceWithDiscount: function() { return ko.observable(100); },
-        getDiscountPercentageValue: function() { return ko.observable(0); },
-        getDiscountExactValue: function() { return ko.observable(0); }
-    }
-};
-
-require("../../../Plugins/Crm.Order/Content/ts/BaseOrderPdfModalViewModel");
-
 describe("BaseOrderPdfModalViewModel", () => {
     test("updates article thumbnail when initializing", async () => {
         expect.assertions(4);
+
+        // Initialize test dependencies and mock namespaces
+        window.Crm = window.Crm || {};
+        window.Crm.Order = window.Crm.Order || {};
+        window.Crm.Order.ViewModels = {
+            BaseOrderDetailsViewModel: {
+                prototype: {
+                    getCalculatedPriceWithDiscount: function() { return ko.observable(100); },
+                    getDiscountPercentageValue: function() { return ko.observable(0); },
+                    getDiscountExactValue: function() { return ko.observable(0); }
+                }
+            }
+        };
+
+        // Load the actual BaseOrderPdfModalViewModel
+        require("../../../Plugins/Crm.Order/Content/ts/BaseOrderPdfModalViewModel");
 
         // Initialize the view model
         const viewModel = new window.Crm.Order.ViewModels.BaseOrderPdfModalViewModel();
